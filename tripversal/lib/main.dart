@@ -3,9 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripversal/widgets/sideNav.dart';
 import 'package:flutter/services.dart' show rootBundle;
-// import 'package:flutter/src/material/popup_menu.dart';
-// import 'package:flutter/src/rendering/box.dart';
-// import 'package:flutter/src/material/dropdown.dart';
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
@@ -50,12 +47,16 @@ class RentACarPage extends StatelessWidget {
           ),
           
           actions: [
-            SizedBox(
-              width: 45,
-              child: Image.asset(
-                "assets/images/User.jpg"
-              ),
-            ),
+            IconButton(
+              icon: Image.asset('assets/images/User.jpg'),
+              iconSize: 50,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AccountPage()),
+                );
+              },
+            )
           ],//error image blur so badly and not round yet
 
             //Transparent setting.
@@ -119,7 +120,6 @@ class RentACarPage extends StatelessWidget {
                         //Button properties.
                         decoration: BoxDecoration(
                           borderRadius : BorderRadius.circular(10),
-                          border: Border.all(width: 0),
                           color: Color(0xFF4169E1),
                           boxShadow: const [
                             BoxShadow(
@@ -134,7 +134,7 @@ class RentACarPage extends StatelessWidget {
                         transform: Matrix4.translationValues(0.0, -15.0, 0.0),
                         
                         child: PopupMenuButton( 
-                          iconSize: 50,
+                          iconSize: 35,
                           icon: Icon(Icons.sort, color: Colors.white),
                           enabled: true,
                           itemBuilder: (context) => [
@@ -249,8 +249,7 @@ class RentACarPage extends StatelessWidget {
                     ),
                 ),
 
-                SizedBox(
-                  height : 375,
+                Flexible(
                   child : SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
@@ -284,7 +283,7 @@ class RentACarPage extends StatelessWidget {
                                                     "Driver", 
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w800,
-                                                      fontSize: 15,
+                                                      fontSize: 14,
                                                       color: Color(0xFF4169E1)
                                                     ),
                                                   ),
@@ -294,7 +293,7 @@ class RentACarPage extends StatelessWidget {
                                                       "none", 
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.w600,
-                                                        fontSize: 14,
+                                                        fontSize: 13,
                                                         color: Color(0xFF808080)
                                                       ),
                                                     ),
@@ -379,7 +378,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: "Rp.",
                                                           style: TextStyle(
                                                             color: Color(0xFF808080),
-                                                            fontSize: 24,
+                                                            fontSize: 21,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -387,7 +386,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " 290.000",
                                                           style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -395,7 +394,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " / Day",
                                                           style: TextStyle(
                                                             color: Color(0xFF808080),
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -429,7 +428,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " 4,8",
                                                           style: TextStyle(
                                                             color: Color(0xFF4169E1),
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -493,7 +492,7 @@ class RentACarPage extends StatelessWidget {
                                                     "Driver", 
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w800,
-                                                      fontSize: 15,
+                                                      fontSize: 14,
                                                       color: Color(0xFF4169E1)
                                                     ),
                                                   ),
@@ -503,7 +502,7 @@ class RentACarPage extends StatelessWidget {
                                                       "none", 
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.w600,
-                                                        fontSize: 14,
+                                                        fontSize: 13,
                                                         color: Color(0xFF808080)
                                                       ),
                                                     ),
@@ -588,7 +587,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: "Rp.",
                                                           style: TextStyle(
                                                             color: Color(0xFF808080),
-                                                            fontSize: 24,
+                                                            fontSize: 21,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -596,7 +595,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " 245.000",
                                                           style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -604,7 +603,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " / Day",
                                                           style: TextStyle(
                                                             color: Color(0xFF808080),
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -638,7 +637,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " 4,4",
                                                           style: TextStyle(
                                                             color: Color(0xFF4169E1),
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -702,7 +701,7 @@ class RentACarPage extends StatelessWidget {
                                                     "Driver", 
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w800,
-                                                      fontSize: 15,
+                                                      fontSize: 14,
                                                       color: Color(0xFF4169E1)
                                                     ),
                                                   ),
@@ -721,7 +720,7 @@ class RentACarPage extends StatelessWidget {
                                                           " Ben Parker", 
                                                           style: TextStyle(
                                                             fontWeight: FontWeight.w800,
-                                                            fontSize: 14,
+                                                            fontSize: 13,
                                                             color: Color(0xFF808080)
                                                           ),
                                                         ),
@@ -808,7 +807,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: "Rp.",
                                                           style: TextStyle(
                                                             color: Color(0xFF808080),
-                                                            fontSize: 24,
+                                                            fontSize: 21,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -816,7 +815,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " 360.000",
                                                           style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -824,7 +823,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " / Day",
                                                           style: TextStyle(
                                                             color: Color(0xFF808080),
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -858,7 +857,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " 4,9",
                                                           style: TextStyle(
                                                             color: Color(0xFF4169E1),
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -922,7 +921,7 @@ class RentACarPage extends StatelessWidget {
                                                     "Driver", 
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w800,
-                                                      fontSize: 15,
+                                                      fontSize: 14,
                                                       color: Color(0xFF4169E1)
                                                     ),
                                                   ),
@@ -941,7 +940,7 @@ class RentACarPage extends StatelessWidget {
                                                           " Craig Mckay", 
                                                           style: TextStyle(
                                                             fontWeight: FontWeight.w800,
-                                                            fontSize: 14,
+                                                            fontSize: 13,
                                                             color: Color(0xFF808080)
                                                           ),
                                                         ),
@@ -1028,7 +1027,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: "Rp.",
                                                           style: TextStyle(
                                                             color: Color(0xFF808080),
-                                                            fontSize: 24,
+                                                            fontSize: 21,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -1036,7 +1035,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " 320.000",
                                                           style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -1044,7 +1043,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " / Day",
                                                           style: TextStyle(
                                                             color: Color(0xFF808080),
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -1078,7 +1077,7 @@ class RentACarPage extends StatelessWidget {
                                                           text: " 4,8",
                                                           style: TextStyle(
                                                             color: Color(0xFF4169E1),
-                                                            fontSize: 20,
+                                                            fontSize: 18,
                                                             fontWeight: FontWeight.w700,
                                                           )
                                                         ),
@@ -1148,6 +1147,237 @@ class RentACarPage extends StatelessWidget {
   }
 }
 
+class AccountPage extends StatelessWidget {
+  const AccountPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+        title: Text("Account", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+        ),
+      ),
+      
+      actions: [
+        IconButton(
+          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RentACarPage()),
+            );
+          },
+        )
+      ],
+        //Transparent setting.
+        backgroundColor: Color(0x44FFFFFF),
+        elevation: 0,
+      ),
+
+      body: Center(
+        child: Container(
+          transform: Matrix4.translationValues(0.0, -40.0, 0.0),
+          child: Flexible(
+            child : SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  //Text.
+                  Container(
+                    width: 160,
+                    margin: EdgeInsets.all(10),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(80), 
+                      child: Image.asset('assets/images/User.jpg'),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(80), 
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey,
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, 3)
+                        )
+                      ],
+                    ),
+                  ),
+
+                  //Full name section.
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: Text(
+                        "Fullname", 
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Color(0xFF808080)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0),
+                      height: 35,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                          ),
+                      
+                          hintText: 'Rose Monde',
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //ID Card section.
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: Text(
+                        "ID Card / Passport Number", 
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Color(0xFF808080)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0),
+                      height: 35,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                          ),
+                      
+                          hintText: '9171010203010001',
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //Password section.
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: Text(
+                        "Password", 
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Color(0xFF808080)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0),
+                      height: 35,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                          ),
+                      
+                          hintText: 'nopass123',
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //Email section.
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: Text(
+                        "Email", 
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Color(0xFF808080)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
+                      height: 35,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                          ),
+                      
+                          hintText: 'monderose@gmail.com',
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //Phone number section.
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: Text(
+                        "Phone Number", 
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Color(0xFF808080)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
+                      height: 35,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                          ),
+                      
+                          hintText: '08114882001',
+                        ),
+                      ),
+                    ),
+                  ),
+                  
+                ]
+              )
+            )
+          )
+        ),
+      )
+    );
+  }
+}
 
 //Drop down location or city.
 class MyStatefulWidget extends StatefulWidget {
