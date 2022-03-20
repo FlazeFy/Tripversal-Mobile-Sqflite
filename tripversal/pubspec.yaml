@@ -71,6 +71,14 @@ flutter:
     - assets/images/background1.png
     - assets/images/driver1.jpg
     - assets/images/driver2.jpg
+    - assets/images/driver3.jpg
+    - assets/images/driver4.jpg
+    - assets/images/united-kingdom.png
+    - assets/images/indonesia.png
+    - assets/images/spain.png
+    - assets/images/china.png
+    - assets/images/brazil.png
+    - assets/images/france.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
@@ -96,3 +104,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+fonts:
+- family: Futura
+  fonts:
+    - asset: assets/fonts/Futura/FuturaMediumBT.ttf
