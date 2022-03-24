@@ -2,6 +2,9 @@
 // Leonardho R Sitanggang - 1302194041 - SE-43-03
 import 'package:flutter/material.dart';
 import 'package:tripversal/widgets/sideNav.dart';
+import 'package:tripversal/widgets/checkBox.dart';
+import 'package:tripversal/myResvBody.dart';
+import 'package:tripversal/bookCarBody.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 Future<String> loadAsset() async {
@@ -480,7 +483,10 @@ class RentACarPage extends StatelessWidget {
                                             ),
                                             ElevatedButton.icon(
                                               onPressed: () {
-                                                  // Respond to button press
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => const BookCarPage()),
+                                                );
                                               },
                                               icon: Icon(Icons.book, size: 18),
                                               label: Text("Book now"),
@@ -1193,10 +1199,7 @@ class AccountPage extends StatelessWidget {
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RentACarPage()),
-            );
+            Navigator.pop(context);
           },
         )
       ],
@@ -1485,10 +1488,7 @@ class AboutPage extends StatelessWidget {
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RentACarPage()),
-            );
+            Navigator.pop(context);
           },
         )
       ],
@@ -1997,7 +1997,7 @@ class TourGuidePage extends StatelessWidget {
                               ),
                               flex:8 ,
                             ),
-                            Container(
+                            SizedBox(
                               height: 100,
                               width: 60,
                               child: ButtonTheme(
@@ -2167,7 +2167,7 @@ class TourGuidePage extends StatelessWidget {
                               ),
                               flex:8 ,
                             ),
-                            Container(
+                            SizedBox(
                               height: 100,
                               width: 60,
                               child: ButtonTheme(
@@ -2337,7 +2337,7 @@ class TourGuidePage extends StatelessWidget {
                               ),
                               flex:8 ,
                             ),
-                            Container(
+                            SizedBox(
                               height: 100,
                               width: 60,
                               child: ButtonTheme(
@@ -2507,7 +2507,7 @@ class TourGuidePage extends StatelessWidget {
                               ),
                               flex:8 ,
                             ),
-                            Container(
+                            SizedBox(
                               height: 100,
                               width: 60,
                               child: ButtonTheme(
@@ -2582,23 +2582,7 @@ class MyResPage extends StatelessWidget {
       ),
       
       body: Center(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
-                child: const Text(
-                  "My resv", 
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: Color(0xFF808080)
-                  ),
-                ),
-              ),
-            ),  
-          ]
-        ),
+        child: ExpansionResv()
       )
     );
   }
@@ -2644,41 +2628,44 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 }
 
-//Check box language.
-class MyStatefulWidget2 extends StatefulWidget {
-  const MyStatefulWidget2({Key? key}) : super(key: key);
-
-  @override
-  State<MyStatefulWidget2> createState() => _MyStatefulWidgetState2();
-}
-
-class _MyStatefulWidgetState2 extends State<MyStatefulWidget2> {
-  bool isChecked = false;
+class BookCarPage extends StatelessWidget {
+  const BookCarPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
-      return Colors.white;
-    }
+    return Scaffold(
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+        title: Text("Book Car", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+        ),
+      ),
+      
+      actions: [
+        IconButton(
+          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+      //Transparent setting.
+      backgroundColor: Color(0x44FFFFFF),
+      elevation: 0,
+    ),
 
-    return Checkbox(
-      checkColor: Color(0xFF4169E1),
-      fillColor: MaterialStateProperty.resolveWith(getColor),
-      value: isChecked,
-      onChanged: (bool? value) {
-        setState(() {
-          isChecked = value!;
-        });
-      },
+      body: Center(
+        child: bookCar()
+      ),
     );
   }
 }
-

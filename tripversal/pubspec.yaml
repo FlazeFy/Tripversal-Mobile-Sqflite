@@ -79,6 +79,8 @@ flutter:
     - assets/images/china.png
     - assets/images/brazil.png
     - assets/images/france.png
+    - assets/images/fuel.png
+    - assets/images/wishlist.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
