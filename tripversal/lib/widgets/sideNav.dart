@@ -33,21 +33,31 @@ class NavDrawer extends StatelessWidget {
             leading: const Icon(Icons.help_center, color: Color(0xFF4169E1)),
             title: const Text('Help'),
             textColor: const Color(0xFF4169E1),
-            onTap: () => {Navigator.of(context).pop( 
-              
-            )},
+            onTap: () {
+              Navigator.push(
+                context, MaterialPageRoute(
+                  builder: (context) => const HelpPage(),
+                ),
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.info, color: Color(0xFF4169E1)),
-            title: const Text('About'),
+            title: const Text('About us'),
             textColor: const Color(0xFF4169E1),
             onTap: () {
-            Navigator.push(
-              context, MaterialPageRoute(
-                builder: (context) => const AboutPage(),
-              ),
-            );
-          },
+              Navigator.push(
+                context, MaterialPageRoute(
+                  builder: (context) => const AboutPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.rule, color: Color(0xFF4169E1)),
+            title: const Text('Privacy & Conditions'),
+            textColor: const Color(0xFF4169E1),
+            onTap: () => {Navigator.of(context).pop()},
           ),
           Expanded(
             child: Align(
@@ -57,7 +67,13 @@ class NavDrawer extends StatelessWidget {
                 leading: const Icon(Icons.exit_to_app, color: Colors.white),
                 title: const Text('Sign-Out'),  
                 textColor: Colors.white,
-                onTap: () => {Navigator.of(context).pop()},
+                onTap: () {
+                  Navigator.push(
+                    context, MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
               ),
            ),
           ),

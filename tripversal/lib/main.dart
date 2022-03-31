@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 // Leonardho R Sitanggang - 1302194041 - SE-43-03
 import 'package:flutter/material.dart';
+import 'package:tripversal/bookGuideBody.dart';
+import 'package:tripversal/helpBody.dart';
+import 'package:tripversal/loginBody.dart';
 import 'package:tripversal/widgets/sideNav.dart';
 import 'package:tripversal/widgets/checkBox.dart';
 import 'package:tripversal/myResvBody.dart';
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Leonardho R Sitanggang-1302194041",
-      home: NavBar(),
+      home: LoginPage(), //Navbar
     );
   }
 }
@@ -451,52 +454,49 @@ class RentACarPage extends StatelessWidget {
                                         ),
                                       ),
 
-                                      Container(
-                                        // flex: 5, //if expanded
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              // flex: 5, //if expanded
-                                              alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: const [
-                                                    WidgetSpan(
-                                                      child: Icon(Icons.star, 
-                                                        size: 20,
-                                                        color: Color(0xFF4169E1),
-                                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            // flex: 5, //if expanded
+                                            alignment: Alignment.topLeft,
+                                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: const [
+                                                  WidgetSpan(
+                                                    child: Icon(Icons.star, 
+                                                      size: 20,
+                                                      color: Color(0xFF4169E1),
                                                     ),
-                                                    TextSpan(
-                                                      text: " 4,8",
-                                                      style: TextStyle(
-                                                        color: Color(0xFF4169E1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(builder: (context) => const BookCarPage()),
-                                                );
-                                              },
-                                              icon: Icon(Icons.book, size: 18),
-                                              label: Text("Book now"),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                                  ),
+                                                  TextSpan(
+                                                    text: " 4,8",
+                                                    style: TextStyle(
+                                                      color: Color(0xFF4169E1),
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w700,
+                                                    )
+                                                  ),
+                                                ],
                                               ),
+                                            )
+                                          ),
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => const BookCarPage()),
+                                              );
+                                            },
+                                            icon: Icon(Icons.book, size: 18),
+                                            label: Text("Book now"),
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
                                             ),
-                                            SizedBox(width: 8,),
-                                          ],
-                                        ),
+                                          ),
+                                          SizedBox(width: 8,),
+                                        ],
                                       )
 
                                     ],
@@ -663,49 +663,46 @@ class RentACarPage extends StatelessWidget {
                                         ),
                                       ),
 
-                                      Container(
-                                        // flex: 5, //if expanded
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              // flex: 5, //if expanded
-                                              alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: const [
-                                                    WidgetSpan(
-                                                      child: Icon(Icons.star, 
-                                                        size: 20,
-                                                        color: Color(0xFF4169E1),
-                                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            // flex: 5, //if expanded
+                                            alignment: Alignment.topLeft,
+                                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: const [
+                                                  WidgetSpan(
+                                                    child: Icon(Icons.star, 
+                                                      size: 20,
+                                                      color: Color(0xFF4169E1),
                                                     ),
-                                                    TextSpan(
-                                                      text: " 4,4",
-                                                      style: TextStyle(
-                                                        color: Color(0xFF4169E1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                  // Respond to button press
-                                              },
-                                              icon: Icon(Icons.book, size: 18),
-                                              label: Text("Book now"),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                                  ),
+                                                  TextSpan(
+                                                    text: " 4,4",
+                                                    style: TextStyle(
+                                                      color: Color(0xFF4169E1),
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w700,
+                                                    )
+                                                  ),
+                                                ],
                                               ),
+                                            )
+                                          ),
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                                // Respond to button press
+                                            },
+                                            icon: Icon(Icons.book, size: 18),
+                                            label: Text("Book now"),
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
                                             ),
-                                            SizedBox(width: 8,),
-                                          ],
-                                        ),
+                                          ),
+                                          SizedBox(width: 8,),
+                                        ],
                                       )
 
                                     ],
@@ -757,12 +754,10 @@ class RentACarPage extends StatelessWidget {
                                                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                                                 child: Row(
                                                   children: [
-                                                    Container(
-                                                      child: ClipRRect(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        child: Image.asset(
-                                                          'assets/images/driver1.jpg', width: 32),
-                                                        ),
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                      child: Image.asset(
+                                                        'assets/images/driver1.jpg', width: 32),
                                                     ),
                                                     Text(
                                                       " Ben Parker", 
@@ -883,49 +878,46 @@ class RentACarPage extends StatelessWidget {
                                         ),
                                       ),
 
-                                      Container(
-                                        // flex: 5, //if expanded
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              // flex: 5, //if expanded
-                                              alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: const [
-                                                    WidgetSpan(
-                                                      child: Icon(Icons.star, 
-                                                        size: 20,
-                                                        color: Color(0xFF4169E1),
-                                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            // flex: 5, //if expanded
+                                            alignment: Alignment.topLeft,
+                                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: const [
+                                                  WidgetSpan(
+                                                    child: Icon(Icons.star, 
+                                                      size: 20,
+                                                      color: Color(0xFF4169E1),
                                                     ),
-                                                    TextSpan(
-                                                      text: " 4,9",
-                                                      style: TextStyle(
-                                                        color: Color(0xFF4169E1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                  // Respond to button press
-                                              },
-                                              icon: Icon(Icons.book, size: 18),
-                                              label: Text("Book now"),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                                  ),
+                                                  TextSpan(
+                                                    text: " 4,9",
+                                                    style: TextStyle(
+                                                      color: Color(0xFF4169E1),
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w700,
+                                                    )
+                                                  ),
+                                                ],
                                               ),
+                                            )
+                                          ),
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                                // Respond to button press
+                                            },
+                                            icon: Icon(Icons.book, size: 18),
+                                            label: Text("Book now"),
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
                                             ),
-                                            SizedBox(width: 8,),
-                                          ],
-                                        ),
+                                          ),
+                                          SizedBox(width: 8,),
+                                        ],
                                       )
 
                                     ],
@@ -977,12 +969,10 @@ class RentACarPage extends StatelessWidget {
                                                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                                                 child: Row(
                                                   children: [
-                                                    Container(
-                                                      child: ClipRRect(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        child: Image.asset(
-                                                          'assets/images/driver2.jpg', width: 32),
-                                                        ),
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                      child: Image.asset(
+                                                        'assets/images/driver2.jpg', width: 32),
                                                     ),
                                                     Text(
                                                       " Craig Mckay", 
@@ -1103,49 +1093,46 @@ class RentACarPage extends StatelessWidget {
                                         ),
                                       ),
 
-                                      Container(
-                                        // flex: 5, //if expanded
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              // flex: 5, //if expanded
-                                              alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: const [
-                                                    WidgetSpan(
-                                                      child: Icon(Icons.star, 
-                                                        size: 20,
-                                                        color: Color(0xFF4169E1),
-                                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            // flex: 5, //if expanded
+                                            alignment: Alignment.topLeft,
+                                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: const [
+                                                  WidgetSpan(
+                                                    child: Icon(Icons.star, 
+                                                      size: 20,
+                                                      color: Color(0xFF4169E1),
                                                     ),
-                                                    TextSpan(
-                                                      text: " 4,8",
-                                                      style: TextStyle(
-                                                        color: Color(0xFF4169E1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                  // Respond to button press
-                                              },
-                                              icon: Icon(Icons.book, size: 18),
-                                              label: Text("Book now"),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                                  ),
+                                                  TextSpan(
+                                                    text: " 4,8",
+                                                    style: TextStyle(
+                                                      color: Color(0xFF4169E1),
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w700,
+                                                    )
+                                                  ),
+                                                ],
                                               ),
+                                            )
+                                          ),
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                                // Respond to button press
+                                            },
+                                            icon: Icon(Icons.book, size: 18),
+                                            label: Text("Book now"),
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
                                             ),
-                                            SizedBox(width: 8,),
-                                          ],
-                                        ),
+                                          ),
+                                          SizedBox(width: 8,),
+                                        ],
                                       )
 
                                     ],
@@ -1518,15 +1505,13 @@ class AboutPage extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              child: Text('-The joy of trip-',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 15,
-                  fontFamily: 'FuturaMediumBT',
-                  color: Color(0xFF4169E1)
-                ),
+            Text('-The joy of trip-',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.italic,
+                fontSize: 15,
+                fontFamily: 'FuturaMediumBT',
+                color: Color(0xFF4169E1)
               ),
             ),
             Container(
@@ -1876,26 +1861,24 @@ class TourGuidePage extends StatelessWidget {
                                       alignment: Alignment.topLeft,
                                       child: Row (
                                         children: [
-                                          Container(
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  WidgetSpan(
-                                                    child: Icon(Icons.person, 
-                                                      size: 20,
-                                                      color: Color(0xFF4169E1),
-                                                    ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: const [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.person, 
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
                                                   ),
-                                                  TextSpan(
-                                                    text: "Ben Parker",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),                              
-                                                ],
-                                              ),
-                                            )
+                                                ),
+                                                TextSpan(
+                                                  text: "Ben Parker",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),                              
+                                              ],
+                                            ),
                                           ),
                                           Container(
                                             transform: Matrix4.translationValues(70.0, 0.0, 0.0),
@@ -2004,7 +1987,10 @@ class TourGuidePage extends StatelessWidget {
                                 minWidth: 30,
                                 child: ElevatedButton.icon(
                                   onPressed: () {
-                                      // Respond to button press
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const BookGuidePage()),
+                                    );
                                   },
                                   icon: Icon(Icons.play_arrow, size: 25),
                                   label: Text(""),
@@ -2046,26 +2032,24 @@ class TourGuidePage extends StatelessWidget {
                                       alignment: Alignment.topLeft,
                                       child: Row (
                                         children: [
-                                          Container(
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  WidgetSpan(
-                                                    child: Icon(Icons.person, 
-                                                      size: 20,
-                                                      color: Color(0xFF4169E1),
-                                                    ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: const [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.person, 
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
                                                   ),
-                                                  TextSpan(
-                                                    text: "Craig Mckay",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),                              
-                                                ],
-                                              ),
-                                            )
+                                                ),
+                                                TextSpan(
+                                                  text: "Craig Mckay",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),                              
+                                              ],
+                                            ),
                                           ),
                                           Container(
                                             transform: Matrix4.translationValues(70.0, 0.0, 0.0),
@@ -2216,26 +2200,24 @@ class TourGuidePage extends StatelessWidget {
                                       alignment: Alignment.topLeft,
                                       child: Row (
                                         children: [
-                                          Container(
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  WidgetSpan(
-                                                    child: Icon(Icons.person, 
-                                                      size: 20,
-                                                      color: Color(0xFF4169E1),
-                                                    ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: const [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.person, 
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
                                                   ),
-                                                  TextSpan(
-                                                    text: "Kelly Christy",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),                              
-                                                ],
-                                              ),
-                                            )
+                                                ),
+                                                TextSpan(
+                                                  text: "Kelly Christy",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),                              
+                                              ],
+                                            ),
                                           ),
                                           Container(
                                             transform: Matrix4.translationValues(70.0, 0.0, 0.0),
@@ -2386,26 +2368,24 @@ class TourGuidePage extends StatelessWidget {
                                       alignment: Alignment.topLeft,
                                       child: Row (
                                         children: [
-                                          Container(
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  WidgetSpan(
-                                                    child: Icon(Icons.person, 
-                                                      size: 20,
-                                                      color: Color(0xFF4169E1),
-                                                    ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: const [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.person, 
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
                                                   ),
-                                                  TextSpan(
-                                                    text: "Maia Austin",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),                              
-                                                ],
-                                              ),
-                                            )
+                                                ),
+                                                TextSpan(
+                                                  text: "Maia Austin",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),                              
+                                              ],
+                                            ),
                                           ),
                                           Container(
                                             transform: Matrix4.translationValues(70.0, 0.0, 0.0),
@@ -2665,6 +2645,102 @@ class BookCarPage extends StatelessWidget {
 
       body: Center(
         child: bookCar()
+      ),
+    );
+  }
+}
+class BookGuidePage extends StatelessWidget {
+  const BookGuidePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+        title: Text("Book Tour Guide", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+        ),
+      ),
+      
+      actions: [
+        IconButton(
+          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+      //Transparent setting.
+      backgroundColor: Color(0x44FFFFFF),
+      elevation: 0,
+    ),
+
+      body: Center(
+        child: bookGuide()
+      ),
+    );
+  }
+}
+
+class HelpPage extends StatelessWidget {
+  const HelpPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+        title: Text("Help", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+        ),
+      ),
+      
+      actions: [
+        IconButton(
+          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+      //Transparent setting.
+      backgroundColor: Color(0x44FFFFFF),
+      elevation: 0,
+    ),
+
+      body: Center(
+        child: help()
+      ),
+    );
+  }
+}
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: login()
       ),
     );
   }

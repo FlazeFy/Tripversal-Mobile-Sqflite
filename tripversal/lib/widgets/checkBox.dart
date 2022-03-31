@@ -26,7 +26,7 @@ class _MyStatefulWidgetState2 extends State<MyStatefulWidget2> {
     }
 
     return Checkbox(
-      checkColor: Color(0xFF4169E1),
+      checkColor: const Color(0xFF4169E1),
       fillColor: MaterialStateProperty.resolveWith(getColor),
       value: isChecked,
       onChanged: (bool? value) {
