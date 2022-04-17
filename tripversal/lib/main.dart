@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:tripversal/bookGuideBody.dart';
 import 'package:tripversal/helpBody.dart';
 import 'package:tripversal/loginBody.dart';
+import 'package:tripversal/orderBody.dart';
+import 'package:tripversal/settingBody.dart';
 import 'package:tripversal/widgets/sideNav.dart';
 import 'package:tripversal/widgets/checkBox.dart';
 import 'package:tripversal/myResvBody.dart';
 import 'package:tripversal/bookCarBody.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'createAccBody.dart';
+import 'forgetPassBody.dart';
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
@@ -2690,6 +2694,43 @@ class BookGuidePage extends StatelessWidget {
     );
   }
 }
+class OrderPage extends StatelessWidget {
+  const OrderPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+        title: Text("Honda Brio RS / 2020", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+        ),
+      ),
+      //Transparent setting.
+      backgroundColor: Color(0x44FFFFFF),
+      elevation: 0,
+    ),
+
+      body: Center(
+        child: Order()
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        label: const Text('Order Now'),
+        backgroundColor: const Color(0xFF00B0FF),
+      ),
+    );
+  }
+}
 
 class HelpPage extends StatelessWidget {
   const HelpPage({Key? key}) : super(key: key);
@@ -2740,7 +2781,93 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: login()
+        child: Login()
+      ),
+    );
+  }
+}
+
+class CreateAccPage extends StatelessWidget {
+  const CreateAccPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        label: const Text('Back'),
+        icon: const Icon(Icons.arrow_back),
+        backgroundColor: Colors.red,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      body: Center(
+        child: createAcc()
+      ),
+    );
+  }
+}
+
+class ForgetPage extends StatelessWidget {
+  const ForgetPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        label: const Text('Back'),
+        icon: const Icon(Icons.arrow_back),
+        backgroundColor: Colors.red,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      body: Center(
+        child: forgetPass()
+      ),
+    );
+  }
+}
+
+class SettingPage extends StatelessWidget {
+  const SettingPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+        title: Text("Setting", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+        ),
+      ),
+      
+      actions: [
+        IconButton(
+          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+      //Transparent setting.
+      backgroundColor: Color(0x44FFFFFF),
+      elevation: 0,
+    ),
+
+      body: Center(
+        child: Setting()
       ),
     );
   }

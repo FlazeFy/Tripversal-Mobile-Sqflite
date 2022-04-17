@@ -34,7 +34,7 @@ class help extends StatelessWidget {
                     SingleChildScrollView(               
                       scrollDirection: Axis.vertical,
                       child: Column(
-                        children: <Widget>[
+                        children: const <Widget>[
                             
                          
                         ]
@@ -62,7 +62,7 @@ class help extends StatelessWidget {
                     SingleChildScrollView(               
                       scrollDirection: Axis.vertical,
                       child: Column(
-                        children: <Widget>[
+                        children: const <Widget>[
                             
                           
                         ]
@@ -89,7 +89,7 @@ class help extends StatelessWidget {
                     SingleChildScrollView(               
                       scrollDirection: Axis.vertical,
                       child: Column(
-                        children: <Widget>[
+                        children: const <Widget>[
                             
                           
                         ]
@@ -117,7 +117,7 @@ class help extends StatelessWidget {
                     SingleChildScrollView(               
                       scrollDirection: Axis.vertical,
                       child: Column(
-                        children: <Widget>[
+                        children: const <Widget>[
                             
                           
                         ]
@@ -145,7 +145,7 @@ class help extends StatelessWidget {
                     SingleChildScrollView(               
                       scrollDirection: Axis.vertical,
                       child: Column(
-                        children: <Widget>[
+                        children: const <Widget>[
                             
                           
                         ]

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:tripversal/main.dart';
 
-class login extends StatelessWidget {
-  const login({Key? key}) : super(key: key);
+class Login extends StatelessWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 100.0),
+        margin: const EdgeInsets.symmetric(vertical: 100.0),
         child: ListView(
           children: <Widget>[
             Column(
-              children: [
+              children: const [
                 Text('tripversal',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
@@ -39,8 +39,8 @@ class login extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                child: Text(
+                margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                child: const Text(
                   "Username", 
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -52,9 +52,9 @@ class login extends StatelessWidget {
             ),
             Align(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0),
+                margin: const EdgeInsets.symmetric(horizontal: 25.0),
                 height: 35,
-                child: TextField(
+                child: const TextField(
                   // controller: usernameCtrl,
                   decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
@@ -69,8 +69,8 @@ class login extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                child: Text(
+                margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                child: const Text(
                   "Password", 
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -82,9 +82,9 @@ class login extends StatelessWidget {
             ),
             Align(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0),
+                margin: const EdgeInsets.symmetric(horizontal: 25.0),
                 height: 35,
-                child: TextField(
+                child: const TextField(
                   obscureText: true,
                   // controller: passwordCtrl,
                   decoration: InputDecoration(
@@ -96,24 +96,25 @@ class login extends StatelessWidget {
               ),
             ),
 
-            Container(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    //forgot password screen
-                  },
-                  child: const Text('Forgot Password',
-                    style: TextStyle(
-                      fontSize: 12,
-                      decoration: TextDecoration.underline,
-                    )
-                  ),
-                  style: TextButton.styleFrom(
-                    primary: Color(0xFF4169E1),
-                  ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ForgetPage()),
+                  );
+                },
+                child: const Text('Forgot Password',
+                  style: TextStyle(
+                    fontSize: 14,
+                    decoration: TextDecoration.underline,
+                  )
                 ),
-              )
+                style: TextButton.styleFrom(
+                  primary: const Color(0xFF4169E1),
+                ),
+              ),
             ),
             
             Container(
@@ -132,24 +133,27 @@ class login extends StatelessWidget {
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF4169E1)),
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF4169E1)),
                 ),
               )
             ),
             Row(
               children: <Widget>[
-                const Text('Does not have account?', style: TextStyle(fontSize: 12)),
+                const Text('Does not have account?', style: TextStyle(fontSize: 14)),
                 TextButton(
                   child: const Text(
                     'Sign up',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       decoration: TextDecoration.underline,
                       color: Color(0xFF4169E1),
                     )
                   ),
-                  onPressed: () {
-                    //signup screen
+                 onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CreateAccPage()),
+                    );
                   },
                 )
               ],
@@ -158,12 +162,12 @@ class login extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                child: Text(
+                margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                child: const Text(
                   "V1.0", 
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontSize: 14,
                     color: Color(0xFF808080)
                   ),
                 ),

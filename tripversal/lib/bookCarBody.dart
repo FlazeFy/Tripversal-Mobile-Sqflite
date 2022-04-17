@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'main.dart';
+
 //Collapse Resv
 class bookCar extends StatelessWidget {
   const bookCar({Key? key}) : super(key: key);
@@ -164,7 +166,7 @@ class bookCar extends StatelessWidget {
               color: Color.fromARGB(255, 185, 185, 185),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height* 0.32,
+              height: MediaQuery.of(context).size.height* 0.28,
               child: Flexible(            
                 child : SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -556,9 +558,12 @@ class bookCar extends StatelessWidget {
                     transform: Matrix4.translationValues(70.0, 0.0, 0.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        // Respond to button press
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const OrderPage()),
+                        );
                       },
-                      child: const Text("Order Now"),
+                      child: const Text("Checkout"),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
                       ),
