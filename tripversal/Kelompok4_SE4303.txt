@@ -1,0 +1,23 @@
+Leonardho R Sitanggang - 1302194041
+-Halaman checkout (OrderPage)
+-Halaman riwayat (MyResPage)
+-Halaman pemesanan rental (RentACarPage)
+
+Muhammad Akmal Fadhlillah - 1302190103
+-Halaman side drawer (NavDrawer)
+-Halaman akun (AccountPage)
+-Halaman katalog rental (BookCarPage)
+
+Muhammad Rafi Alfarisi - 1302194024
+-Halaman pemesanan tour guide (TourGuidePage)
+-Halaman ganti password (ForgetPage)
+-Halaman katalog tour guide (BookGuidePage)
+
+Ananda Ardian Pratama P. - 1302194049
+-Halaman login (LoginPage)
+-Halaman buat akun (CreateAccPage)
+-Halaman proses pembayaran (PaymentPage)
+
+Asset image = tripversal\assets\images
+Running on Pixel 5 API 28 emulator
+Github =

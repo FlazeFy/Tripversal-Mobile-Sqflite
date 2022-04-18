@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors
-// Leonardho R Sitanggang - 1302194041 - SE-43-03
+// Kelompok 4 - SE-43-03
 import 'package:flutter/material.dart';
 import 'package:tripversal/bookGuideBody.dart';
 import 'package:tripversal/helpBody.dart';
 import 'package:tripversal/loginBody.dart';
 import 'package:tripversal/orderBody.dart';
+import 'package:tripversal/paymentBody.dart';
 import 'package:tripversal/settingBody.dart';
 import 'package:tripversal/widgets/sideNav.dart';
 import 'package:tripversal/widgets/checkBox.dart';
@@ -182,7 +183,7 @@ class RentACarPage extends StatelessWidget {
                         )
                       ],
                     ),
-                    margin: EdgeInsets.symmetric(horizontal: 15.0),
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
                     transform: Matrix4.translationValues(0.0, -15.0, 0.0),
                     
                     child: PopupMenuButton( 
@@ -1190,7 +1191,11 @@ class AccountPage extends StatelessWidget {
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context, MaterialPageRoute(
+                builder: (context) => const NavBar(),
+              ),
+            );
           },
         )
       ],
@@ -1479,7 +1484,11 @@ class AboutPage extends StatelessWidget {
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context, MaterialPageRoute(
+                builder: (context) => const NavBar(),
+              ),
+            );
           },
         )
       ],
@@ -1640,7 +1649,7 @@ class TourGuidePage extends StatelessWidget {
                         )
                       ],
                     ),
-                    margin: EdgeInsets.symmetric(horizontal: 15.0),
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
                     transform: Matrix4.translationValues(0.0, -15.0, 0.0),
                     
                     child: PopupMenuButton( 
@@ -1984,9 +1993,10 @@ class TourGuidePage extends StatelessWidget {
                               ),
                               flex:8 ,
                             ),
-                            SizedBox(
-                              height: 100,
-                              width: 60,
+                            Container(
+                              height: 80,
+                              width: 50,
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: ButtonTheme(
                                 minWidth: 30,
                                 child: ElevatedButton.icon(
@@ -1996,7 +2006,7 @@ class TourGuidePage extends StatelessWidget {
                                       MaterialPageRoute(builder: (context) => const BookGuidePage()),
                                     );
                                   },
-                                  icon: Icon(Icons.play_arrow, size: 25),
+                                  icon: Icon(Icons.arrow_forward, size: 25),
                                   label: Text(""),
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
@@ -2155,16 +2165,17 @@ class TourGuidePage extends StatelessWidget {
                               ),
                               flex:8 ,
                             ),
-                            SizedBox(
-                              height: 100,
-                              width: 60,
+                            Container(
+                              height: 80,
+                              width: 50,
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: ButtonTheme(
                                 minWidth: 30,
                                 child: ElevatedButton.icon(
                                   onPressed: () {
                                       // Respond to button press
                                   },
-                                  icon: Icon(Icons.play_arrow, size: 25),
+                                  icon: Icon(Icons.arrow_forward, size: 25),
                                   label: Text(""),
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
@@ -2323,16 +2334,17 @@ class TourGuidePage extends StatelessWidget {
                               ),
                               flex:8 ,
                             ),
-                            SizedBox(
-                              height: 100,
-                              width: 60,
+                            Container(
+                              height: 80,
+                              width: 50,
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: ButtonTheme(
                                 minWidth: 30,
                                 child: ElevatedButton.icon(
                                   onPressed: () {
                                       // Respond to button press
                                   },
-                                  icon: Icon(Icons.play_arrow, size: 25),
+                                  icon: Icon(Icons.arrow_forward, size: 25),
                                   label: Text(""),
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
@@ -2491,16 +2503,17 @@ class TourGuidePage extends StatelessWidget {
                               ),
                               flex:8 ,
                             ),
-                            SizedBox(
-                              height: 100,
-                              width: 60,
+                            Container(
+                              height: 80,
+                              width: 50,
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: ButtonTheme(
                                 minWidth: 30,
                                 child: ElevatedButton.icon(
                                   onPressed: () {
                                       // Respond to button press
                                   },
-                                  icon: Icon(Icons.play_arrow, size: 25),
+                                  icon: Icon(Icons.arrow_forward, size: 25),
                                   label: Text(""),  
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
@@ -2635,12 +2648,21 @@ class BookCarPage extends StatelessWidget {
       
       actions: [
         IconButton(
+          onPressed: () {
+            // Respond to button press
+          },
+          icon: Image.asset("assets/images/wishlist.png"),
+          color: const Color(0xFF00B0FF),
+          //Wishlist icon external
+          padding: const EdgeInsets.all(0.0)
+        ),
+        IconButton(
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
             Navigator.pop(context);
           },
-        )
+        ),
       ],
       //Transparent setting.
       backgroundColor: Color(0x44FFFFFF),
@@ -2649,6 +2671,16 @@ class BookCarPage extends StatelessWidget {
 
       body: Center(
         child: bookCar()
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const OrderPage()),
+          );
+        },
+        label: const Text('Checkout'),
+        backgroundColor: const Color(0xFF1F9F2F),
       ),
     );
   }
@@ -2676,6 +2708,15 @@ class BookGuidePage extends StatelessWidget {
       
       actions: [
         IconButton(
+          onPressed: () {
+            // Respond to button press
+          },
+          icon: Image.asset("assets/images/wishlist.png"),
+          color: const Color(0xFF00B0FF),
+          //Wishlist icon external
+          padding: const EdgeInsets.all(0.0)
+        ),
+        IconButton(
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
@@ -2690,6 +2731,16 @@ class BookGuidePage extends StatelessWidget {
 
       body: Center(
         child: bookGuide()
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const OrderPage()),
+          );
+        },
+        label: const Text('Checkout'),
+        backgroundColor: const Color(0xFF1F9F2F),
       ),
     );
   }
@@ -2723,10 +2774,59 @@ class OrderPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PaymentPage()),
+          );
         },
         label: const Text('Order Now'),
         backgroundColor: const Color(0xFF00B0FF),
+      ),
+    );
+  }
+}
+
+class PaymentPage extends StatelessWidget {
+  const PaymentPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+        title: Text("Payment", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+        ),
+      ),
+      
+      actions: [
+        IconButton(
+          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.push(
+              context, MaterialPageRoute(
+                builder: (context) => const NavBar(),
+              ),
+            );
+          },
+        )
+      ],
+      //Transparent setting.
+      backgroundColor: Color(0x44FFFFFF),
+      elevation: 0,
+    ),
+
+      body: Center(
+        child: payment()
       ),
     );
   }
@@ -2758,7 +2858,11 @@ class HelpPage extends StatelessWidget {
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context, MaterialPageRoute(
+                builder: (context) => const NavBar(),
+              ),
+            );
           },
         )
       ],
@@ -2857,7 +2961,11 @@ class SettingPage extends StatelessWidget {
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context, MaterialPageRoute(
+                builder: (context) => const NavBar(),
+              ),
+            );
           },
         )
       ],

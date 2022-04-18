@@ -517,7 +517,6 @@ class _OrderState extends State<Order> {
                   ),
                 ),
 
-
                 const Divider(
                   height: 20,
                   thickness: 4,
@@ -527,33 +526,6 @@ class _OrderState extends State<Order> {
                 ),
                 Column(
                   children: <Widget>[
-                    ExpansionTile( //Collapse-1 ===========================================
-                      leading: IconButton(
-                        iconSize: 30,
-                        icon: const Icon(Icons.cancel,
-                        color: Color(0xFF808080)),
-                        onPressed: () {},
-                      ),
-                      title: const Text(
-                        "Can I canceled the order?",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w800
-                        ),
-                      ),
-                      children: <Widget>[                     
-                        SingleChildScrollView(               
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: const <Widget>[
-                                
-                            
-                            ]
-                          )
-                        )   
-                        
-                      ],
-                    ),
 
                     ExpansionTile( //Collapse-2 ===========================================
                       leading: IconButton(

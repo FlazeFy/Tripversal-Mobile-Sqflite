@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripversal/main.dart';
 
 //Collapse Resv
 class ExpansionResv extends StatelessWidget {
@@ -75,7 +76,7 @@ class ExpansionResv extends StatelessWidget {
                                           ),
                                           Container(
                                             alignment: Alignment.bottomLeft,
-                                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                                             child: Row(
                                               children: [
                                                 Container(
@@ -166,14 +167,14 @@ class ExpansionResv extends StatelessWidget {
                                           Padding(
                                             padding: EdgeInsets.all(1.0),
                                             child: Icon(
-                                              Icons.message,
+                                              Icons.info,
                                               color: Colors.white,
                                             ),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.all(0),
                                             child: Text(
-                                              "Contact",
+                                              "Details",
                                               style: TextStyle(
                                                 color: Colors.white,
                                               ),
@@ -182,6 +183,11 @@ class ExpansionResv extends StatelessWidget {
                                         ],
                                       ),
                                       onPressed: () {
+                                        Navigator.push(
+                                          context, MaterialPageRoute(
+                                            builder: (context) => const PaymentPage(),
+                                          ),
+                                        );
                                       },
                                     )
                                   ),
@@ -240,7 +246,7 @@ class ExpansionResv extends StatelessWidget {
                                         children: [
                                           Container(
                                             alignment: Alignment.topLeft,
-                                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                                             child: RichText(
                                               text: const TextSpan(
                                                 children: [
