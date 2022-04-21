@@ -399,8 +399,7 @@ class ExpansionResv extends StatelessWidget {
                     SingleChildScrollView(               
                       scrollDirection: Axis.vertical,
                       child: Column(
-                        children: <Widget>[
-                            
+                      children: <Widget>[
                           Card( //item-1 -----------------------------------------
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(color: Colors.white),
@@ -545,7 +544,7 @@ class ExpansionResv extends StatelessWidget {
                                           scrollDirection: Axis.vertical,
                                           child: Column(
                                             children: <Widget>[
-                                           
+                                            
                                               Row(
                                                 children: [  
                                                   Expanded(
@@ -639,7 +638,7 @@ class ExpansionResv extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                               
+                                                
                                             ]
                                           )
                                         )  
@@ -814,7 +813,7 @@ class ExpansionResv extends StatelessWidget {
                                                 )
                                               ),
                                               Container(margin: const EdgeInsets.symmetric(vertical: 5.0))
-                                               
+                                                
                                             ]
                                           )
                                         )  

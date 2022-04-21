@@ -8,23 +8,25 @@ class createAcc extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        transform: Matrix4.translationValues(0.0, 0.0, 0.0),
         child: Flexible(
           child : SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                //Text.
-                Container(
-                  width: 120,
-                  margin: const EdgeInsets.all(5),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(80), 
-                    child: Image.asset('assets/images/Default.png'),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(80), 
-                    color: const Color(0xFF4169E1)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    width: 120,
+                    margin: const EdgeInsets.symmetric(horizontal: 15.0),
+                    transform: Matrix4.translationValues(0.0, 30.0, 0.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(80), 
+                      child: Image.asset('assets/images/Default.png'),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(80), 
+                      color: const Color(0xFF4169E1)
+                    ),
                   ),
                 ),
 
@@ -32,7 +34,7 @@ class createAcc extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
                     child: const Text(
                       "Fullname", 
                       style: TextStyle(
@@ -63,7 +65,7 @@ class createAcc extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
                     child: const Text(
                       "ID Card / Passport Number", 
                       style: TextStyle(
@@ -125,7 +127,7 @@ class createAcc extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
                     child: const Text(
                       "Email", 
                       style: TextStyle(
@@ -138,7 +140,7 @@ class createAcc extends StatelessWidget {
                 ),
                 Align(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
                     height: 35,
                     child: const TextField(
                       decoration: InputDecoration(
@@ -146,7 +148,7 @@ class createAcc extends StatelessWidget {
                           borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                         ),
                     
-                        hintText: '',
+                        hintText: 'contoh@gmail.com',
                       ),
                     ),
                   ),
@@ -156,7 +158,7 @@ class createAcc extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
                     child: const Text(
                       "Phone Number", 
                       style: TextStyle(
@@ -169,7 +171,7 @@ class createAcc extends StatelessWidget {
                 ),
                 Align(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
                     height: 35,
                     child: const TextField(
                       decoration: InputDecoration(
@@ -211,7 +213,7 @@ class createAcc extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width* 0.9,
                   padding: EdgeInsets.all(4.0),
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.lightGreen.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(10), 
                   ),  
@@ -219,7 +221,7 @@ class createAcc extends StatelessWidget {
                     children: [
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                        child: Icon(
+                        child: const Icon(
                           Icons.info,
                           color: Colors.lightGreen,
                           size: 30.0,
@@ -230,7 +232,7 @@ class createAcc extends StatelessWidget {
                         child: Container(
                           width: MediaQuery.of(context).size.width* 0.65,
                           margin: EdgeInsets.symmetric(vertical: 5.0),
-                          child: Text(
+                          child: const Text(
                             "Password must have min 8 character, Have 1 capital and 1 number.", 
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
@@ -244,39 +246,40 @@ class createAcc extends StatelessWidget {
                   ),
                 ),
 
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                              // Respond to button press
-                          },
-                          icon: const Icon(Icons.photo, size: 20),
-                          label: const Text("Upload Photo"),
-                          style: ElevatedButton.styleFrom(
-                            primary: const Color(0xFF4169E1), 
-                          ),
-                        ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    transform: Matrix4.translationValues(0.0, 10.0, 0.0),
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                          // Respond to button press
+                      },
+                      icon: const Icon(Icons.photo, size: 20),
+                      label: const Text("Upload Photo"),
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xFF4169E1), 
                       ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                              // Respond to button press
-                          },
-                          icon: const Icon(Icons.save, size: 20),
-                          label: const Text("Next"),
-                          style: ElevatedButton.styleFrom(
-                            primary: const Color(0xFF13B402), 
-                          ),
-                        ),
-                      ),
-                    ]
-                  )
+                    ),
+                  ),
                 ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    transform: Matrix4.translationValues(0.0, -38.0, 0.0),
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                          // Respond to button press
+                      },
+                      icon: const Icon(Icons.save, size: 20),
+                      label: const Text("Next"),
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xFF13B402), 
+                      ),
+                    ),
+                  ),
+                )
 
               ]
             )

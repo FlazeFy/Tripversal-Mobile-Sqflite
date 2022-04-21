@@ -61,13 +61,14 @@ class _NavBarState extends State<NavBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.book),
-              label: 'My Reservation',
+              label: 'Reservation',
             ),
           ],
           //Selected menu style.
           selectedLabelStyle: TextStyle(fontSize: 15),
-          selectedItemColor: Color(0xFF4169E1),
-          unselectedItemColor: Color(0xFF808080),
+          selectedItemColor: Colors.white,
+          backgroundColor: Color(0xFF22A7F0),
+          unselectedItemColor: Colors.white,
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
@@ -491,7 +492,21 @@ class RentACarPage extends StatelessWidget {
                                             onPressed: () {
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => const BookCarPage()),
+                                                PageRouteBuilder(
+                                                  pageBuilder: (c, a1, a2) => BookCarPage(),
+                                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                    final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                                    final curvedAnimation = CurvedAnimation(
+                                                      parent: animation,
+                                                      curve: Curves.ease,
+                                                    );
+
+                                                    return SlideTransition(
+                                                      position: tween.animate(curvedAnimation),
+                                                      child: child,
+                                                    );
+                                                  }
+                                                ),
                                               );
                                             },
                                             icon: Icon(Icons.book, size: 18),
@@ -2003,7 +2018,21 @@ class TourGuidePage extends StatelessWidget {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const BookGuidePage()),
+                                      PageRouteBuilder(
+                                        pageBuilder: (c, a1, a2) => BookGuidePage(),
+                                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                          final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                          final curvedAnimation = CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.ease,
+                                          );
+
+                                          return SlideTransition(
+                                            position: tween.animate(curvedAnimation),
+                                            child: child,
+                                          );
+                                        }
+                                      ),
                                     );
                                   },
                                   icon: Icon(Icons.arrow_forward, size: 25),
@@ -2676,7 +2705,21 @@ class BookCarPage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const OrderPage()),
+            PageRouteBuilder(
+              pageBuilder: (c, a1, a2) => OrderPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.ease,
+                );
+
+                return SlideTransition(
+                  position: tween.animate(curvedAnimation),
+                  child: child,
+                );
+              }
+            ),
           );
         },
         label: const Text('Checkout'),
@@ -2736,7 +2779,21 @@ class BookGuidePage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const OrderPage()),
+            PageRouteBuilder(
+              pageBuilder: (c, a1, a2) => OrderPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.ease,
+                );
+
+                return SlideTransition(
+                  position: tween.animate(curvedAnimation),
+                  child: child,
+                );
+              }
+            ),
           );
         },
         label: const Text('Checkout'),
@@ -2897,13 +2954,16 @@ class CreateAccPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        label: const Text('Back'),
-        icon: const Icon(Icons.arrow_back),
-        backgroundColor: Colors.red,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          label: const Text('Back'),
+          icon: const Icon(Icons.arrow_back),
+          backgroundColor: Colors.red,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: Center(
@@ -2919,13 +2979,16 @@ class ForgetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        label: const Text('Back'),
-        icon: const Icon(Icons.arrow_back),
-        backgroundColor: Colors.red,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          label: const Text('Back'),
+          icon: const Icon(Icons.arrow_back),
+          backgroundColor: Colors.red,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: Center(

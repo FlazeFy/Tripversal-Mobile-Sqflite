@@ -67,20 +67,18 @@ class payment extends StatelessWidget {
                                 ),
                               ),
                             ),    
-                            Align(
+                            const Align(
                               alignment: Alignment.center,
-                              child: Container(
-                                child: const Text(
-                                  "Rp. 800.000", 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20,
-                                    color: Colors.black
-                                  ),
+                              child: Text(
+                                "Rp. 800.000", 
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                  color: Colors.black
                                 ),
                               ),
                             ),   
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             )                         
                           ]
@@ -118,7 +116,7 @@ class payment extends StatelessWidget {
                             //Countdown timer
                           ),
                         ),    
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         )                         
                       ]
