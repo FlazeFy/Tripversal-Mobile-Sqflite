@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:tripversal/models/userModel.dart';
+import 'package:tripversal/services/userServices.dart';
 import 'package:tripversal/widgets/checkBox.dart';
 
 class createAcc extends StatelessWidget {
-  const createAcc({Key? key}) : super(key: key);
+  //const createAcc({Key? key}) : super(key: key);
+  var _fullnameCtrl = TextEditingController();
+  var _idCardCtrl = TextEditingController();
+  var _passwordCtrl = TextEditingController();
+  var _emailCtrl = TextEditingController();
+  var _phoneCtrl = TextEditingController();
+
+  var _user = userModel();
+  var _userservices = userServices();
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Flexible(
           child : SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -17,7 +28,6 @@ class createAcc extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: Container(
                     width: 120,
-                    margin: const EdgeInsets.symmetric(horizontal: 15.0),
                     transform: Matrix4.translationValues(0.0, 30.0, 0.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(80), 
@@ -29,12 +39,28 @@ class createAcc extends StatelessWidget {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    transform: Matrix4.translationValues(0.0, 30.0, 0.0),
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                          // Respond to button press
+                      },
+                      icon: const Icon(Icons.photo, size: 20),
+                      label: const Text("Select Image"),
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xFF4169E1), 
+                      ),
+                    ),
+                  )
+                ),
 
                 //Full name section.
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
                     child: const Text(
                       "Fullname", 
                       style: TextStyle(
@@ -47,10 +73,11 @@ class createAcc extends StatelessWidget {
                 ),
                 Align(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
                     height: 35,
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _fullnameCtrl,
+                      decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                         ),
@@ -65,7 +92,7 @@ class createAcc extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
                     child: const Text(
                       "ID Card / Passport Number", 
                       style: TextStyle(
@@ -78,10 +105,11 @@ class createAcc extends StatelessWidget {
                 ),
                 Align(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
                     height: 35,
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _idCardCtrl,
+                      decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                         ),
@@ -96,7 +124,7 @@ class createAcc extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                     child: const Text(
                       "Password", 
                       style: TextStyle(
@@ -109,10 +137,11 @@ class createAcc extends StatelessWidget {
                 ),
                 Align(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
                     height: 35,
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _passwordCtrl,
+                      decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                         ),
@@ -127,7 +156,7 @@ class createAcc extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
                     child: const Text(
                       "Email", 
                       style: TextStyle(
@@ -140,10 +169,11 @@ class createAcc extends StatelessWidget {
                 ),
                 Align(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
                     height: 35,
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _emailCtrl,
+                      decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                         ),
@@ -158,7 +188,7 @@ class createAcc extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
                     child: const Text(
                       "Phone Number", 
                       style: TextStyle(
@@ -171,10 +201,11 @@ class createAcc extends StatelessWidget {
                 ),
                 Align(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
                     height: 35,
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _phoneCtrl,
+                      decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                         ),
@@ -212,7 +243,7 @@ class createAcc extends StatelessWidget {
 
                 Container(
                   width: MediaQuery.of(context).size.width* 0.9,
-                  padding: EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(4.0),
                   decoration: BoxDecoration(
                     color: Colors.lightGreen.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(10), 
@@ -220,7 +251,7 @@ class createAcc extends StatelessWidget {
                   child: Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                         child: const Icon(
                           Icons.info,
                           color: Colors.lightGreen,
@@ -231,7 +262,7 @@ class createAcc extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Container(
                           width: MediaQuery.of(context).size.width* 0.65,
-                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                          margin: const EdgeInsets.symmetric(vertical: 5.0),
                           child: const Text(
                             "Password must have min 8 character, Have 1 capital and 1 number.", 
                             style: TextStyle(
@@ -245,38 +276,26 @@ class createAcc extends StatelessWidget {
                     ]
                   ),
                 ),
+                
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: ElevatedButton.icon(
+                    onPressed: () async{
+                        //coba
+                        _user.fullname = _fullnameCtrl.text;
+                        _user.idCard = _idCardCtrl.text;
+                        _user.password = _passwordCtrl.text;
+                        _user.email = _emailCtrl.text;
+                        _user.phone = _phoneCtrl.text;
 
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                    transform: Matrix4.translationValues(0.0, 10.0, 0.0),
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                          // Respond to button press
-                      },
-                      icon: const Icon(Icons.photo, size: 20),
-                      label: const Text("Upload Photo"),
-                      style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFF4169E1), 
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                    transform: Matrix4.translationValues(0.0, -38.0, 0.0),
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                          // Respond to button press
-                      },
-                      icon: const Icon(Icons.save, size: 20),
-                      label: const Text("Next"),
-                      style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFF13B402), 
-                      ),
+                        //_userservices.createAccount(_user);
+                        var result = await _userservices.createAccount(_user);
+                        print(result);
+                    },
+                    icon: const Icon(Icons.save, size: 20),
+                    label: const Text("Next"),
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xFF13B402), 
                     ),
                   ),
                 )

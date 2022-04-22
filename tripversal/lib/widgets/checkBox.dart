@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //Check box language.
 class MyStatefulWidget2 extends StatefulWidget {
-  const MyStatefulWidget2({Key? key}) : super(key: key);
+  const MyStatefulWidget2({Key key}) : super(key: key);
 
   @override
   State<MyStatefulWidget2> createState() => _MyStatefulWidgetState2();
@@ -29,9 +29,9 @@ class _MyStatefulWidgetState2 extends State<MyStatefulWidget2> {
       checkColor: const Color(0xFF4169E1),
       fillColor: MaterialStateProperty.resolveWith(getColor),
       value: isChecked,
-      onChanged: (bool? value) {
+      onChanged: (bool value) {
         setState(() {
-          isChecked = value!;
+          isChecked = value;
         });
       },
     );
@@ -39,7 +39,7 @@ class _MyStatefulWidgetState2 extends State<MyStatefulWidget2> {
 }
 
 class MyStatefulWidget3 extends StatefulWidget {
-  const MyStatefulWidget3({Key? key}) : super(key: key);
+  const MyStatefulWidget3({Key key}) : super(key: key);
 
   @override
   State<MyStatefulWidget3> createState() => _MyStatefulWidgetState3();
@@ -66,9 +66,9 @@ class _MyStatefulWidgetState3 extends State<MyStatefulWidget3> {
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith(getColor),
       value: isChecked,
-      onChanged: (bool? value) {
+      onChanged: (bool value) {
         setState(() {
-          isChecked = value!;
+          isChecked = value;
         });
       },
     );

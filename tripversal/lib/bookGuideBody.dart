@@ -4,7 +4,7 @@ import 'main.dart';
 
 //Collapse Resv
 class bookGuide extends StatelessWidget {
-  const bookGuide({Key? key}) : super(key: key);
+  const bookGuide({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

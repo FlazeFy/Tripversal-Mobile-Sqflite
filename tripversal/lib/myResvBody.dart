@@ -3,7 +3,7 @@ import 'package:tripversal/main.dart';
 
 //Collapse Resv
 class ExpansionResv extends StatelessWidget {
-  const ExpansionResv({Key? key}) : super(key: key);
+  const ExpansionResv({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class forgetPass extends StatelessWidget {
-  const forgetPass({Key? key}) : super(key: key);
+  const forgetPass({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +78,43 @@ class forgetPass extends StatelessWidget {
                         hintText: '',
                       ),
                     ),
+                  ),
+                ),
+
+                Container(
+                  width: MediaQuery.of(context).size.width* 0.9,
+                  margin: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    color: Colors.lightGreen.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(10), 
+                  ),  
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        child: const Icon(
+                          Icons.info,
+                          color: Colors.lightGreen,
+                          size: 30.0,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width* 0.65,
+                          margin: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: const Text(
+                            "Password must have min 8 character, Have 1 capital and 1 number.", 
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                              color: Color(0xFF212121)
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]
                   ),
                 ),
                 //End of text entry section.

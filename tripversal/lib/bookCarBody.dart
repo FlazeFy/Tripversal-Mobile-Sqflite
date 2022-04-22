@@ -4,7 +4,7 @@ import 'main.dart';
 
 //Collapse Resv
 class bookCar extends StatelessWidget {
-  const bookCar({Key? key}) : super(key: key);
+  const bookCar({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -533,7 +533,7 @@ class bookCar extends StatelessWidget {
 
                       ]
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 60,
                     ),
                   ]

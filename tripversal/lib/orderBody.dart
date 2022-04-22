@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Order extends StatefulWidget {
-  const Order({Key? key}) : super(key: key);
+  const Order({Key key}) : super(key: key);
 
   @override
   _OrderState createState() {
@@ -595,7 +595,7 @@ class _OrderState extends State<Order> {
   }
   //Time picker
   _selectTime(BuildContext context) async {          
-  final TimeOfDay? timeOfDay = await showTimePicker(
+  final TimeOfDay timeOfDay = await showTimePicker(
     context: context,
     initialTime: selectedTime,
     initialEntryMode: TimePickerEntryMode.dial,
@@ -611,7 +611,7 @@ class _OrderState extends State<Order> {
 
 //Drop down location or city.
 class PaymentMethod extends StatefulWidget {
-  const PaymentMethod({Key? key}) : super(key: key);
+  const PaymentMethod({Key key}) : super(key: key);
   
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -633,9 +633,9 @@ class _PaymentMethodState extends State<PaymentMethod> {
         height: 2,
         color: const Color(0xFF4169E1),
       ),
-      onChanged: (String? newValue) {
+      onChanged: (String newValue) {
         setState(() {
-          dropdownValue = newValue!;
+          dropdownValue = newValue;
         });
       },
       items: <String>["Transfer Mandiri", "Transfer BNI", "Transfer BRI", "Link Aja", "Ovo", "Dana"]

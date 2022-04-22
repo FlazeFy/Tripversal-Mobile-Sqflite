@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:tripversal/bookGuideBody.dart';
 import 'package:tripversal/helpBody.dart';
 import 'package:tripversal/loginBody.dart';
+import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/orderBody.dart';
 import 'package:tripversal/paymentBody.dart';
+import 'package:tripversal/services/userServices.dart';
 import 'package:tripversal/settingBody.dart';
 import 'package:tripversal/widgets/sideNav.dart';
 import 'package:tripversal/widgets/checkBox.dart';
@@ -21,7 +23,7 @@ Future<String> loadAsset() async {
 void main() { runApp(const MyApp()); }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
   }
 }
 class NavBar extends StatefulWidget {
-  const NavBar({Key? key}) : super(key: key);
+  const NavBar({Key key}) : super(key: key);
   @override
   _NavBarState createState() => _NavBarState();
 }
@@ -80,7 +82,7 @@ class _NavBarState extends State<NavBar> {
 }
 
 class RentACarPage extends StatelessWidget {
-  const RentACarPage({Key? key}) : super(key: key);
+  const RentACarPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +109,7 @@ class RentACarPage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AccountPage()),
+              MaterialPageRoute(builder: (context) => AccountPage()),
             );
           },
         )
@@ -1179,9 +1181,41 @@ class RentACarPage extends StatelessWidget {
       );
   }
 }
+class AccountPage extends StatefulWidget {
+  @override
 
-class AccountPage extends StatelessWidget {
-  const AccountPage({Key? key}) : super(key: key);
+  _AccountPage createState() => _AccountPage();
+}
+
+class _AccountPage extends State<AccountPage> {
+  //const AccountPage({Key key}) : super(key: key);
+  var _user = userModel();
+  var _userServices = userServices();
+
+  List<userModel> _userList = List<userModel>();
+  
+  @override
+  void initState(){
+    super.initState();
+    getAllUserData();
+  }
+
+  getAllUserData() async {
+    _userList = List<userModel>();
+    var users = await _userServices.readUser();
+
+    users.forEach((user){
+      setState((){
+        var userModels = userModel();
+        userModels.fullname = user['fullname'];
+        userModels.idCard = user['id_card'].toString();
+        userModels.password = user['password'];
+        userModels.email = user['email'];
+        userModels.phone = user['phone'];
+        _userList.add(userModels);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1219,8 +1253,11 @@ class AccountPage extends StatelessWidget {
         elevation: 0,
       ),
 
-      body: Center(
-        child: Container(
+      body: ListView.builder(
+        itemCount : _userList.length,
+        itemBuilder: (context, index){
+
+        return Container(
           transform: Matrix4.translationValues(0.0, -40.0, 0.0),
           child: Flexible(
             child : SingleChildScrollView(
@@ -1273,7 +1310,7 @@ class AccountPage extends StatelessWidget {
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
-                          hintText: 'Rose Monde',
+                          hintText: _userList[index].fullname,
                         ),
                       ),
                     ),
@@ -1304,7 +1341,7 @@ class AccountPage extends StatelessWidget {
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
-                          hintText: '9171010203010001',
+                          hintText: _userList[index].idCard,
                         ),
                       ),
                     ),
@@ -1335,7 +1372,7 @@ class AccountPage extends StatelessWidget {
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
-                          hintText: 'nopass123',
+                          hintText: _userList[index].password,
                         ),
                       ),
                     ),
@@ -1366,7 +1403,7 @@ class AccountPage extends StatelessWidget {
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
-                          hintText: 'monderose@gmail.com',
+                          hintText: _userList[index].email,
                         ),
                       ),
                     ),
@@ -1397,7 +1434,7 @@ class AccountPage extends StatelessWidget {
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
-                          hintText: '08114882001',
+                          hintText: _userList[index].phone,
                         ),
                       ),
                     ),
@@ -1467,14 +1504,14 @@ class AccountPage extends StatelessWidget {
               )
             )
           )
-        ),
-      )
+        );
+     })
     );
   }
 }
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({Key? key}) : super(key: key);
+  const AboutPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1561,7 +1598,7 @@ class AboutPage extends StatelessWidget {
   }
 }
 class TourGuidePage extends StatelessWidget {
-  const TourGuidePage({Key? key}) : super(key: key);
+  const TourGuidePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1588,7 +1625,7 @@ class TourGuidePage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AccountPage()),
+              MaterialPageRoute(builder: (context) => AccountPage()),
             );
           },
         )
@@ -2569,7 +2606,7 @@ class TourGuidePage extends StatelessWidget {
   }
 }
 class MyResPage extends StatelessWidget {
-  const MyResPage({Key? key}) : super(key: key);
+  const MyResPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2596,7 +2633,7 @@ class MyResPage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AccountPage()),
+              MaterialPageRoute(builder: (context) => AccountPage()),
             );
           },
         )
@@ -2616,7 +2653,7 @@ class MyResPage extends StatelessWidget {
 
 //Drop down location or city.
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+  const MyStatefulWidget({Key key}) : super(key: key);
   
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
@@ -2638,9 +2675,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         height: 2,
         color: Color(0xFF4169E1),
       ),
-      onChanged: (String? newValue) {
+      onChanged: (String newValue) {
         setState(() {
-          dropdownValue = newValue!;
+          dropdownValue = newValue;
         });
       },
       items: <String>["Bandung", "Jakarta", "Bali", "Lombok", "Toraja"]
@@ -2655,7 +2692,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 class BookCarPage extends StatelessWidget {
-  const BookCarPage({Key? key}) : super(key: key);
+  const BookCarPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2729,7 +2766,7 @@ class BookCarPage extends StatelessWidget {
   }
 }
 class BookGuidePage extends StatelessWidget {
-  const BookGuidePage({Key? key}) : super(key: key);
+  const BookGuidePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2803,7 +2840,7 @@ class BookGuidePage extends StatelessWidget {
   }
 }
 class OrderPage extends StatelessWidget {
-  const OrderPage({Key? key}) : super(key: key);
+  const OrderPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2844,7 +2881,7 @@ class OrderPage extends StatelessWidget {
 }
 
 class PaymentPage extends StatelessWidget {
-  const PaymentPage({Key? key}) : super(key: key);
+  const PaymentPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2890,7 +2927,7 @@ class PaymentPage extends StatelessWidget {
 }
 
 class HelpPage extends StatelessWidget {
-  const HelpPage({Key? key}) : super(key: key);
+  const HelpPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2936,7 +2973,7 @@ class HelpPage extends StatelessWidget {
 }
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2949,7 +2986,7 @@ class LoginPage extends StatelessWidget {
 }
 
 class CreateAccPage extends StatelessWidget {
-  const CreateAccPage({Key? key}) : super(key: key);
+  const CreateAccPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2974,7 +3011,7 @@ class CreateAccPage extends StatelessWidget {
 }
 
 class ForgetPage extends StatelessWidget {
-  const ForgetPage({Key? key}) : super(key: key);
+  const ForgetPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -2999,7 +3036,7 @@ class ForgetPage extends StatelessWidget {
 }
 
 class SettingPage extends StatelessWidget {
-  const SettingPage({Key? key}) : super(key: key);
+  const SettingPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

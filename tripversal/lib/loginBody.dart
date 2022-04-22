@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tripversal/main.dart';
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
