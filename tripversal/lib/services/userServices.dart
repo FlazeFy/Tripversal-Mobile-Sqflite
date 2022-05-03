@@ -15,4 +15,9 @@ class userServices{
   readUser() async{
     return await _repository.readData('user');
   }
+
+  //New.
+  loginAccount(userModel user) async{
+    return await _repository.checkData('user', user.loginuserMap());
+  }
 }

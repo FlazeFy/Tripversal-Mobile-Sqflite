@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:tripversal/repositories/database_connection.dart';
-import 'package:flutter/material.dart';
 
 class Repository{
   DatabaseConnection _databaseConnection;
@@ -19,13 +18,31 @@ class Repository{
 
   insertData(table, data) async{
     var connection = await database;
-
+  
     return await connection.insert(table, data);
   }
 
   readData(table) async{
     var connection = await database;
     // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM user WHERE id_user=?', ['3']);
+    return await connection.rawQuery('SELECT * FROM user WHERE id_user=?', ['1']);
+  }
+  readCarData(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM car');
+  }
+
+  readCarDataById(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM car WHERE id_car=?', ['']);
+  }
+
+  //New.
+  checkData(table, data) async{
+    var connection = await database;
+    connection.rawQuery('SELECT * FROM user WHERE fullname=? AND password=?', data);
+
   }
 }

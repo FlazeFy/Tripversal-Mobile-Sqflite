@@ -19,4 +19,14 @@ class userModel{
 
     return mapping;
   }
+
+  //New.
+  loginuserMap(){
+    var mapping = Map<String, dynamic>();
+
+    mapping['fullname'] = fullname;
+    mapping['password'] = password;
+
+    return mapping;
+  }
 }

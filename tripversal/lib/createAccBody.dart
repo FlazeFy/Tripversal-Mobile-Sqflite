@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tripversal/main.dart';
 import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/services/userServices.dart';
 import 'package:tripversal/widgets/checkBox.dart';
 
-class createAcc extends StatelessWidget {
+class CreateAcc extends StatelessWidget {
   //const createAcc({Key? key}) : super(key: key);
   var _fullnameCtrl = TextEditingController();
   var _idCardCtrl = TextEditingController();
@@ -13,6 +14,8 @@ class createAcc extends StatelessWidget {
 
   var _user = userModel();
   var _userservices = userServices();
+
+  CreateAcc({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -289,8 +292,17 @@ class createAcc extends StatelessWidget {
                         _user.phone = _phoneCtrl.text;
 
                         //_userservices.createAccount(_user);
+                        //ERROR!!! User still can create account with no data
                         var result = await _userservices.createAccount(_user);
                         print(result);
+                        if(result != null){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NavBar()),
+                          );
+                        } else {
+
+                        }
                     },
                     icon: const Icon(Icons.save, size: 20),
                     label: const Text("Next"),

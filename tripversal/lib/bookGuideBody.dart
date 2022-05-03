@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'main.dart';
-
 //Collapse Resv
 class bookGuide extends StatelessWidget {
   const bookGuide({Key key}) : super(key: key);
@@ -471,7 +469,7 @@ class bookGuide extends StatelessWidget {
 
                       ]
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 60,
                     ),
                   ]

@@ -41,7 +41,7 @@ class Login extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
                 child: const Text(
-                  "Username", 
+                  "Fullname", 
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
