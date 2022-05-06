@@ -1,19 +1,24 @@
 // ignore_for_file: prefer_const_constructors
 // Kelompok 4 - SE-43-03
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tripversal/bookGuideBody.dart';
 import 'package:tripversal/helpBody.dart';
 import 'package:tripversal/loginBody.dart';
 import 'package:tripversal/models/carModel.dart';
+import 'package:tripversal/models/guideModel.dart';
+import 'package:tripversal/models/onGoingModel.dart';
+import 'package:tripversal/models/resvModel.dart';
 import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/orderBody.dart';
 import 'package:tripversal/paymentBody.dart';
+import 'package:tripversal/services/guideServices.dart';
+import 'package:tripversal/services/resvServices.dart';
 import 'package:tripversal/services/userServices.dart';
 import 'package:tripversal/services/carServices.dart';
 import 'package:tripversal/settingBody.dart';
 import 'package:tripversal/widgets/sideNav.dart';
 import 'package:tripversal/widgets/checkBox.dart';
-import 'package:tripversal/myResvBody.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'createAccBody.dart';
 import 'forgetPassBody.dart';
@@ -111,6 +116,7 @@ class _RentACarPage extends State<RentACarPage> {
         var carModels = carModel();
         carModels.idCar = car['id_car'];
         carModels.plate = car['plate'];
+        carModels.type = car['type'];
         carModels.carname = car['carname'];
         carModels.location = car['location'];
         carModels.price = car['price'];
@@ -471,7 +477,7 @@ class _RentACarPage extends State<RentACarPage> {
                                                 text: TextSpan(
                                                   children: [
                                                     TextSpan(
-                                                      text: "Rp.",
+                                                      text: "Rp. ",
                                                       style: TextStyle(
                                                         color: Color(0xFF808080),
                                                         fontSize: 21,
@@ -1010,8 +1016,46 @@ class AboutPage extends StatelessWidget {
     );
   }
 }
-class TourGuidePage extends StatelessWidget {
+class TourGuidePage extends StatefulWidget {
   const TourGuidePage({Key key}) : super(key: key);
+
+  @override
+
+  _TourGuidePage createState() => _TourGuidePage();
+}
+
+class _TourGuidePage extends State<TourGuidePage> {
+  var _guide = guideModel();
+  var _guideServices = guideServices();
+
+  List<guideModel> _guideList = <guideModel>[];
+  
+  @override
+  void initState(){
+    super.initState();
+    getAllGuideData();
+  }
+
+  getAllGuideData() async {
+    _guideList = <guideModel>[];
+    var guides = await _guideServices.readGuide();
+
+    guides.forEach((guide){
+      setState((){
+        var guideModels = guideModel();
+        guideModels.idGuide = guide['id_guide'];
+        guideModels.name = guide['name'];
+        guideModels.price = guide['price'];
+        guideModels.rating = guide['rating'];
+        guideModels.customer = guide['customer'];
+        guideModels.desc = guide['desc'];
+        guideModels.phone = guide['phone'];
+        guideModels.address = guide['address'];
+        guideModels.email = guide['email'];
+        _guideList.add(guideModels);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1299,7 +1343,7 @@ class TourGuidePage extends StatelessWidget {
             ),
 
             Align( //text
-              child: Text('Showing 4 result...',
+              child: Text("Showing ${_guideList.length.toString()} result...",
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 13,
@@ -1309,24 +1353,21 @@ class TourGuidePage extends StatelessWidget {
             ),
 
             Flexible(
-              child : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: <Widget>[
+              child: ListView.builder(
+              itemCount : _guideList.length,
+              itemBuilder: (context, index){
                       
-                    Card( //item-1 -----------------------------------------
+                  return  Card( //item-1 -----------------------------------------
                       child:Container(
                         height: 100,
-                        color: Colors.white,
                         child: Row(
                           children: [  
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 10.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  'assets/images/driver1.jpg', width: 80),
-                                ),
+                                child: Image.asset("assets/images/${ _guideList[index].name}.jpg", width: 80),
+                              ),
                             ),
                             Expanded(
                               child:Container(
@@ -1341,7 +1382,7 @@ class TourGuidePage extends StatelessWidget {
                                         children: [
                                           RichText(
                                             text: TextSpan(
-                                              children: const [
+                                              children: [
                                                 WidgetSpan(
                                                   child: Icon(Icons.person, 
                                                     size: 20,
@@ -1349,7 +1390,7 @@ class TourGuidePage extends StatelessWidget {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: "Ben Parker",
+                                                  text: _guideList[index].name,
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.w700,
@@ -1362,7 +1403,7 @@ class TourGuidePage extends StatelessWidget {
                                             transform: Matrix4.translationValues(70.0, 0.0, 0.0),
                                             child: RichText(
                                               text: TextSpan(
-                                                children: const [
+                                                children: [
                                                   WidgetSpan(
                                                     child: Icon(Icons.star, 
                                                       size: 20,
@@ -1370,7 +1411,7 @@ class TourGuidePage extends StatelessWidget {
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: "4,9",
+                                                    text: _guideList[index].rating.toString(),
                                                     style: TextStyle(
                                                       color: Color(0xFF4169E1),
                                                       fontSize: 18,
@@ -1420,9 +1461,9 @@ class TourGuidePage extends StatelessWidget {
                                             margin: EdgeInsets.symmetric(horizontal: 25.0),
                                             child: RichText(
                                               text: TextSpan(
-                                                children: const [
+                                                children: [
                                                   TextSpan(
-                                                    text: "Rp.",
+                                                    text: "Rp. ",
                                                     style: TextStyle(
                                                       color: Color(0xFF808080),
                                                       fontSize: 21,
@@ -1430,7 +1471,7 @@ class TourGuidePage extends StatelessWidget {
                                                     )
                                                   ),
                                                   TextSpan(
-                                                    text: " 450.000",
+                                                    text: _guideList[index].price.toString(),
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 18,
@@ -1492,534 +1533,98 @@ class TourGuidePage extends StatelessWidget {
                                   ),
                                 )
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                      elevation: 8,
-                      margin: EdgeInsets.all(10),
-                    ),
-
-                    Card( //item-2 -----------------------------------------
-                      child:Container(
-                        height: 100,
-                        color: Colors.white,
-                        child: Row(
-                          children: [  
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: ClipRRect(
+                              decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  'assets/images/driver2.jpg', width: 80),
-                                ),
-                            ),
-                            Expanded(
-                              child:Container(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      margin: EdgeInsets.symmetric(vertical: 5.0),
-                                      alignment: Alignment.topLeft,
-                                      child: Row (
-                                        children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              children: const [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.person, 
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: "Craig Mckay",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),                              
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            transform: Matrix4.translationValues(70.0, 0.0, 0.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  WidgetSpan(
-                                                    child: Icon(Icons.star, 
-                                                      size: 20,
-                                                      color: Color(0xFF4169E1),
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: "4,8",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF4169E1),
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),                              
-                                                ],
-                                              ),
-                                            )
-                                          )
-                                        ]
-                                      ),                            
-                                    ),
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                        text: TextSpan(
-                                          children: const [
-                                            WidgetSpan(
-                                              child: Icon(Icons.message, 
-                                                size: 20,
-                                                color: Color(0xFF4169E1),
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: " ID, EN, ZH, PT",
-                                              style: TextStyle(
-                                                color: Color(0xFF808080),
-                                                fontWeight: FontWeight.w700,
-                                              )
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ),
-
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            // flex: 5, //if expanded
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.symmetric(horizontal: 25.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  TextSpan(
-                                                    text: "Rp.",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF808080),
-                                                      fontSize: 21,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                  TextSpan(
-                                                    text: " 420.000",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                  TextSpan(
-                                                    text: " / 12 hr",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF808080),
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ),
-                              flex:8 ,
-                            ),
-                            Container(
-                              height: 80,
-                              width: 50,
-                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: ButtonTheme(
-                                minWidth: 30,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                      // Respond to button press
-                                  },
-                                  icon: Icon(Icons.arrow_forward, size: 25),
-                                  label: Text(""),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                  ),
-                                )
+                                color: Colors.white,
                               ),
                             )
                           ],
                         ),
                       ),
                       elevation: 8,
-                      margin: EdgeInsets.all(10),
-                    ),
-
-                    Card( //item-3 -----------------------------------------
-                      child:Container(
-                        height: 100,
-                        color: Colors.white,
-                        child: Row(
-                          children: [  
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  'assets/images/driver3.jpg', width: 80),
-                                ),
-                            ),
-                            Expanded(
-                              child:Container(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      margin: EdgeInsets.symmetric(vertical: 5.0),
-                                      alignment: Alignment.topLeft,
-                                      child: Row (
-                                        children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              children: const [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.person, 
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: "Kelly Christy",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),                              
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            transform: Matrix4.translationValues(70.0, 0.0, 0.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  WidgetSpan(
-                                                    child: Icon(Icons.star, 
-                                                      size: 20,
-                                                      color: Color(0xFF4169E1),
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: "4,7",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF4169E1),
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),                              
-                                                ],
-                                              ),
-                                            )
-                                          )
-                                        ]
-                                      ),                            
-                                    ),
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                        text: TextSpan(
-                                          children: const [
-                                            WidgetSpan(
-                                              child: Icon(Icons.message, 
-                                                size: 20,
-                                                color: Color(0xFF4169E1),
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: " ID, EN, PT",
-                                              style: TextStyle(
-                                                color: Color(0xFF808080),
-                                                fontWeight: FontWeight.w700,
-                                              )
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ),
-
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            // flex: 5, //if expanded
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.symmetric(horizontal: 25.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  TextSpan(
-                                                    text: "Rp.",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF808080),
-                                                      fontSize: 21,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                  TextSpan(
-                                                    text: " 380.000",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                  TextSpan(
-                                                    text: " / 12 hr",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF808080),
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ),
-                              flex:8 ,
-                            ),
-                            Container(
-                              height: 80,
-                              width: 50,
-                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: ButtonTheme(
-                                minWidth: 30,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                      // Respond to button press
-                                  },
-                                  icon: Icon(Icons.arrow_forward, size: 25),
-                                  label: Text(""),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                  ),
-                                )
-                              ),
-                            )
-                          ],
-                        ),
+                      margin: EdgeInsets.all(6),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      elevation: 8,
-                      margin: EdgeInsets.all(10),
-                    ),
-
-                    Card( //item-4 -----------------------------------------
-                      child:Container(
-                        height: 100,
-                        color: Colors.white,
-                        child: Row(
-                          children: [  
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  'assets/images/driver4.jpg', width: 80),
-                                ),
-                            ),
-                            Expanded(
-                              child:Container(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      margin: EdgeInsets.symmetric(vertical: 5.0),
-                                      alignment: Alignment.topLeft,
-                                      child: Row (
-                                        children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              children: const [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.person, 
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: "Maia Austin",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),                              
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            transform: Matrix4.translationValues(70.0, 0.0, 0.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  WidgetSpan(
-                                                    child: Icon(Icons.star, 
-                                                      size: 20,
-                                                      color: Color(0xFF4169E1),
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: "4,6",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF4169E1),
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),                              
-                                                ],
-                                              ),
-                                            )
-                                          )
-                                        ]
-                                      ),                            
-                                    ),
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                        text: TextSpan(
-                                          children: const [
-                                            WidgetSpan(
-                                              child: Icon(Icons.message, 
-                                                size: 20,
-                                                color: Color(0xFF4169E1),
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: " ID, EN, ES, FR",
-                                              style: TextStyle(
-                                                color: Color(0xFF808080),
-                                                fontWeight: FontWeight.w700,
-                                              )
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ),
-
-                                    Container(
-                                      // flex: 5, //if expanded
-                                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            // flex: 5, //if expanded
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.symmetric(horizontal: 25.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: const [
-                                                  TextSpan(
-                                                    text: "Rp.",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF808080),
-                                                      fontSize: 21,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                  TextSpan(
-                                                    text: " 370.000",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                  TextSpan(
-                                                    text: " / 12 hr",
-                                                    style: TextStyle(
-                                                      color: Color(0xFF808080),
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ),
-                              flex:8 ,
-                            ),
-                            Container(
-                              height: 80,
-                              width: 50,
-                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: ButtonTheme(
-                                minWidth: 30,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                      // Respond to button press
-                                  },
-                                  icon: Icon(Icons.arrow_forward, size: 25),
-                                  label: Text(""),  
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                  ),
-                                )
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      elevation: 8,
-                      margin: EdgeInsets.all(10),
-                    ),
-
-                  ] 
+                    );
+ 
                   //End of card.
+                  }
                 )
               )
-            )
+            
           ]
         )
       )
     );
   }
 }
-class MyResPage extends StatelessWidget {
+class MyResPage extends StatefulWidget {
   const MyResPage({Key key}) : super(key: key);
+
+  @override
+
+  _MyResPage createState() => _MyResPage();
+}
+
+class _MyResPage extends State<MyResPage> {
+  var _resv = resvModel();
+  var _ongoing = onGoingModel();
+  var _resvServices = resvServices();
+
+  List<resvModel> _historyList = <resvModel>[];
+  List<onGoingModel> _onGoingList = <onGoingModel>[];
+  
+  @override
+  void initState(){
+    super.initState();
+    getAllHistoryData();
+    getAllOnGoingData();
+  }
+
+  getAllHistoryData() async {
+    _historyList = <resvModel>[];
+    var history = await _resvServices.readHistory();
+
+    history.forEach((history){
+      setState((){
+        var historyModels = resvModel();
+        historyModels.idHistory = history['id_history'];
+        historyModels.idUser = history['id_user'];
+        historyModels.type = history['type'];
+        historyModels.price = history['price'];
+        historyModels.rating = history['rating'];
+        historyModels.name = history['name'];
+        historyModels.phone = history['phone'];
+        historyModels.location = history['location'];
+        historyModels.barcode = history['barcode'];
+        historyModels.dateStart= DateTime.tryParse(history['dateStart']);
+        historyModels.dateEnd= DateTime.tryParse(history['dateEnd']);
+        historyModels.dateComment= DateTime.tryParse(history['dateComment']);
+        historyModels.comment= history['comment'];
+        _historyList.add(historyModels);
+      });
+    });
+  }
+  getAllOnGoingData() async {
+    _onGoingList = <onGoingModel>[];
+    var ongoing = await _resvServices.readOnGoing();
+
+    ongoing.forEach((ongoing){
+      setState((){
+        var onGoingModels = onGoingModel();
+        onGoingModels.idOnGoing = ongoing['id_ongoing'];
+        onGoingModels.idUser = ongoing['id_user'];
+        onGoingModels.idCarGuide = ongoing['id_car_guide'];
+        onGoingModels.type = ongoing['type'];
+        onGoingModels.desc = ongoing['desc'];
+        onGoingModels.dateStart= DateTime.tryParse(ongoing['dateStart']);
+        onGoingModels.dateEnd= DateTime.tryParse(ongoing['dateEnd']);
+
+        _onGoingList.add(onGoingModels);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -2058,7 +1663,796 @@ class MyResPage extends StatelessWidget {
       ),
       
       body: Center(
-        child: ExpansionResv()
+        child: Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+        child: Flexible(            
+          child : SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: <Widget>[
+                
+                ExpansionTile( //Collapse-1 ===========================================
+                  initiallyExpanded: true,
+                  leading: IconButton(
+                    iconSize: 30,
+                    icon: const Icon(Icons.payment,
+                    color: Color(0xFF808080)),
+                    onPressed: () {},
+                  ),
+                  title: const Text(
+                    "Waiting for Payment",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w800
+                    ),
+                  ),
+                  children: <Widget>[                     
+                    SingleChildScrollView(               
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: <Widget>[
+                            
+                          Card( //item-1 -----------------------------------------
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child:Container(
+                              height: 100,
+                              decoration: BoxDecoration(
+                                borderRadius : BorderRadius.circular(10),             
+                                color: const Color(0xFF4169E1),
+                              ),
+                              child: Row(
+                                children: [  
+                                  Expanded(
+                                    child:Container(
+                                      alignment: Alignment.topLeft,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                            child: RichText(
+                                              text: const TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: " Toyota Innova / 2015",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 18
+                                                    )
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ),
+                                          Container(
+                                            alignment: Alignment.bottomLeft,
+                                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  alignment: Alignment.bottomLeft,
+                                               
+                                                  child: RichText(
+                                                    text: const TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: "Rp.",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 18,
+                                                          )
+                                                        ),
+                                                        TextSpan(
+                                                          text: " 400.000",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 22,
+                                                            fontWeight: FontWeight.bold
+                                                          )
+                                                        ),
+                                                        TextSpan(
+                                                          text: " / Day",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 18,
+                                                          )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    flex:8 ,
+                                  ),
+                                  Container(
+                                    //Timer with minute and second.
+                                  ),
+                                  Container(
+                                    height: 60,
+                                    width: 80,
+                                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                    child: RaisedButton(
+                                      color: const Color(0xFFe33b51),
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: const <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.all(1.0),
+                                            child: Icon(
+                                              Icons.cancel,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(0),
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                      },
+                                    )
+                                  ),
+                                  Container(
+                                    height: 60,
+                                    width: 80,
+                                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: RaisedButton(
+                                      color: const Color(0xFF13B402),
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: const <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.all(1.0),
+                                            child: Icon(
+                                              Icons.info,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(0),
+                                            child: Text(
+                                              "Details",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context, MaterialPageRoute(
+                                            builder: (context) => const PaymentPage(),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            elevation: 8,
+                            margin: const EdgeInsets.all(10),
+                          ),
+
+                        ]
+                      )
+                    )   
+                    
+                  ],
+                ),
+
+                ExpansionTile( //Collapse-2 ===========================================
+                  initiallyExpanded: true,
+                  leading: IconButton(
+                    iconSize: 30,
+                    icon: const Icon(Icons.punch_clock,
+                    color: Color(0xFF808080)),
+                    onPressed: () {},
+                  ),
+                  title: const Text(
+                    "OnGoing",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w800
+                    ),
+                  ),
+                  children: <Widget>[
+                    Container(
+                      height: 260, 
+                      margin: EdgeInsets.symmetric(horizontal: 5), 
+                      child: ListView.builder(               
+                        scrollDirection: Axis.horizontal,
+                        itemCount : _onGoingList.length,
+                        itemBuilder: (context, index){
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: Color(0xFF4169E1), width: 2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Container(
+                              width: 220,
+                              decoration: BoxDecoration(
+                                borderRadius : BorderRadius.circular(10),             
+                                color: Colors.white,
+                              ),
+                                  
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(_onGoingList[index].type, style: TextStyle(fontWeight: FontWeight.w800)),
+                                    subtitle: Text(
+                                      "${_onGoingList[index].desc} ~ end on ${_onGoingList[index].dateEnd}",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical : 3), 
+                                    child: Image.asset('assets/images/D 1670 VZB.jpg', width: 180),
+                                  ),
+                                  Align(
+                                    
+                                  ),
+                                  Row(
+                                  children:[ 
+                                    Container(
+                                      height: 40,
+                                      width: 90, 
+                                      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical : 10), 
+                                      child: RaisedButton(
+                                        color: const Color(0xFF4169E1),
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: const <Widget>[
+                                            Padding(
+                                              padding: EdgeInsets.all(1.0),
+                                              child: Icon(
+                                                Icons.add,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(0),
+                                              child: Text(
+                                                "Extend",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        onPressed: () {
+                                        },
+                                      )
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      width: 100,
+                                      child: RaisedButton(
+                                        color: const Color(0xFF13B402),
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: const <Widget>[
+                                            Padding(
+                                              padding: EdgeInsets.all(1.0),
+                                              child: Icon(
+                                                Icons.message,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(0),
+                                              child: Text(
+                                                "Contact",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        onPressed: () {
+                                        },
+                                      )
+                                    ),
+                                ])
+                                ],
+                              ),
+                            ),
+                            elevation: 10,
+                          );
+                        }
+                        
+                      )  
+                    )  
+                  ],
+                ),
+
+                    ExpansionTile( //Collapse-3 ===========================================
+                      leading: IconButton(
+                        iconSize: 30,
+                        icon: const Icon(Icons.history,
+                        color: Color(0xFF808080)),
+                        onPressed: () {},
+                      ),
+                      title: const Text(
+                        "History",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w800
+                        ),
+                      ),
+                      children: <Widget>[ 
+                        Container(
+                        //Can use flexible error flex
+                        height: MediaQuery.of(context).size.height,                    
+                        child: ListView.builder(               
+                          scrollDirection: Axis.vertical,
+                          itemCount : _historyList.length,
+                          itemBuilder: (context, index){
+                              return Card( //item-1 -----------------------------------------
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child:Container(
+                                  // height: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius : BorderRadius.circular(10),             
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    children: [ 
+                                      Align( 
+                                        child: Row(
+                                          children: [  
+                                            Expanded(
+                                              child:Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: _historyList[index].type,
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: 18
+                                                              )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ),
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: _historyList[index].location,
+                                                              style: TextStyle(
+                                                                color: Color(0xFF808080),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: 16
+                                                              )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ),
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: "~on ${_historyList[index].dateStart.toString()}",
+                                                              style: TextStyle(
+                                                                color: Color(0xFF808080),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontStyle: FontStyle.italic,
+                                                                fontSize: 16
+                                                              )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              flex:8 ,
+                                            ),
+                                            Container(
+                                              height: 60,
+                                              width: 80,
+                                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                              child: OutlineButton(
+                                                onPressed: () {
+                                                    // Respond to button press
+                                                },
+                                                borderSide: const BorderSide(
+                                                  color: Color(0xFF4169E1),
+                                                  width: 2,
+                                                ),
+                                                child: const Text("Review", 
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
+                                                ), 
+                                              )
+                                            ),
+                                            Container(
+                                              height: 60,
+                                              width: 80,
+                                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                    // Respond to button press
+                                                },
+                                                child: const Text("Book Again", 
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                style: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF4169E1)),
+                                                ), 
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      //Review section
+                                      Align(
+                                        child: ExpansionTile( 
+                                          leading: IconButton(
+                                            iconSize: 30,
+                                            icon: const Icon(Icons.star,
+                                            color: Color(0xFF808080)),
+                                            onPressed: () {},
+                                          ),
+                                          title: const Text(
+                                            "My Review",
+                                            style: TextStyle(
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w800
+                                            ),
+                                          ),
+                                          children: <Widget>[
+                                            SingleChildScrollView(               
+                                              scrollDirection: Axis.vertical,
+                                              child: Column(
+                                                children: <Widget>[
+                                                
+                                                  Row(
+                                                    children: [  
+                                                      Expanded(
+                                                        child:Container(
+                                                          alignment: Alignment.topLeft,
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                alignment: Alignment.topLeft,
+                                                                margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                                                                child: RichText(
+                                                                  text: const TextSpan(
+                                                                    children: [
+                                                                    WidgetSpan(
+                                                                      child: Icon(Icons.star, 
+                                                                        size: 20,
+                                                                        color: Color(0xFF4169E1),
+                                                                      ),
+                                                                    ),
+                                                                    WidgetSpan(
+                                                                      child: Icon(Icons.star, 
+                                                                        size: 20,
+                                                                        color: Color(0xFF4169E1),
+                                                                      ),
+                                                                    ),
+                                                                    WidgetSpan(
+                                                                      child: Icon(Icons.star, 
+                                                                        size: 20,
+                                                                        color: Color(0xFF4169E1),
+                                                                      ),
+                                                                    ),
+                                                                    WidgetSpan(
+                                                                      child: Icon(Icons.star, 
+                                                                        size: 20,
+                                                                        color: Color(0xFF4169E1),
+                                                                      ),
+                                                                    ),
+                                                                    WidgetSpan(
+                                                                      child: Icon(Icons.star, 
+                                                                        size: 20,
+                                                                        color: Color(0xFF4169E1),
+                                                                      ),
+                                                                    ),
+                                    
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ),
+                                                              Container(
+                                                                alignment: Alignment.topLeft,
+                                                                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                                child: RichText(
+                                                                  text: TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text: _historyList[index].comment,
+                                                                        style: TextStyle(
+                                                                          color: Color.fromARGB(255, 77, 77, 77),
+                                                                          fontWeight: FontWeight.w500,
+                                                                          fontSize: 16
+                                                                        )
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ),
+                                                              Container(
+                                                                alignment: Alignment.topLeft,
+                                                                margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                                                                child: RichText(
+                                                                  text: TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text: "~on ${_historyList[index].dateComment.toString()}",
+                                                                        style: TextStyle(
+                                                                          color: Color(0xFF808080),
+                                                                          fontWeight: FontWeight.w500,
+                                                                          fontStyle: FontStyle.italic,
+                                                                          fontSize: 13
+                                                                        )
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        flex:8 ,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                    
+                                                ]
+                                              )
+                                            )  
+                                          ],
+                                        ),
+                                      ),
+
+                                      //Review section
+                                      Align(
+                                        child: ExpansionTile( 
+                                          leading: IconButton(
+                                            iconSize: 30,
+                                            icon: const Icon(Icons.info,
+                                            color: Color(0xFF808080)),
+                                            onPressed: () {},
+                                          ),
+                                          title: const Text(
+                                            "Detail",
+                                            style: TextStyle(
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w800
+                                            ),
+                                          ),
+                                          children: <Widget>[
+                                            SingleChildScrollView(               
+                                              scrollDirection: Axis.vertical,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                    child: RichText(
+                                                      text: const TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: "Period :",
+                                                            style: TextStyle(
+                                                              color: Color(0xFF212121),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize: 16
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: "${_historyList[index].dateStart.toString()} - ${_historyList[index].dateEnd.toString()}",
+                                                            style: TextStyle(
+                                                              color: Color(0xFF808080),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontStyle: FontStyle.italic,
+                                                              fontSize: 16
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                    child: RichText(
+                                                      text: const TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: "Price :",
+                                                            style: TextStyle(
+                                                              color: Color(0xFF212121),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize: 16
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: "Rp. ${_historyList[index].price.toString()}",
+                                                            style: TextStyle(
+                                                              color: Color(0xFF808080),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontStyle: FontStyle.italic,
+                                                              fontSize: 16
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                    child: RichText(
+                                                      text: const TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: "Driver :",
+                                                            style: TextStyle(
+                                                              color: Color(0xFF212121),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize: 16
+                                                            )
+                                                          ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ),
+                                                      Container(
+                                                        alignment: Alignment.topLeft,
+                                                        margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: _historyList[index].name,
+                                                                style: TextStyle(
+                                                                  color: Color(0xFF808080),
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontStyle: FontStyle.italic,
+                                                                  fontSize: 16
+                                                                )
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ),
+                                                      Container(
+                                                        alignment: Alignment.center,
+                                                        child: RichText(
+                                                          text: const TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: "Barcode :",
+                                                                style: TextStyle(
+                                                                  color: Color(0xFF212121),
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 16
+                                                                )
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ),
+                                                      Container(
+                                                        alignment: Alignment.center,
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: _historyList[index].barcode,
+                                                                style: TextStyle(
+                                                                  color: Color(0xFF212121),
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 20
+                                                                )
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ),
+                                                      Container(margin: const EdgeInsets.symmetric(vertical: 5.0))
+                                                      
+                                                    ]
+                                                  )
+                                                )  
+                                              ],
+                                            ),
+                                          )
+
+                                        ],
+                                      ),
+                                    ),
+                                    elevation: 8,
+                                    margin: const EdgeInsets.all(10),
+                                  );
+                                }
+
+                              )   
+                        
+                        ),
+                      ]
+                    )
+
+                  ],
+                ),
+              )
+            )
+          )
+        )
       )
     );
   }
@@ -2134,6 +2528,7 @@ class _BookCarPage extends State<BookCarPage> {
         var carModels = carModel();
         carModels.idCar = car['id_car'];
         carModels.plate = car['plate'];
+        carModels.type = car['type'];
         carModels.carname = car['carname'];
         carModels.location = car['location'];
         carModels.price = car['price'];

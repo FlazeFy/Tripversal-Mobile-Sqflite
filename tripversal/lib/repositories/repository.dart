@@ -30,7 +30,23 @@ class Repository{
   readCarData(table) async{
     var connection = await database;
     // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM car');
+    return await connection.rawQuery('SELECT * FROM car where type=?',['City Car']);
+  }
+  readGuideData(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM guide');
+  }
+  
+  readHistoryDataById(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM history WHERE id_user=?', ['1']);
+  }
+  readOnGoingDataById(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM ongoing WHERE id_user=?', ['1']);
   }
 
   readCarDataById(table) async{

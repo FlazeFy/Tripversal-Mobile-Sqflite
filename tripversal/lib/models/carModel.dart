@@ -2,6 +2,7 @@ class carModel{
    int idCar;
 
    String plate;
+   String type;
    String carname;
    String location;
   String driver;
@@ -17,6 +18,7 @@ class carModel{
 
     mapping['id_car'] = idCar;
     mapping['plate'] = plate;
+    mapping['type'] = type;
     mapping['carname'] = carname;
     mapping['location'] = location;
     mapping['price'] = price;

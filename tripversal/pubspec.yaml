@@ -78,10 +78,8 @@ flutter:
     - assets/images/D 1910 CDB.jpg
     - assets/images/D 2410 VBZ.jpg
     - assets/images/background1.png
-    - assets/images/driver1.jpg
-    - assets/images/driver2.jpg
-    - assets/images/driver3.jpg
-    - assets/images/driver4.jpg
+    - assets/images/Ben Parker.jpg
+    - assets/images/Craig Mckay.jpg
     - assets/images/united-kingdom.png
     - assets/images/indonesia.png
     - assets/images/spain.png
@@ -92,6 +90,7 @@ flutter:
     - assets/images/wishlist.png
     - assets/images/Default.png
 
+    - assets/images/icon/Empty.gif
     - assets/images/forgotpass.gif
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
