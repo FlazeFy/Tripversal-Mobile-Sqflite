@@ -21,7 +21,7 @@ class DatabaseConnection{
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc) VALUES(null, 'D 1670 VZB', 'City Car', 'Honda Brio RS/2020', 'Bojongsoang', 290000, 5, 'Ben Parker', 5, 35, 12000, 'Lorem ipsum')");
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc) VALUES(null, 'D 1140 AAB', 'City Car', 'Toyota Raize/2022', 'Bojongsoang', 340000, 5, 'none', 5, 35, 7000, 'Lorem ipsum')");
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc) VALUES(null, 'D 1910 CDB', 'City Car', 'Toyota Agya/2018', 'Baleendah', 275000, 5, 'Ben Parker', 5, 30, 52000, 'Lorem ipsum')");
-    await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc) VALUES(null, 'D 2410 VBZ', 'City Car', 'Honda Brio Satya/2019', 'Baleendah', 270000, 5, 'Kreig Maycalle', 5, 30, 31000, 'Lorem ipsum')");
+    await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc) VALUES(null, 'D 2410 VBZ', 'City Car', 'Honda Brio Satya/2019', 'Baleendah', 270000, 5, 'Craig Mckay', 5, 30, 31000, 'Lorem ipsum')");
   
     //Insert Minibus Item 
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc) VALUES(null, 'D 3410 AAC', 'Minibus', 'Toyota Innova/2015', 'Buah Batu', 400000, 5, 'Ben Parker', 8, 50, 127000, 'Lorem ipsum')");

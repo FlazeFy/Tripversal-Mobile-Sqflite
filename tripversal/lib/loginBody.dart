@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tripversal/main.dart';
 
 class Login extends StatelessWidget {
-  const Login({Key key}) : super(key: key);
+  var usernameCtrl;
+
+  Login({Key key, this.usernameCtrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +56,8 @@ class Login extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 25.0),
                 height: 35,
-                child: const TextField(
-                  // controller: usernameCtrl,
+                child: TextField(
+                  controller: usernameCtrl,
                   decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -128,7 +130,7 @@ class Login extends StatelessWidget {
                   // print(passwordController.text);
                   Navigator.push(
                     context, MaterialPageRoute(
-                      builder: (context) => const NavBar(),
+                      builder: (context) => NavBar(pass_usernameNav: usernameCtrl),
                     ),
                   );
                 },

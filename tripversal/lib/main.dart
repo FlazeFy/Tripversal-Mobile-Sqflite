@@ -2,7 +2,6 @@
 // Kelompok 4 - SE-43-03
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tripversal/bookGuideBody.dart';
 import 'package:tripversal/helpBody.dart';
 import 'package:tripversal/loginBody.dart';
 import 'package:tripversal/models/carModel.dart';
@@ -39,16 +38,19 @@ class MyApp extends StatelessWidget {
   }
 }
 class NavBar extends StatefulWidget {
-  const NavBar({Key key}) : super(key: key);
+  const NavBar({Key key, this.pass_usernameNav}) : super(key: key);
+  final String pass_usernameNav;
+  
   @override
   _NavBarState createState() => _NavBarState();
 }
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
+  static var _usernamePass;
 
   final List<Widget> _widgetOptions = <Widget>[
-    RentACarPage(),
+    RentACarPage(pass_username: _usernamePass),
     TourGuidePage(),
     MyResPage(),
   ];
@@ -80,15 +82,19 @@ class _NavBarState extends State<NavBar> {
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
+              _usernamePass = widget.pass_usernameNav;
             });
           },
+          
         ),
     );
   }
 }
 
 class RentACarPage extends StatefulWidget {
-  const RentACarPage({Key key}) : super(key: key);
+  const RentACarPage({Key key, this.pass_username}) : super(key: key);
+
+  final String pass_username;
 
   @override
 
@@ -141,7 +147,7 @@ class _RentACarPage extends State<RentACarPage> {
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Welcome, Rose Monde", 
+        title: Text("Welcome, ${widget.pass_username}", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.bold,
@@ -541,7 +547,7 @@ class _RentACarPage extends State<RentACarPage> {
                                               Navigator.push(
                                                 context,
                                                 PageRouteBuilder(
-                                                  pageBuilder: (c, a1, a2) => BookCarPage(),
+                                                  pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar),
                                                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                                     final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
                                                     final curvedAnimation = CurvedAnimation(
@@ -1017,7 +1023,8 @@ class AboutPage extends StatelessWidget {
   }
 }
 class TourGuidePage extends StatefulWidget {
-  const TourGuidePage({Key key}) : super(key: key);
+  const TourGuidePage({Key key, this.pass_idGuide}) : super(key: key);
+  final String pass_idGuide;
 
   @override
 
@@ -1510,7 +1517,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
-                                        pageBuilder: (c, a1, a2) => BookGuidePage(),
+                                        pageBuilder: (c, a1, a2) => BookGuidePage(pass_idGuide: _guideList[index].idGuide),
                                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                           final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
                                           final curvedAnimation = CurvedAnimation(
@@ -2499,7 +2506,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 class BookCarPage extends StatefulWidget {
-  const BookCarPage({Key key}) : super(key: key);
+  const BookCarPage({Key key, this.pass_idCar}) : super(key: key);
+
+  final int pass_idCar;
 
   @override
 
@@ -2524,22 +2533,24 @@ class _BookCarPage extends State<BookCarPage> {
     var cars = await _carServices.readCar();
 
     cars.forEach((car){
-      setState((){
-        var carModels = carModel();
-        carModels.idCar = car['id_car'];
-        carModels.plate = car['plate'];
-        carModels.type = car['type'];
-        carModels.carname = car['carname'];
-        carModels.location = car['location'];
-        carModels.price = car['price'];
-        carModels.rating = car['rating'];
-        carModels.driver = car['driver'];
-        carModels.seat = car['seat'];
-        carModels.tank = car['tank'];
-        carModels.distance = car['distance'];
-        carModels.desc = car['desc'];
-        _carList.add(carModels);
-      });
+      if(car['id_car'] == widget.pass_idCar){
+        setState((){
+          var carModels = carModel();
+          carModels.idCar = car['id_car'];
+          carModels.plate = car['plate'];
+          carModels.type = car['type'];
+          carModels.carname = car['carname'];
+          carModels.location = car['location'];
+          carModels.price = car['price'];
+          carModels.rating = car['rating'];
+          carModels.driver = car['driver'];
+          carModels.seat = car['seat'];
+          carModels.tank = car['tank'];
+          carModels.distance = car['distance'];
+          carModels.desc = car['desc'];
+          _carList.add(carModels);
+        });
+      }
     });
   }
   
@@ -2587,7 +2598,7 @@ class _BookCarPage extends State<BookCarPage> {
       body: ListView.builder(
         itemCount : _carList.length,
         itemBuilder: (context, index){
-          Container(
+            return Container(
             height: MediaQuery.of(context).size.height,
             transform: Matrix4.translationValues(0.0, 0.0, 0.0),
             child: Column(
@@ -2598,7 +2609,7 @@ class _BookCarPage extends State<BookCarPage> {
                   margin: const EdgeInsets.all(10),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10), 
-                    child: Image.asset('assets/images/citycar1.jpg'),
+                    child: Image.asset('assets/images/${_carList[index].plate}.jpg'),
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(80), 
@@ -2850,7 +2861,7 @@ class _BookCarPage extends State<BookCarPage> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
                                     child: Image.asset(
-                                      'assets/images/driver1.jpg', width: 40),
+                                      'assets/images/${_carList[index].driver}.jpg', width: 40),
                                     ),
                                 ),
                                 Expanded(                 
@@ -3124,6 +3135,8 @@ class _BookCarPage extends State<BookCarPage> {
               ]
             )
           );
+          
+          
         }
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -3153,8 +3166,51 @@ class _BookCarPage extends State<BookCarPage> {
     );
   }
 }
-class BookGuidePage extends StatelessWidget {
-  const BookGuidePage({Key key}) : super(key: key);
+
+class BookGuidePage extends StatefulWidget {
+  const BookGuidePage({Key key, this.pass_idGuide}) : super(key: key);
+
+  final int pass_idGuide;
+
+  @override
+
+  _BookGuidePage createState() => _BookGuidePage();
+}
+
+class _BookGuidePage extends State<BookGuidePage> {
+  //const _BookGuidePage({Key key}) : super(key: key);
+  var _guide = guideModel();
+  var _guideServices = guideServices();
+
+  List<guideModel> _guideList = <guideModel>[];
+  
+  @override
+  void initState(){
+    super.initState();
+    getAllGuideData();
+  }
+
+  getAllGuideData() async {
+    _guideList = <guideModel>[];
+    var guides = await _guideServices.readGuide();
+
+    guides.forEach((guide){
+      if(guide['id_guide'] == widget.pass_idGuide){
+      setState((){
+        var guideModels = guideModel();
+        guideModels.idGuide = guide['id_guide'];
+        guideModels.name = guide['name'];
+        guideModels.price = guide['price'];
+        guideModels.rating = guide['rating'];
+        guideModels.customer = guide['customer'];
+        guideModels.desc = guide['desc'];
+        guideModels.phone = guide['phone'];
+        guideModels.address = guide['address'];
+        guideModels.email = guide['email'];
+        _guideList.add(guideModels);
+      });
+    }});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -3197,8 +3253,484 @@ class BookGuidePage extends StatelessWidget {
       elevation: 0,
     ),
 
-      body: Center(
-        child: bookGuide()
+      body: ListView.builder(
+        itemCount : _guideList.length,
+        itemBuilder: (context, index){
+          return Container(
+          height: MediaQuery.of(context).size.height,
+          transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+          child: Column(
+            children: [
+              //Text.
+              Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                margin: const EdgeInsets.all(10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10), 
+                  child: Image.asset('assets/images/${_guideList[index].name}.jpg'),
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(80), 
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: Offset(0, 3)
+                    )
+                  ],
+                ),
+              ),
+              Row (
+                children: [
+                  Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          WidgetSpan(
+                            child: Icon(Icons.person, 
+                              size: 24,
+                              color: Color(0xFF4169E1),
+                            ),
+                          ),
+                          TextSpan(
+                            text: _guideList[index].name,
+                            style: TextStyle(
+                              color: Color(0xFF4169E1),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18
+                            )
+                          ),                              
+                        ],
+                      ),
+                    )
+                  ),
+                  Container(
+                    transform: Matrix4.translationValues(140.0, 0.0, 0.0),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          WidgetSpan(
+                            child: Icon(Icons.star, 
+                              size: 20,
+                              color: Color(0xFF4169E1),
+                            ),
+                          ),
+                          TextSpan(
+                            text: _guideList[index].rating.toString(),
+                            style: TextStyle(
+                              color: Color(0xFF4169E1),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            )
+                          ),                              
+                        ],
+                      ),
+                    )
+                  )
+                ]
+              ),
+              Container(
+                // flex: 5, //if expanded
+                margin: const EdgeInsets.symmetric(vertical: 5.0),
+                child: Row(
+                  children: [
+                    Container(
+                      // flex: 5, //if expanded
+                      alignment: Alignment.centerLeft,
+                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Rp.",
+                              style: TextStyle(
+                                color: Color(0xFF808080),
+                                fontSize: 21,
+                                fontWeight: FontWeight.w700,
+                              )
+                            ),
+                            TextSpan(
+                              text: " ${_guideList[index].price.toString()}",
+                              style: TextStyle(
+                                color: Color(0xFF4169E1),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              )
+                            ),
+                            TextSpan(
+                              text: " / 12 hr",
+                              style: TextStyle(
+                                color: Color(0xFF808080),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              )
+                            ),
+                          ],
+                        ),
+                      )
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(
+                height: 20,
+                thickness: 1,
+                indent: 15,
+                endIndent: 15,
+                color: Color.fromARGB(255, 185, 185, 185),
+              ),
+        
+              Flexible(            
+                child : SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: const Text(
+                            "Description", 
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15,
+                              color: Color(0xFF808080)
+                            ),
+                          ),
+                        )
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            _guideList[index].desc,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 145, 145, 145)
+                            ),
+                          ),
+                        )
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                          child: const Text(
+                            "Language", 
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15,
+                              color: Color(0xFF808080)
+                            ),
+                          ),
+                        )
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: Row (
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: RichText(
+                                text: const TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      child: Icon(Icons.message, 
+                                        size: 20,
+                                        color: Color(0xFF808080),
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "ID, EN, ES, FR",
+                                      style: TextStyle(
+                                        color: Color(0xFF808080),
+                                        fontSize: 16
+                                      )
+                                    ),                              
+                                  ],
+                                ),
+                              )
+                            ),
+                            Container(
+                              transform: Matrix4.translationValues(20.0, 0.0, 0.0),
+                              child: RichText(
+                                text: const TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      child: Icon(Icons.person, 
+                                        size: 20,
+                                        color: Color(0xFF808080),
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "40 Customer in 10 month",
+                                      style: TextStyle(
+                                        color: Color(0xFF808080),
+                                        fontSize: 16
+                                      )
+                                    ),                              
+                                  ],
+                                ),
+                              )
+                            ),
+                          ]
+                        ),  
+                      ),
+                      Column(
+                        children: <Widget>[
+                    
+                          ExpansionTile( //Collapse-Contact ===========================================
+                            leading: IconButton(
+                              iconSize: 30,
+                              icon: const Icon(Icons.contact_mail,
+                              color: Color(0xFF808080)),
+                              onPressed: () {},
+                            ),
+                            title: const Text(
+                              "Contact",
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w800
+                              ),
+                            ),
+                            children: <Widget>[                     
+                              SingleChildScrollView(               
+                                scrollDirection: Axis.vertical,
+                                child: Column(
+                                  children: <Widget>[
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              WidgetSpan(
+                                                child: Icon(Icons.call, 
+                                                  size: 20,
+                                                  color: Color(0xFF808080),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: "+62 ${_guideList[index].phone}",
+                                                style: TextStyle(
+                                                  color: Color(0xFF808080),
+                                                  fontSize: 15
+                                                )
+                                              ),                              
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              WidgetSpan(
+                                                child: Icon(Icons.location_on, 
+                                                  size: 20,
+                                                  color: Color(0xFF808080),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: _guideList[index].address,
+                                                style: TextStyle(
+                                                  color: Color(0xFF808080),
+                                                  fontSize: 15
+                                                )
+                                              ),                              
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              WidgetSpan(
+                                                child: Icon(Icons.email, 
+                                                  size: 20,
+                                                  color: Color(0xFF808080),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: " ${_guideList[index].email}",
+                                                style: TextStyle(
+                                                  color: Color(0xFF808080),
+                                                  fontSize: 15
+                                                )
+                                              ),                              
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(margin: const EdgeInsets.symmetric(vertical: 10.0))
+
+                                  ]
+                                )
+                              )   
+                              
+                            ],
+                          ),
+
+                          ExpansionTile( //Collapse-review ===========================================
+                            leading: IconButton(
+                              iconSize: 30,
+                              icon: const Icon(Icons.reviews,
+                              color: Color(0xFF808080)),
+                              onPressed: () {},
+                            ),
+                            title: const Text(
+                              "Review",
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w800
+                              ),
+                            ),
+                            children: <Widget>[                     
+                              SingleChildScrollView(               
+                                scrollDirection: Axis.vertical,
+                                child: Column(
+                                  children: <Widget>[
+                                      
+                                    Card( //item-1 -----------------------------------------
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child:Flexible(
+                                        
+                                        
+                                        child: Row(
+                                          children: [  
+                                            Expanded(
+                                              child:Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                      child: RichText(
+                                                        text: const TextSpan(
+                                                          children: [
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
+                                                            ),
+                                                          ),
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
+                                                            ),
+                                                          ),
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
+                                                            ),
+                                                          ),
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
+                                                            ),
+                                                          ),
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
+                                                            ),
+                                                          ),
+                          
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ),
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                      child: RichText(
+                                                        text: const TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: "The translator is very kind and friendly. He is also very familiar with tourist sites in Bandung.",
+                                                              style: TextStyle(
+                                                                color: Color.fromARGB(255, 77, 77, 77),
+                                                                fontSize: 16
+                                                              )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ),
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                      child: RichText(
+                                                        text: const TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: "~Richard Kyle on 19/1/22",
+                                                              style: TextStyle(
+                                                                color: Color(0xFF808080),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontStyle: FontStyle.italic,
+                                                                fontSize: 13
+                                                              )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              flex:8 ,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      elevation: 8,
+                                      margin: const EdgeInsets.all(10),
+                                    ),
+
+
+                                  ]
+                                )
+                              )   
+                              
+                            ],
+                          ),
+
+                        ]
+                      ),
+                      const SizedBox(
+                        height: 60,
+                      ),
+                    ]
+                  ),
+                )
+              )
+          
+            ]
+          )
+        );
+        }
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -3227,6 +3759,7 @@ class BookGuidePage extends StatelessWidget {
     );
   }
 }
+
 class OrderPage extends StatelessWidget {
   const OrderPage({Key key}) : super(key: key);
 

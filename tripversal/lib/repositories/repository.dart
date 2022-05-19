@@ -49,11 +49,11 @@ class Repository{
     return await connection.rawQuery('SELECT * FROM ongoing WHERE id_user=?', ['1']);
   }
 
-  readCarDataById(table) async{
-    var connection = await database;
-    // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM car WHERE id_car=?', ['']);
-  }
+  // readCarDataById(table) async{
+  //   var connection = await database;
+  //   // return await connection.query(table);
+  //   return await connection.rawQuery('SELECT * FROM car WHERE id_car=?', ['1']);
+  // }
 
   //New.
   checkData(table, data) async{
