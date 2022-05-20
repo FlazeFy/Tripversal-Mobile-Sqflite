@@ -25,7 +25,7 @@ class Repository{
   readData(table) async{
     var connection = await database;
     // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM user WHERE id_user=?', ['1']);
+    return await connection.rawQuery('SELECT * FROM user');
   }
   readCarData(table) async{
     var connection = await database;
@@ -55,10 +55,8 @@ class Repository{
   //   return await connection.rawQuery('SELECT * FROM car WHERE id_car=?', ['1']);
   // }
 
-  //New.
   checkData(table, data) async{
     var connection = await database;
-    connection.rawQuery('SELECT * FROM user WHERE fullname=? AND password=?', data);
-
+    return await connection.rawQuery('SELECT id_user FROM user WHERE fullname=? AND password=?', [data['fullname'], data['password']]);
   }
 }

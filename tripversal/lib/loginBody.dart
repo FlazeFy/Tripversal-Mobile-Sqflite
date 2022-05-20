@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tripversal/main.dart';
+import 'package:tripversal/models/userModel.dart';
+import 'package:tripversal/services/userServices.dart';
 
 class Login extends StatelessWidget {
-  var usernameCtrl;
+  var usernameCtrl = TextEditingController();
+  var passwordCtrl = TextEditingController();
 
-  Login({Key key, this.usernameCtrl}) : super(key: key);
+  var _user = userModel();
+  var _userservices = userServices();
+
+  Login({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +92,9 @@ class Login extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 25.0),
                 height: 35,
-                child: const TextField(
+                child: TextField(
                   obscureText: true,
-                  // controller: passwordCtrl,
+                  controller: passwordCtrl,
                   decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -102,9 +108,11 @@ class Login extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
+                  _user.fullname = usernameCtrl.text;
+
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ForgetPage()),
+                    MaterialPageRoute(builder: (context) => ForgetPage(pass_usernameNav: _user.fullname)),
                   );
                 },
                 child: const Text('Forgot Password',
@@ -125,14 +133,23 @@ class Login extends StatelessWidget {
               child: ElevatedButton(
                 
                 child: const Text('Login'),
-                onPressed: () {
-                  // print(nameController.text);
-                  // print(passwordController.text);
-                  Navigator.push(
-                    context, MaterialPageRoute(
-                      builder: (context) => NavBar(pass_usernameNav: usernameCtrl),
-                    ),
-                  );
+                onPressed: () async{
+                  _user.fullname = usernameCtrl.text;
+                  _user.password = passwordCtrl.text;
+
+                  if((_user.fullname.isNotEmpty)&&(_user.password.isNotEmpty)){
+                    var result = await _userservices.loginAccount(_user);
+                    print(result);
+                    if(result.toString() != '[]'){
+                      Navigator.push(
+                        context, MaterialPageRoute(
+                          builder: (context) => NavBar(pass_usernameNav: _user.fullname),
+                        ),
+                      );
+                    }
+                  } else {
+                    print('Fullname and password must not empty');
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF4169E1)),
@@ -154,7 +171,7 @@ class Login extends StatelessWidget {
                  onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const CreateAccPage()),
+                      MaterialPageRoute(builder: (context) => CreateAccPage()),
                     );
                   },
                 )

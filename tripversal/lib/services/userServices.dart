@@ -18,6 +18,6 @@ class userServices{
 
   //New.
   loginAccount(userModel user) async{
-    return await _repository.checkData('user', user.loginuserMap());
+    return await _repository.checkData('user', user.userMap());
   }
 }

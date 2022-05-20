@@ -49,13 +49,14 @@ class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
   static var _usernamePass;
 
-  final List<Widget> _widgetOptions = <Widget>[
-    RentACarPage(pass_username: _usernamePass),
-    TourGuidePage(),
-    MyResPage(),
-  ];
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _widgetOptions = <Widget>[
+      RentACarPage(pass_username: widget.pass_usernameNav),
+      TourGuidePage(pass_username: widget.pass_usernameNav),
+      MyResPage(pass_username: widget.pass_usernameNav),
+    ];
+  
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
@@ -82,7 +83,6 @@ class _NavBarState extends State<NavBar> {
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
-              _usernamePass = widget.pass_usernameNav;
             });
           },
           
@@ -162,7 +162,7 @@ class _RentACarPage extends State<RentACarPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AccountPage()),
+              MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
             );
           },
         )
@@ -605,7 +605,8 @@ class _RentACarPage extends State<RentACarPage> {
   }
 }
 class AccountPage extends StatefulWidget {
-  const AccountPage({Key key}) : super(key: key);
+  const AccountPage({Key key, this.pass_username}) : super(key: key);
+  final String pass_username;
 
   @override
 
@@ -630,6 +631,7 @@ class _AccountPage extends State<AccountPage> {
     var users = await _userServices.readUser();
 
     users.forEach((user){
+      if(user['fullname'] == widget.pass_username){
       setState((){
         var userModels = userModel();
         userModels.fullname = user['fullname'];
@@ -639,7 +641,7 @@ class _AccountPage extends State<AccountPage> {
         userModels.phone = user['phone'];
         _userList.add(userModels);
       });
-    });
+    }});
   }
 
   @override
@@ -1023,8 +1025,8 @@ class AboutPage extends StatelessWidget {
   }
 }
 class TourGuidePage extends StatefulWidget {
-  const TourGuidePage({Key key, this.pass_idGuide}) : super(key: key);
-  final String pass_idGuide;
+  const TourGuidePage({Key key, this.pass_username}) : super(key: key);
+  final String pass_username;
 
   @override
 
@@ -1074,7 +1076,7 @@ class _TourGuidePage extends State<TourGuidePage> {
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Welcome, Rose Monde", 
+        title: Text("Welcome, ${widget.pass_username}", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.bold,
@@ -1089,7 +1091,7 @@ class _TourGuidePage extends State<TourGuidePage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AccountPage()),
+              MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
             );
           },
         )
@@ -1567,7 +1569,8 @@ class _TourGuidePage extends State<TourGuidePage> {
   }
 }
 class MyResPage extends StatefulWidget {
-  const MyResPage({Key key}) : super(key: key);
+  const MyResPage({Key key, this.pass_username}) : super(key: key);
+  final String pass_username;
 
   @override
 
@@ -1643,7 +1646,7 @@ class _MyResPage extends State<MyResPage> {
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Welcome, Rose Monde", 
+        title: Text("Welcome, ${widget.pass_username}", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.bold,
@@ -1658,7 +1661,7 @@ class _MyResPage extends State<MyResPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AccountPage()),
+              MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
             );
           },
         )
@@ -3930,9 +3933,15 @@ class CreateAccPage extends StatelessWidget {
     );
   }
 }
+class ForgetPage extends StatefulWidget {
+  const ForgetPage({Key key, this.pass_usernameNav}) : super(key: key);
+  final String pass_usernameNav;
 
-class ForgetPage extends StatelessWidget {
-  const ForgetPage({Key key}) : super(key: key);
+  @override
+
+  _ForgetPage createState() => _ForgetPage();
+}
+class _ForgetPage extends State<ForgetPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -3950,7 +3959,138 @@ class ForgetPage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: Center(
-        child: forgetPass()
+        child: Container(
+          transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+          child: Flexible(
+            child : SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  //Text.
+                  SizedBox(
+                    width: 250,
+                    child: Image.asset('assets/images/forgotpass.gif'),
+                  ),
+
+                  //Full name section.
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: const Text(
+                        "Fullname", 
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Color(0xFF808080)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                      height: 35,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                          ),
+                      
+                          hintText: widget.pass_usernameNav,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //Email section.
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: const Text(
+                        "Email", 
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Color(0xFF808080)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
+                      height: 35,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                          ),
+                      
+                          hintText: '',
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width* 0.9,
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      color: Colors.lightGreen.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(10), 
+                    ),  
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                          child: const Icon(
+                            Icons.info,
+                            color: Colors.lightGreen,
+                            size: 30.0,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width* 0.65,
+                            margin: const EdgeInsets.symmetric(vertical: 5.0),
+                            child: const Text(
+                              "Password must have min 8 character, Have 1 capital and 1 number.", 
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13,
+                                color: Color(0xFF212121)
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]
+                    ),
+                  ),
+                  //End of text entry section.
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: ElevatedButton(
+                  
+                      child: const Text('Submit'),
+                      onPressed: () {
+                        
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                      ),
+                    )
+                  ),
+
+                ]
+              )
+            )
+          )
+        ),
       ),
     );
   }

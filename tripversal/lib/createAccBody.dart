@@ -284,25 +284,26 @@ class CreateAcc extends StatelessWidget {
                   alignment: Alignment.bottomRight,
                   child: ElevatedButton.icon(
                     onPressed: () async{
-                        //coba
-                        _user.fullname = _fullnameCtrl.text;
-                        _user.idCard = _idCardCtrl.text;
-                        _user.password = _passwordCtrl.text;
-                        _user.email = _emailCtrl.text;
-                        _user.phone = _phoneCtrl.text;
+                      //coba
+                      _user.fullname = _fullnameCtrl.text;
+                      _user.idCard = _idCardCtrl.text;
+                      _user.password = _passwordCtrl.text;
+                      _user.email = _emailCtrl.text;
+                      _user.phone = _phoneCtrl.text;
 
-                        //_userservices.createAccount(_user);
-                        //ERROR!!! User still can create account with no data
+                      //_userservices.createAccount(_user);
+                      //ERROR!!! User still can create account with no data
+                      
+                      if((_user.fullname.isNotEmpty)&&(_user.fullname.length < 20)&&(_user.password.length > 6)&&(_user.email.isNotEmpty)&&(_user.phone.length > 9)){
                         var result = await _userservices.createAccount(_user);
                         print(result);
-                        if(result != null){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => NavBar()),
-                          );
-                        } else {
-
-                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NavBar(pass_usernameNav: _user.fullname)),
+                        );
+                      } else {
+                        print('Create Account Failed');
+                      }
                     },
                     icon: const Icon(Icons.save, size: 20),
                     label: const Text("Next"),
