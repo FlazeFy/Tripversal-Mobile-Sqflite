@@ -59,4 +59,9 @@ class Repository{
     var connection = await database;
     return await connection.rawQuery('SELECT id_user FROM user WHERE fullname=? AND password=?', [data['fullname'], data['password']]);
   }
+
+  readReviewCar(table) async{
+    var connection = await database;
+    return await connection.rawQuery('SELECT review.id_review, review.id_user, user.fullname, review.id_car_guide, review.type, review.comment, review.rating, dateReview FROM review JOIN car ON review.id_car_guide = car.id_car JOIN user ON review.id_user = user.id_user');
+  }
 }

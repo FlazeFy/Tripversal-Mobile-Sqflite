@@ -8,6 +8,7 @@ import 'package:tripversal/models/carModel.dart';
 import 'package:tripversal/models/guideModel.dart';
 import 'package:tripversal/models/onGoingModel.dart';
 import 'package:tripversal/models/resvModel.dart';
+import 'package:tripversal/models/reviewModel.dart';
 import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/orderBody.dart';
 import 'package:tripversal/paymentBody.dart';
@@ -104,6 +105,7 @@ class RentACarPage extends StatefulWidget {
 class _RentACarPage extends State<RentACarPage> {
   var _car = carModel();
   var _carServices = carServices();
+  var categorySearch = 'null';
 
   List<carModel> _carList = <carModel>[];
   
@@ -307,17 +309,8 @@ class _RentACarPage extends State<RentACarPage> {
                           margin: const EdgeInsets.only(right: 10.0),
                           child: OutlinedButton.icon(
                             onPressed: () {
-                                //Respond
-                            },
-                            icon: Icon(Icons.motorcycle, size: 30),
-                            label: Text("Motorcycle")
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 10.0),
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                                //Respond
+                              categorySearch = 'City Car';
+                              setState(() {});
                             },
                             icon: Icon(Icons.motorcycle, size: 30),
                             label: Text("City Car")
@@ -327,7 +320,8 @@ class _RentACarPage extends State<RentACarPage> {
                           margin: const EdgeInsets.only(right: 10.0),
                           child: OutlinedButton.icon(
                             onPressed: () {
-                                //Respond
+                              categorySearch = 'Minibus';
+                              setState(() {});
                             },
                             icon: Icon(Icons.airport_shuttle, size: 30),
                             label: Text("Minibus")
@@ -337,10 +331,11 @@ class _RentACarPage extends State<RentACarPage> {
                           margin: const EdgeInsets.only(right: 10.0),
                           child: OutlinedButton.icon(
                             onPressed: () {
-                                //Respond
+                              categorySearch = 'Other';
+                              setState(() {});
                             },
                             icon: Icon(Icons.motorcycle, size: 30),
-                            label: Text("Bus")
+                            label: Text("Other")
                           ),
                         ),
                       ]
@@ -363,145 +358,180 @@ class _RentACarPage extends State<RentACarPage> {
                   child: ListView.builder(
                     itemCount : _carList.length,
                     itemBuilder: (context, index){
-
-                      return Card(
-                        child:Container(
-                          height: 140,
-                          child: Row(
-                            children: [
-                              Center(
-                                child:Container(
-                                  padding: EdgeInsets.all(10),
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                        child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
-                                        flex:2 ,
-                                      ),
-                                    
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Container(
-                                          transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                                          
-                                          //Left section.
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "Driver", 
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 14,
-                                                  color: Color(0xFF4169E1)
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                                child: Text(
-                                                  _carList[index].driver, 
+                      if(categorySearch == 'null'){
+                        return Card(
+                          child:Container(
+                            height: 140,
+                            child: Row(
+                              children: [
+                                Center(
+                                  child:Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10), 
+                                            child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
+                                          ),
+                                          flex:2 ,
+                                        ),
+                                      
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Container(
+                                            transform: Matrix4.translationValues(0.0, 5.0, 0.0),
+                                            
+                                            //Left section.
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Driver", 
                                                   style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 13,
-                                                    color: Color(0xFF808080)
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 14,
+                                                    color: Color(0xFF4169E1)
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                                  child: Text(
+                                                    _carList[index].driver, 
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13,
+                                                      color: Color(0xFF808080)
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
 
-                                          )
+                                            )
+                                          ),
                                         ),
-                                      ),
 
-                                    ]
+                                      ]
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child:Container(
-                                  alignment: Alignment.topLeft,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        // flex: 5, //if expanded
-                                        margin: EdgeInsets.symmetric(vertical: 5.0),
-                                        alignment: Alignment.topLeft,
-                                        child: RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              WidgetSpan(
-                                                child: Icon(Icons.car_rental,   
-                                                  size: 20,
-                                                  color: Color(0xFF4169E1),
+                                Expanded(
+                                  child:Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.car_rental,   
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
                                                 ),
-                                              ),
-                                              TextSpan(
-                                                text: _carList[index].carname, 
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w700,
-                                                )
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ),
-                                      Container(
-                                        // flex: 5, //if expanded
-                                        alignment: Alignment.topLeft,
-                                        child: RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              WidgetSpan(
-                                                child: Icon(Icons.location_on, 
-                                                  size: 20,
-                                                  color: Color(0xFF4169E1),
+                                                TextSpan(
+                                                  text: _carList[index].carname, 
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
                                                 ),
-                                              ),
-                                              TextSpan(
-                                                text: _carList[index].location, 
-                                                style: TextStyle(
-                                                  color: Color(0xFF808080),
-                                                  fontWeight: FontWeight.w700,
-                                                )
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.location_on, 
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: _carList[index].location, 
+                                                  style: TextStyle(
+                                                    color: Color(0xFF808080),
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
 
-                                      Container(
-                                        // flex: 5, //if expanded
-                                        margin: EdgeInsets.symmetric(vertical: 5.0),
-                                        child: Row(
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                // flex: 5, //if expanded
+                                                alignment: Alignment.topLeft,
+                                                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Rp. ",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontSize: 21,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: _carList[index].price.toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: " / Day",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
                                             Container(
                                               // flex: 5, //if expanded
                                               alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
                                               child: RichText(
                                                 text: TextSpan(
                                                   children: [
-                                                    TextSpan(
-                                                      text: "Rp. ",
-                                                      style: TextStyle(
-                                                        color: Color(0xFF808080),
-                                                        fontSize: 21,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
+                                                    WidgetSpan(
+                                                      child: Icon(Icons.star, 
+                                                        size: 20,
+                                                        color: Color(0xFF4169E1),
+                                                      ),
                                                     ),
                                                     TextSpan(
-                                                      text: _carList[index].price.toString(),
+                                                      text: _carList[index].rating.toString(), 
                                                       style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                    TextSpan(
-                                                      text: " / Day",
-                                                      style: TextStyle(
-                                                        color: Color(0xFF808080),
+                                                        color: Color(0xFF4169E1),
                                                         fontSize: 18,
                                                         fontWeight: FontWeight.w700,
                                                       )
@@ -510,88 +540,754 @@ class _RentACarPage extends State<RentACarPage> {
                                                 ),
                                               )
                                             ),
-                                          ],
-                                        ),
-                                      ),
+                                            ElevatedButton.icon(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
+                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                                      final curvedAnimation = CurvedAnimation(
+                                                        parent: animation,
+                                                        curve: Curves.ease,
+                                                      );
 
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            // flex: 5, //if expanded
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  WidgetSpan(
-                                                    child: Icon(Icons.star, 
-                                                      size: 20,
-                                                      color: Color(0xFF4169E1),
+                                                      return SlideTransition(
+                                                        position: tween.animate(curvedAnimation),
+                                                        child: child,
+                                                      );
+                                                    }
+                                                  ),
+                                                );
+                                              },
+                                              icon: Icon(Icons.book, size: 18),
+                                              label: Text("Book now"),
+                                              style: ButtonStyle(
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                              ),
+                                            ),
+                                            SizedBox(width: 8,),
+                                          ],
+                                        )
+
+                                      ],
+                                    ),
+                                  ),
+                                  flex:8 ,
+                                ),
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                          ),
+                          elevation: 6,
+                          margin: EdgeInsets.all(6),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ); 
+                        //End of card.
+                      } else if((categorySearch == 'City Car')&&(_carList[index].type == 'City Car')){
+                        return Card(
+                          child:Container(
+                            height: 140,
+                            child: Row(
+                              children: [
+                                Center(
+                                  child:Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10), 
+                                            child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
+                                          ),
+                                          flex:2 ,
+                                        ),
+                                      
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Container(
+                                            transform: Matrix4.translationValues(0.0, 5.0, 0.0),
+                                            
+                                            //Left section.
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Driver", 
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 14,
+                                                    color: Color(0xFF4169E1)
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                                  child: Text(
+                                                    _carList[index].driver, 
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13,
+                                                      color: Color(0xFF808080)
                                                     ),
                                                   ),
-                                                  TextSpan(
-                                                    text: _carList[index].rating.toString(), 
-                                                    style: TextStyle(
-                                                      color: Color(0xFF4169E1),
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w700,
-                                                    )
-                                                  ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
+
                                             )
                                           ),
-                                          ElevatedButton.icon(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                PageRouteBuilder(
-                                                  pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar),
-                                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                    final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
-                                                    final curvedAnimation = CurvedAnimation(
-                                                      parent: animation,
-                                                      curve: Curves.ease,
-                                                    );
+                                        ),
 
-                                                    return SlideTransition(
-                                                      position: tween.animate(curvedAnimation),
-                                                      child: child,
-                                                    );
-                                                  }
-                                                ),
-                                              );
-                                            },
-                                            icon: Icon(Icons.book, size: 18),
-                                            label: Text("Book now"),
-                                            style: ButtonStyle(
-                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                            ),
-                                          ),
-                                          SizedBox(width: 8,),
-                                        ],
-                                      )
-
-                                    ],
+                                      ]
+                                    ),
                                   ),
                                 ),
-                                flex:8 ,
-                              ),
-                            ],
+                                Expanded(
+                                  child:Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.car_rental,   
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: _carList[index].carname, 
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.location_on, 
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: _carList[index].location, 
+                                                  style: TextStyle(
+                                                    color: Color(0xFF808080),
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                // flex: 5, //if expanded
+                                                alignment: Alignment.topLeft,
+                                                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Rp. ",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontSize: 21,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: _carList[index].price.toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: " / Day",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              // flex: 5, //if expanded
+                                              alignment: Alignment.topLeft,
+                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    WidgetSpan(
+                                                      child: Icon(Icons.star, 
+                                                        size: 20,
+                                                        color: Color(0xFF4169E1),
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: _carList[index].rating.toString(), 
+                                                      style: TextStyle(
+                                                        color: Color(0xFF4169E1),
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.w700,
+                                                      )
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ),
+                                            ElevatedButton.icon(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
+                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                                      final curvedAnimation = CurvedAnimation(
+                                                        parent: animation,
+                                                        curve: Curves.ease,
+                                                      );
+
+                                                      return SlideTransition(
+                                                        position: tween.animate(curvedAnimation),
+                                                        child: child,
+                                                      );
+                                                    }
+                                                  ),
+                                                );
+                                              },
+                                              icon: Icon(Icons.book, size: 18),
+                                              label: Text("Book now"),
+                                              style: ButtonStyle(
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                              ),
+                                            ),
+                                            SizedBox(width: 8,),
+                                          ],
+                                        )
+
+                                      ],
+                                    ),
+                                  ),
+                                  flex:8 ,
+                                ),
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
                           ),
-                          decoration: BoxDecoration(
+                          elevation: 6,
+                          margin: EdgeInsets.all(6),
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
                           ),
-                        ),
-                        elevation: 6,
-                        margin: EdgeInsets.all(6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ); 
-                      //End of card.
+                        ); 
+                        //End of card.
+                      } else if((categorySearch == 'Minibus')&&(_carList[index].type == 'Minibus')){
+                        return Card(
+                          child:Container(
+                            height: 140,
+                            child: Row(
+                              children: [
+                                Center(
+                                  child:Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10), 
+                                            child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
+                                          ),
+                                          flex:2 ,
+                                        ),
+                                      
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Container(
+                                            transform: Matrix4.translationValues(0.0, 5.0, 0.0),
+                                            
+                                            //Left section.
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Driver", 
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 14,
+                                                    color: Color(0xFF4169E1)
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                                  child: Text(
+                                                    _carList[index].driver, 
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13,
+                                                      color: Color(0xFF808080)
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+
+                                            )
+                                          ),
+                                        ),
+
+                                      ]
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child:Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.car_rental,   
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: _carList[index].carname, 
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.location_on, 
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: _carList[index].location, 
+                                                  style: TextStyle(
+                                                    color: Color(0xFF808080),
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                // flex: 5, //if expanded
+                                                alignment: Alignment.topLeft,
+                                                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Rp. ",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontSize: 21,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: _carList[index].price.toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: " / Day",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              // flex: 5, //if expanded
+                                              alignment: Alignment.topLeft,
+                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    WidgetSpan(
+                                                      child: Icon(Icons.star, 
+                                                        size: 20,
+                                                        color: Color(0xFF4169E1),
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: _carList[index].rating.toString(), 
+                                                      style: TextStyle(
+                                                        color: Color(0xFF4169E1),
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.w700,
+                                                      )
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ),
+                                            ElevatedButton.icon(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
+                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                                      final curvedAnimation = CurvedAnimation(
+                                                        parent: animation,
+                                                        curve: Curves.ease,
+                                                      );
+
+                                                      return SlideTransition(
+                                                        position: tween.animate(curvedAnimation),
+                                                        child: child,
+                                                      );
+                                                    }
+                                                  ),
+                                                );
+                                              },
+                                              icon: Icon(Icons.book, size: 18),
+                                              label: Text("Book now"),
+                                              style: ButtonStyle(
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                              ),
+                                            ),
+                                            SizedBox(width: 8,),
+                                          ],
+                                        )
+
+                                      ],
+                                    ),
+                                  ),
+                                  flex:8 ,
+                                ),
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                          ),
+                          elevation: 6,
+                          margin: EdgeInsets.all(6),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ); 
+                        //End of card.
+                      }else if((categorySearch == 'Other')&&(_carList[index].type == 'Other')){
+                        return Card(
+                          child:Container(
+                            height: 140,
+                            child: Row(
+                              children: [
+                                Center(
+                                  child:Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10), 
+                                            child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
+                                          ),
+                                          flex:2 ,
+                                        ),
+                                      
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Container(
+                                            transform: Matrix4.translationValues(0.0, 5.0, 0.0),
+                                            
+                                            //Left section.
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Driver", 
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 14,
+                                                    color: Color(0xFF4169E1)
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                                  child: Text(
+                                                    _carList[index].driver, 
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13,
+                                                      color: Color(0xFF808080)
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+
+                                            )
+                                          ),
+                                        ),
+
+                                      ]
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child:Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.car_rental,   
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: _carList[index].carname, 
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(Icons.location_on, 
+                                                    size: 20,
+                                                    color: Color(0xFF4169E1),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: _carList[index].location, 
+                                                  style: TextStyle(
+                                                    color: Color(0xFF808080),
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                // flex: 5, //if expanded
+                                                alignment: Alignment.topLeft,
+                                                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Rp. ",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontSize: 21,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: _carList[index].price.toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: " / Day",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w700,
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              // flex: 5, //if expanded
+                                              alignment: Alignment.topLeft,
+                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    WidgetSpan(
+                                                      child: Icon(Icons.star, 
+                                                        size: 20,
+                                                        color: Color(0xFF4169E1),
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: _carList[index].rating.toString(), 
+                                                      style: TextStyle(
+                                                        color: Color(0xFF4169E1),
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.w700,
+                                                      )
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ),
+                                            ElevatedButton.icon(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
+                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                                      final curvedAnimation = CurvedAnimation(
+                                                        parent: animation,
+                                                        curve: Curves.ease,
+                                                      );
+
+                                                      return SlideTransition(
+                                                        position: tween.animate(curvedAnimation),
+                                                        child: child,
+                                                      );
+                                                    }
+                                                  ),
+                                                );
+                                              },
+                                              icon: Icon(Icons.book, size: 18),
+                                              label: Text("Book now"),
+                                              style: ButtonStyle(
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                              ),
+                                            ),
+                                            SizedBox(width: 8,),
+                                          ],
+                                        )
+
+                                      ],
+                                    ),
+                                  ),
+                                  flex:8 ,
+                                ),
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                          ),
+                          elevation: 6,
+                          margin: EdgeInsets.all(6),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ); 
+                        //End of card.
+                      }
+                      print(categorySearch);
                   }
                 //End of item list.
                 )
@@ -2509,9 +3205,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 class BookCarPage extends StatefulWidget {
-  const BookCarPage({Key key, this.pass_idCar}) : super(key: key);
+  const BookCarPage({Key key, this.pass_idCar, this.pass_fullname}) : super(key: key);
 
   final int pass_idCar;
+  final String pass_fullname;
 
   @override
 
@@ -2521,14 +3218,17 @@ class BookCarPage extends StatefulWidget {
 class _BookCarPage extends State<BookCarPage> {
   /*const _BookCarPage({Key key}) : super(key: key);*/
   var _car = carModel();
+  var _review = reviewModel();
   var _carServices = carServices();
 
   List<carModel> _carList = <carModel>[];
+  List<reviewModel> _reviewList = <reviewModel>[];
   
   @override
   void initState(){
     super.initState();
     getAllCarData();
+    getAllCarReview();
   }
 
   getAllCarData() async {
@@ -2556,6 +3256,33 @@ class _BookCarPage extends State<BookCarPage> {
       }
     });
   }
+
+  getAllCarReview() async {
+    _reviewList = <reviewModel>[];
+    var review = await _carServices.readCarwReview();
+
+    review.forEach((review){
+      if(review['id_car_guide'] == widget.pass_idCar){
+        setState((){
+          var reviewModels = reviewModel();
+          reviewModels.idReview = review['id_review'];
+          reviewModels.idUser = review['id_user'];
+          if(review['fullname'] == widget.pass_fullname){
+            reviewModels.fullname = 'You';
+          } else {
+            reviewModels.fullname = review['fullname'];
+          }     
+          reviewModels.idCarGuide = review['id_car_guide'];
+          reviewModels.type = review['type'];
+          reviewModels.comment = review['comment'];
+          reviewModels.rating = review['rating'];
+          reviewModels.dateReview= DateTime.tryParse(review['dateReview']);
+          
+          _reviewList.add(reviewModels);
+        });
+      }
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -2576,6 +3303,13 @@ class _BookCarPage extends State<BookCarPage> {
       ),
       
       actions: [
+        IconButton(
+          icon: Icon(Icons.map, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            //gmaps
+          },
+        ),
         IconButton(
           onPressed: () {
             // Respond to button press
@@ -2984,6 +3718,22 @@ class _BookCarPage extends State<BookCarPage> {
                                           ),
                                         ),
                                       ),
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: ElevatedButton.icon(
+                                            onPressed: () {
+                                              //MessagePage
+                                            },
+                                            icon: Icon(Icons.chat, size: 18),
+                                            label: Text("Chat Now"),
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                       Container(margin: const EdgeInsets.symmetric(vertical: 10.0))
 
                                     ]
@@ -3007,123 +3757,121 @@ class _BookCarPage extends State<BookCarPage> {
                                   fontWeight: FontWeight.w800
                                 ),
                               ),
-                              children: <Widget>[                     
-                                SingleChildScrollView(               
-                                  scrollDirection: Axis.vertical,
-                                  child: Column(
-                                    children: <Widget>[
-                                        
-                                      Card( //item-1 -----------------------------------------
-                                        shape: RoundedRectangleBorder(
-                                          side: const BorderSide(color: Colors.white),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child:Flexible(
-                                          child: Row(
-                                            children: [  
-                                              Expanded(
-                                                child:Container(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                        child: RichText(
-                                                          text: const TextSpan(
-                                                            children: [
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                            
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                        child: RichText(
-                                                          text: const TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text: "This car is well maintained by the owner, have a clean interior, and experienced driver",
-                                                                style: TextStyle(
-                                                                  color: Color.fromARGB(255, 77, 77, 77),
-                                                                  fontWeight: FontWeight.w500,
-                                                                  fontSize: 16
-                                                                )
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                        child: RichText(
-                                                          text: const TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text: "~Richard Kyle on 19/1/22",
-                                                                style: TextStyle(
-                                                                  color: Color(0xFF808080),
-                                                                  fontWeight: FontWeight.w500,
-                                                                  fontStyle: FontStyle.italic,
-                                                                  fontSize: 13
-                                                                )
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                flex:8 ,
-                                              ),
-                                            ],
+                              children: [
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height*0.5,
+                                  child: ListView.builder(
+                                    itemCount : _reviewList.length,
+                                    itemBuilder: (context, index){
+                                            
+                                      return Card( //item-1 -----------------------------------------
+                                          shape: RoundedRectangleBorder(
+                                            side: const BorderSide(color: Colors.white),
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
-                                        ),
-                                        elevation: 8,
-                                        margin: const EdgeInsets.all(10),
-                                      ),
-
-
-                                    ]
-                                  )
-                                )   
+                                          child:Flexible(
+                                            child: Row(
+                                              children: [  
+                                                Expanded(
+                                                  child:Container(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          alignment: Alignment.topLeft,
+                                                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                          child: RichText(
+                                                            text: const TextSpan(
+                                                              children: [
+                                                              WidgetSpan(
+                                                                child: Icon(Icons.star, 
+                                                                  size: 20,
+                                                                  color: Color(0xFF4169E1),
+                                                                ),
+                                                              ),
+                                                              WidgetSpan(
+                                                                child: Icon(Icons.star, 
+                                                                  size: 20,
+                                                                  color: Color(0xFF4169E1),
+                                                                ),
+                                                              ),
+                                                              WidgetSpan(
+                                                                child: Icon(Icons.star, 
+                                                                  size: 20,
+                                                                  color: Color(0xFF4169E1),
+                                                                ),
+                                                              ),
+                                                              WidgetSpan(
+                                                                child: Icon(Icons.star, 
+                                                                  size: 20,
+                                                                  color: Color(0xFF4169E1),
+                                                                ),
+                                                              ),
+                                                              WidgetSpan(
+                                                                child: Icon(Icons.star, 
+                                                                  size: 20,
+                                                                  color: Color(0xFF4169E1),
+                                                                ),
+                                                              ),
                                 
-                              ],
-                            ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ),
+                                                        Container(
+                                                          alignment: Alignment.topLeft,
+                                                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: _reviewList[index].comment,
+                                                                  style: TextStyle(
+                                                                    color: Color.fromARGB(255, 77, 77, 77),
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontSize: 16
+                                                                  )
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ),
+                                                        Container(
+                                                          alignment: Alignment.topLeft,
+                                                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: "~${_reviewList[index].fullname} on ${_reviewList[index].dateReview}",
+                                                                  style: TextStyle(
+                                                                    color: Color(0xFF808080),
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontStyle: FontStyle.italic,
+                                                                    fontSize: 13
+                                                                  )
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  flex:8 ,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          elevation: 8,
+                                          margin: const EdgeInsets.all(10),
+                                        );
 
+                                      }  
+                                    )
+                                )
+                              ],
+                            )
                           ]
                         ),
                         const SizedBox(
@@ -3575,6 +4323,22 @@ class _BookGuidePage extends State<BookGuidePage> {
                                                 )
                                               ),                              
                                             ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                      child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: ElevatedButton.icon(
+                                          onPressed: () {
+                                            //MessagePage
+                                          },
+                                          icon: Icon(Icons.chat, size: 18),
+                                          label: Text("Chat Now"),
+                                          style: ButtonStyle(
+                                            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
                                           ),
                                         ),
                                       ),

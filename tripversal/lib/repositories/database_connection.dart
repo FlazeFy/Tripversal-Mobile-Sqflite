@@ -16,6 +16,7 @@ class DatabaseConnection{
     await database.execute("CREATE TABLE guide (id_guide INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, price INTEGER NOT NULL , rating INTEGER, customer INTEGER NOT NULL, desc TEXT NOT NULL, phone TEXT NOT NULL, address TEXT NOT NULL, email TEXT NOT NULL)");
     await database.execute("CREATE TABLE history (id_history INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, type TEXT NOT NULL, price INTEGER NOT NULL , rating INTEGER, name TEXT NOT NULL, phone TEXT NOT NULL, location TEXT NOT NULL, barcode TEXT NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL, dateComment DATETIME NOT NULL, comment TEXT NOT NULL)");
     await database.execute("CREATE TABLE ongoing (id_ongoing INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, desc TEXT NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL)");
+    await database.execute("CREATE TABLE review (id_review INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, comment TEXT NOT NULL, rating INTEGER NOT NULL, dateReview DATETIME NOT NULL)");
     
     //Insert City Car Item 
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc) VALUES(null, 'D 1670 VZB', 'City Car', 'Honda Brio RS/2020', 'Bojongsoang', 290000, 5, 'Ben Parker', 5, 35, 12000, 'Lorem ipsum')");
@@ -36,5 +37,8 @@ class DatabaseConnection{
 
     //Insert OnGoing Item 
     await database.execute("INSERT INTO ongoing(id_ongoing, id_user, id_car_guide, type, desc, dateStart, dateEnd) VALUES(null, 1, 1, 'Car Rental', 'D 1670 VZB', '2022-05-01 10:37:20', '2022-05-03 10:10:45')");
+
+    //Insert Review Item 
+    await database.execute("INSERT INTO review(id_review, id_user, id_car_guide, type, comment, rating, dateReview) VALUES(null, 1, 1, 'Car Rental', 'This car is well maintained by the owner, have clean interior, and also experienced driver', 5, '2022-05-02 10:10:45')");
   }
 }
