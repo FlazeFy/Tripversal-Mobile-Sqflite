@@ -22,6 +22,8 @@ import 'package:tripversal/widgets/checkBox.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'createAccBody.dart';
 import 'forgetPassBody.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Leonardho R Sitanggang-1302194041",
       home: LoginPage(), //Navbar
     );
@@ -134,6 +137,8 @@ class _RentACarPage extends State<RentACarPage> {
         carModels.tank = car['tank'];
         carModels.distance = car['distance'];
         carModels.desc = car['desc'];
+        carModels.coordinate_lan = car['coordinate_lan'];
+        carModels.coordinate_lng = car['coordinate_lng'];
         _carList.add(carModels);
       });
     });
@@ -489,7 +494,7 @@ class _RentACarPage extends State<RentACarPage> {
                                                         )
                                                       ),
                                                       TextSpan(
-                                                        text: _carList[index].price.toString(),
+                                                        text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 18,
@@ -721,7 +726,7 @@ class _RentACarPage extends State<RentACarPage> {
                                                         )
                                                       ),
                                                       TextSpan(
-                                                        text: _carList[index].price.toString(),
+                                                        text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 18,
@@ -953,7 +958,7 @@ class _RentACarPage extends State<RentACarPage> {
                                                         )
                                                       ),
                                                       TextSpan(
-                                                        text: _carList[index].price.toString(),
+                                                        text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 18,
@@ -1185,7 +1190,7 @@ class _RentACarPage extends State<RentACarPage> {
                                                         )
                                                       ),
                                                       TextSpan(
-                                                        text: _carList[index].price.toString(),
+                                                        text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 18,
@@ -1363,11 +1368,7 @@ class _AccountPage extends State<AccountPage> {
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
-            Navigator.push(
-              context, MaterialPageRoute(
-                builder: (context) => const NavBar(),
-              ),
-            );
+            Navigator.pop(context);
           },
         )
       ],
@@ -2176,7 +2177,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                                     )
                                                   ),
                                                   TextSpan(
-                                                    text: _guideList[index].price.toString(),
+                                                    text: "${_guideList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 18,
@@ -2215,7 +2216,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
-                                        pageBuilder: (c, a1, a2) => BookGuidePage(pass_idGuide: _guideList[index].idGuide),
+                                        pageBuilder: (c, a1, a2) => BookGuidePage(pass_idGuide: _guideList[index].idGuide, pass_fullname: widget.pass_username),
                                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                           final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
                                           final curvedAnimation = CurvedAnimation(
@@ -3047,7 +3048,7 @@ class _MyResPage extends State<MyResPage> {
                                                       text: TextSpan(
                                                         children: [
                                                           TextSpan(
-                                                            text: "Rp. ${_historyList[index].price.toString()}",
+                                                            text: "Rp. ${_historyList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                             style: TextStyle(
                                                               color: Color(0xFF808080),
                                                               fontWeight: FontWeight.w500,
@@ -3220,6 +3221,7 @@ class _BookCarPage extends State<BookCarPage> {
   var _car = carModel();
   var _review = reviewModel();
   var _carServices = carServices();
+  var carname; var coordinate_lan; var coordinate_lng;
 
   List<carModel> _carList = <carModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
@@ -3243,6 +3245,7 @@ class _BookCarPage extends State<BookCarPage> {
           carModels.plate = car['plate'];
           carModels.type = car['type'];
           carModels.carname = car['carname'];
+          carname = car['carname'];
           carModels.location = car['location'];
           carModels.price = car['price'];
           carModels.rating = car['rating'];
@@ -3251,6 +3254,10 @@ class _BookCarPage extends State<BookCarPage> {
           carModels.tank = car['tank'];
           carModels.distance = car['distance'];
           carModels.desc = car['desc'];
+          carModels.coordinate_lan = car['coordinate_lan'];
+          carModels.coordinate_lng = car['coordinate_lng'];
+          coordinate_lan = car['coordinate_lan'];
+          coordinate_lng = car['coordinate_lng'];
           _carList.add(carModels);
         });
       }
@@ -3262,7 +3269,7 @@ class _BookCarPage extends State<BookCarPage> {
     var review = await _carServices.readCarwReview();
 
     review.forEach((review){
-      if(review['id_car_guide'] == widget.pass_idCar){
+      if((review['id_car_guide'] == widget.pass_idCar)&&(review['type'] == 'Car Rental')){
         setState((){
           var reviewModels = reviewModel();
           reviewModels.idReview = review['id_review'];
@@ -3307,7 +3314,24 @@ class _BookCarPage extends State<BookCarPage> {
           icon: Icon(Icons.map, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
-            //gmaps
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (c, a1, a2) => MapsPage(pass_carguidename: carname, pass_coordinate_lan: double.tryParse(coordinate_lan), pass_coordinate_lng: double.tryParse(coordinate_lng)),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                  final curvedAnimation = CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.ease,
+                  );
+
+                  return SlideTransition(
+                    position: tween.animate(curvedAnimation),
+                    child: child,
+                  );
+                }
+              ),
+            );
           },
         ),
         IconButton(
@@ -3426,7 +3450,7 @@ class _BookCarPage extends State<BookCarPage> {
                           )
                         ),
                         TextSpan(
-                          text: _carList[index].price.toString(),
+                          text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                           style: TextStyle(
                             color: Color(0xFF4169E1),
                             fontSize: 18,
@@ -3919,9 +3943,10 @@ class _BookCarPage extends State<BookCarPage> {
 }
 
 class BookGuidePage extends StatefulWidget {
-  const BookGuidePage({Key key, this.pass_idGuide}) : super(key: key);
+  const BookGuidePage({Key key, this.pass_idGuide, this.pass_fullname}) : super(key: key);
 
   final int pass_idGuide;
+  final String pass_fullname;
 
   @override
 
@@ -3932,13 +3957,16 @@ class _BookGuidePage extends State<BookGuidePage> {
   //const _BookGuidePage({Key key}) : super(key: key);
   var _guide = guideModel();
   var _guideServices = guideServices();
+  var _review = reviewModel();
 
   List<guideModel> _guideList = <guideModel>[];
+  List<reviewModel> _reviewList = <reviewModel>[];
   
   @override
   void initState(){
     super.initState();
     getAllGuideData();
+    getAllGuideReview();
   }
 
   getAllGuideData() async {
@@ -3962,6 +3990,34 @@ class _BookGuidePage extends State<BookGuidePage> {
       });
     }});
   }
+
+  getAllGuideReview() async {
+    _reviewList = <reviewModel>[];
+    var review = await _guideServices.readGuidewReview();
+
+    review.forEach((review){
+      if((review['id_car_guide'] == widget.pass_idGuide)&&(review['type'] == 'Tour Guide')){
+        setState((){
+          var reviewModels = reviewModel();
+          reviewModels.idReview = review['id_review'];
+          reviewModels.idUser = review['id_user'];
+          if(review['fullname'] == widget.pass_fullname){
+            reviewModels.fullname = 'You';
+          } else {
+            reviewModels.fullname = review['fullname'];
+          }     
+          reviewModels.idCarGuide = review['id_car_guide'];
+          reviewModels.type = review['type'];
+          reviewModels.comment = review['comment'];
+          reviewModels.rating = review['rating'];
+          reviewModels.dateReview= DateTime.tryParse(review['dateReview']);
+          
+          _reviewList.add(reviewModels);
+        });
+      }
+    });
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -4103,7 +4159,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                               )
                             ),
                             TextSpan(
-                              text: " ${_guideList[index].price.toString()}",
+                              text: " ${_guideList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                               style: TextStyle(
                                 color: Color(0xFF4169E1),
                                 fontSize: 18,
@@ -4366,121 +4422,119 @@ class _BookGuidePage extends State<BookGuidePage> {
                                 fontWeight: FontWeight.w800
                               ),
                             ),
-                            children: <Widget>[                     
-                              SingleChildScrollView(               
-                                scrollDirection: Axis.vertical,
-                                child: Column(
-                                  children: <Widget>[
-                                      
-                                    Card( //item-1 -----------------------------------------
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child:Flexible(
-                                        
-                                        
-                                        child: Row(
-                                          children: [  
-                                            Expanded(
-                                              child:Container(
-                                                alignment: Alignment.topLeft,
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                      child: RichText(
-                                                        text: const TextSpan(
-                                                          children: [
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                          
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                      child: RichText(
-                                                        text: const TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: "The translator is very kind and friendly. He is also very familiar with tourist sites in Bandung.",
-                                                              style: TextStyle(
-                                                                color: Color.fromARGB(255, 77, 77, 77),
-                                                                fontSize: 16
-                                                              )
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                      child: RichText(
-                                                        text: const TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: "~Richard Kyle on 19/1/22",
-                                                              style: TextStyle(
-                                                                color: Color(0xFF808080),
-                                                                fontWeight: FontWeight.w500,
-                                                                fontStyle: FontStyle.italic,
-                                                                fontSize: 13
-                                                              )
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              flex:8 ,
-                                            ),
-                                          ],
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height*0.5,
+                                child: ListView.builder(
+                                  itemCount : _reviewList.length,
+                                  itemBuilder: (context, index){
+                                          
+                                    return Card( //item-1 -----------------------------------------
+                                        shape: RoundedRectangleBorder(
+                                          side: const BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(10),
                                         ),
-                                      ),
-                                      elevation: 8,
-                                      margin: const EdgeInsets.all(10),
-                                    ),
-
-
-                                  ]
-                                )
-                              )   
+                                        child:Flexible(
+                                          child: Row(
+                                            children: [  
+                                              Expanded(
+                                                child:Container(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        alignment: Alignment.topLeft,
+                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                        child: RichText(
+                                                          text: const TextSpan(
+                                                            children: [
+                                                            WidgetSpan(
+                                                              child: Icon(Icons.star, 
+                                                                size: 20,
+                                                                color: Color(0xFF4169E1),
+                                                              ),
+                                                            ),
+                                                            WidgetSpan(
+                                                              child: Icon(Icons.star, 
+                                                                size: 20,
+                                                                color: Color(0xFF4169E1),
+                                                              ),
+                                                            ),
+                                                            WidgetSpan(
+                                                              child: Icon(Icons.star, 
+                                                                size: 20,
+                                                                color: Color(0xFF4169E1),
+                                                              ),
+                                                            ),
+                                                            WidgetSpan(
+                                                              child: Icon(Icons.star, 
+                                                                size: 20,
+                                                                color: Color(0xFF4169E1),
+                                                              ),
+                                                            ),
+                                                            WidgetSpan(
+                                                              child: Icon(Icons.star, 
+                                                                size: 20,
+                                                                color: Color(0xFF4169E1),
+                                                              ),
+                                                            ),
                               
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ),
+                                                      Container(
+                                                        alignment: Alignment.topLeft,
+                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: _reviewList[index].comment,
+                                                                style: TextStyle(
+                                                                  color: Color.fromARGB(255, 77, 77, 77),
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 16
+                                                                )
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ),
+                                                      Container(
+                                                        alignment: Alignment.topLeft,
+                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: "~${_reviewList[index].fullname} on ${_reviewList[index].dateReview}",
+                                                                style: TextStyle(
+                                                                  color: Color(0xFF808080),
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontStyle: FontStyle.italic,
+                                                                  fontSize: 13
+                                                                )
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                flex:8 ,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        elevation: 8,
+                                        margin: const EdgeInsets.all(10),
+                                      );
+
+                                    }  
+                                  )
+                              )
                             ],
                           ),
 
@@ -4903,5 +4957,93 @@ class SettingPage extends StatelessWidget {
         child: Setting()
       ),
     );
+  }
+}
+
+class MapsPage extends StatefulWidget {
+  MapsPage({Key key, this.pass_carguidename, this.pass_coordinate_lan, this.pass_coordinate_lng}) : super(key: key);
+
+  final String pass_carguidename;
+  final double pass_coordinate_lan;
+  final double pass_coordinate_lng;
+
+  @override
+  _MapsPageState createState() => _MapsPageState();
+}
+class _MapsPageState extends State<MapsPage> {
+  static const _initialCameraPosition = CameraPosition(
+    target: LatLng(-6.913698347245817, 107.60835377374151), //Bandung
+    zoom: 12, 
+  );
+  GoogleMapController _googleMapController;
+  Marker _origin;
+  Marker _destination;
+
+  @override
+  void dispose() {
+    _googleMapController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(     
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+          title: Text("${widget.pass_carguidename}", 
+          style: TextStyle(
+            color: Color(0xFF4169E1),
+            fontWeight: FontWeight.w800,
+            fontSize: 16,
+          ),
+        ),
+        //Transparent setting.
+        backgroundColor: Color(0x44FFFFFF),
+        elevation: 0,
+      ),
+      body: GoogleMap(
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
+        initialCameraPosition: _initialCameraPosition,
+        onMapCreated: (controller) => _googleMapController = controller,
+        markers: {
+          if (_origin != null) _origin,
+          Marker(
+            markerId: const MarkerId('destination'),
+            infoWindow: const InfoWindow(title: 'Destination'),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+            position: LatLng(widget.pass_coordinate_lan, widget.pass_coordinate_lng),
+          )
+        },
+        onLongPress: _addMarker,
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.black,
+        onPressed: () => _googleMapController.animateCamera(
+          CameraUpdate.newCameraPosition(_initialCameraPosition),
+        ),
+        child: Icon(Icons.center_focus_strong),
+      )
+    );
+  }
+  void _addMarker(LatLng pos) async {
+    if (_origin == null || (_origin != null && _destination != null)) {
+      setState(() {
+        _origin = Marker(
+          markerId: const MarkerId('origin'),
+          infoWindow: const InfoWindow(title: 'Your Location'),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          position: pos,
+        );
+        // Reset destination
+        _destination = null;
+      });
+    } 
   }
 }

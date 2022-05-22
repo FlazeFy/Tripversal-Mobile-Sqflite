@@ -12,6 +12,8 @@ class carModel{
    int tank;
    int distance;
     String desc;
+  String coordinate_lan;
+  String coordinate_lng;
    
   carMap(){
     var mapping = Map<String, dynamic>();
@@ -28,6 +30,8 @@ class carModel{
     mapping['driver'] = driver;
     mapping['distance'] = distance;
     mapping['desc'] = desc;
+    mapping['coordinate_lan'] = coordinate_lan;
+    mapping['coordinate_lng'] = coordinate_lng;
 
     return mapping;
   }

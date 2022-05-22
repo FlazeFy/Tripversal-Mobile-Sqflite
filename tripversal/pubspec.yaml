@@ -34,6 +34,11 @@ dependencies:
   sqflite: ^2.0.2+1
   path_provider: ^2.0.9
 
+  #Google Maps
+  dio: ^4.0.0
+  flutter_polyline_points: ^0.2.6
+  google_maps_flutter: ^2.0.2
+
   # format DateTime
   intl: ^0.17.0
 
