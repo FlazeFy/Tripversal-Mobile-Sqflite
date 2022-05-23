@@ -68,4 +68,9 @@ class Repository{
     var connection = await database;
     return await connection.rawQuery('SELECT review.id_review, review.id_user, user.fullname, review.id_car_guide, review.type, review.comment, review.rating, dateReview FROM review JOIN guide ON review.id_car_guide = guide.id_guide JOIN user ON review.id_user = user.id_user');
   }
+
+  readMessageCar(table) async{
+    var connection = await database;
+    return await connection.rawQuery('SELECT * FROM message');
+  }
 }

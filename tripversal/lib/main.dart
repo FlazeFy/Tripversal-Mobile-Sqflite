@@ -6,6 +6,7 @@ import 'package:tripversal/helpBody.dart';
 import 'package:tripversal/loginBody.dart';
 import 'package:tripversal/models/carModel.dart';
 import 'package:tripversal/models/guideModel.dart';
+import 'package:tripversal/models/messageModel.dart';
 import 'package:tripversal/models/onGoingModel.dart';
 import 'package:tripversal/models/resvModel.dart';
 import 'package:tripversal/models/reviewModel.dart';
@@ -23,6 +24,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'createAccBody.dart';
 import 'forgetPassBody.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_chat_bubble/bubble_type.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 
 
 Future<String> loadAsset() async {
@@ -5022,8 +5026,8 @@ class _MapsPageState extends State<MapsPage> {
         onLongPress: _addMarker,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.black,
+        backgroundColor: Color(0xFF1F9F2F),
+        foregroundColor: Colors.white,
         onPressed: () => _googleMapController.animateCamera(
           CameraUpdate.newCameraPosition(_initialCameraPosition),
         ),
@@ -5045,5 +5049,347 @@ class _MapsPageState extends State<MapsPage> {
         _destination = null;
       });
     } 
+  }
+}
+
+class MessagePage extends StatefulWidget {
+  MessagePage({Key key}) : super(key: key);
+
+  @override
+  _MessagePageState createState() => _MessagePageState();
+}
+class _MessagePageState extends State<MessagePage> {
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(     
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+          title: Text("Message", 
+          style: TextStyle(
+            color: Color(0xFF4169E1),
+            fontWeight: FontWeight.w800,
+            fontSize: 16,
+          ),
+        ),
+        //Transparent setting.
+        backgroundColor: Color(0x44FFFFFF),
+        elevation: 0,
+      ),
+      body:  Column(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(   
+              width: MediaQuery.of(context).size.width*0.75,
+              transform: Matrix4.translationValues(15.0, -5.0, 0.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                  ),
+                  border: OutlineInputBorder(),
+                  hintText: 'search by driver, car...',
+                  hintStyle: TextStyle(
+                    fontStyle: FontStyle.italic
+                  ),
+                ),
+              ),
+            ),
+          ),
+          
+          Flexible(
+            child : ListView(
+              children: <Widget>[
+
+                InkWell(
+                  child: Card(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                      child: Row(
+                        children: [ 
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(25),
+                              child: Image.asset(
+                                'assets/images/Ben Parker.jpg', width: 50),
+                              ),
+                          ),
+                          Expanded(                 
+                            child: Column (
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: RichText(
+                                    text: TextSpan(                     
+                                      text: 'Ben Parker',
+                                      style: TextStyle(
+                                        color: Color(0xFF212121),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 17,
+                                      )
+                                    ),                              
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(                     
+                                    text: '${"Hello. can you meet me in 3.pm at Transmart Buah Batu"}...',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 128, 128, 128),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                    )
+                                  ),                              
+                                )
+                              ]
+                            )
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                              child: const Text(
+                                "12/4/22", 
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: Color(0xFF808080)
+                                ),
+                              ),
+                            )
+                          ), 
+                        ]
+                      )    
+                    )
+                  ),
+                  onTap: () { 
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChatPage()),
+                    );
+                  },                   
+                ),
+
+              ]
+            )
+          )
+          
+        ], 
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF1F9F2F),
+        foregroundColor: Colors.white,
+        onPressed: () {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => ),
+          // );
+        },
+        child: Icon(Icons.send),
+      )
+    );
+  }
+}
+
+class ChatPage extends StatefulWidget {
+  const ChatPage({key}) : super(key: key);
+
+  @override
+
+  _ChatPage createState() => _ChatPage();
+}
+
+class _ChatPage extends State<ChatPage> {
+  var _message = messageModel();
+  var _carServices = carServices();
+
+  List<messageModel> _messageList = <messageModel>[];
+  
+  @override
+  void initState(){
+    super.initState();
+    getAllCarMessage();
+  }
+
+  getAllCarMessage() async {
+    _messageList = <messageModel>[];
+    var messages = await _carServices.readCarwMessage();
+
+    messages.forEach((message){
+      if((message['type'] == 'Car Rental')&&((message['sender'] == 'flazefy')||(message['receiver'] == 'flazefy'))){
+      setState((){
+        var messageModels = messageModel();
+        messageModels.idMessage = message['id_message'];
+        messageModels.sender = message['sender'];
+        messageModels.receiver = message['receiver'];
+        messageModels.type = message['type'];
+        messageModels.body = message['body'];
+        messageModels.imageURL = message['imageURL'];
+        messageModels.datetime = DateTime.tryParse(message['datetime']);
+        _messageList.add(messageModels);
+      });
+    }});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+          title: Text("Ben Parker", 
+          style: TextStyle(
+            color: Color(0xFF4169E1),
+            fontWeight: FontWeight.w800,
+            fontSize: 16,
+          ),
+        ),
+        //Transparent setting.
+        backgroundColor: Color(0x44FFFFFF),
+        elevation: 0,
+      ),
+
+      //Body.
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+            children: [
+              //Text.
+              Flexible(
+                child: ListView.builder(
+                  itemCount : _messageList.length,
+                  itemBuilder: (context, index){
+                    if(_messageList[index].sender == 'flazefy'){
+                      return Column(
+                        children:[
+                          ChatBubble(
+                            clipper: ChatBubbleClipper1(type: BubbleType.sendBubble),
+                            alignment: Alignment.topRight,
+                            margin: const EdgeInsets.only(top: 20),
+                            backGroundColor: Colors.blue,
+                            child: Container(
+                              constraints: BoxConstraints(
+                                maxWidth: MediaQuery.of(context).size.width * 0.7,
+                              ),
+                              child: Text(
+                                _messageList[index].body,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
+                              child: Text(_messageList[index].datetime.toString(),
+                                style: const TextStyle(color: Colors.grey, fontSize:14))
+                            )
+                          )
+                        ]
+                      );
+                    } else if (_messageList[index].receiver == 'flazefy'){
+                      return Column(
+                        children:[
+                          ChatBubble(
+                            clipper: ChatBubbleClipper1(type: BubbleType.receiverBubble),
+                            alignment: Alignment.topLeft,
+                            margin: const EdgeInsets.only(top: 20),
+                            backGroundColor: Colors.blue,
+                            child: Container(
+                              constraints: BoxConstraints(
+                                maxWidth: MediaQuery.of(context).size.width * 0.7,
+                              ),
+                              child: Text(
+                                _messageList[index].body,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
+                              child: Text(_messageList[index].datetime.toString(),
+                                style: const TextStyle(color: Colors.grey, fontSize:14))
+                            )
+                          )
+                        ]
+                      );
+                    }
+                    //End of card.
+                  }
+                )
+              //End of item list.
+              ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                padding: const EdgeInsets.only(left: 10,bottom: 10,top: 10),
+                height: 60,
+                width: double.infinity,
+                color: Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: (){
+                      },
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.lightBlue,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: const Icon(Icons.add, color: Colors.white, size: 20, ),
+                      ),
+                    ),
+                    const SizedBox(width: 15,),
+                    Expanded(
+                      child: TextField(
+                        // controller: _messageTextCtrl,
+                        decoration: const InputDecoration(
+                          hintText: "Type your message...",
+                          hintStyle: TextStyle(color: Colors.black54),
+                          border: InputBorder.none
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 15,),
+                    FloatingActionButton(
+                      onPressed: () async{
+                        // _message.message = _messageTextCtrl.text;
+
+                        // var result = await _messageServices.sendMessage(_message);
+                        // print(result);
+                        // if(result != null){
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(builder: (context) => const MessagePage()),
+                        //   );
+                        // } else {
+
+                        // }
+                      },
+                      child: const Icon(Icons.send,color: Colors.white,size: 18,),
+                      backgroundColor: Colors.green,
+                      elevation: 0,
+                    ),
+                  ],
+                  
+                ),
+              ),
+            ),
+          ], 
+      
+        ),
+      )
+    );
   }
 }

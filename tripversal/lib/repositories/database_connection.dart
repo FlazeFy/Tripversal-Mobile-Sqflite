@@ -17,6 +17,7 @@ class DatabaseConnection{
     await database.execute("CREATE TABLE history (id_history INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, type TEXT NOT NULL, price INTEGER NOT NULL , rating INTEGER, name TEXT NOT NULL, phone TEXT NOT NULL, location TEXT NOT NULL, barcode TEXT NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL, dateComment DATETIME NOT NULL, comment TEXT NOT NULL)");
     await database.execute("CREATE TABLE ongoing (id_ongoing INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, desc TEXT NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL)");
     await database.execute("CREATE TABLE review (id_review INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, comment TEXT NOT NULL, rating INTEGER NOT NULL, dateReview DATETIME NOT NULL)");
+    await database.execute("CREATE TABLE message (id_message INTEGER PRIMARY KEY AUTOINCREMENT, sender TEXT NOT NULL, receiver TEXT NOT NULL, type TEXT NOT NULL, body TEXT NOT NULL, imageURL TEXT NOT NULL, datetime DATETIME NOT NULL)");
     
     //Insert City Car Item 
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 1670 VZB', 'City Car', 'Honda Brio RS/2020', 'Bojongsoang', 290000, 5, 'Ben Parker', 5, 35, 12000, 'Lorem ipsum', '-6.972278953671738', '107.6412048707937')");
@@ -41,6 +42,10 @@ class DatabaseConnection{
     //Insert Review Item 
     await database.execute("INSERT INTO review(id_review, id_user, id_car_guide, type, comment, rating, dateReview) VALUES(null, 1, 1, 'Car Rental', 'This car is well maintained by the owner, have clean interior, and also experienced driver', 5, '2022-05-02 10:10:45')");
     await database.execute("INSERT INTO review(id_review, id_user, id_car_guide, type, comment, rating, dateReview) VALUES(null, 1, 2, 'Tour Guide', 'The tour guide is soo kindly and know all the tourist spot in Bandung', 5, '2022-05-12 12:40:15')");
+
+    //Insert Message Item
+    await database.execute("INSERT INTO message(id_message, sender, receiver, type, body, imageURL, datetime) VALUES(null, 'Maju Jaya Rent', 'flazefy', 'Car Rental', 'Hello my name is Ben. And i will be ur driver for the next 24 hr', 'null', '2022-05-23 12:10:45')");
+    await database.execute("INSERT INTO message(id_message, sender, receiver, type, body, imageURL, datetime) VALUES(null, 'Maju Jaya Rent', 'flazefy', 'Car Rental', 'Where should i pick u up tommorow?', 'null', '2022-05-23 12:11:31')");
 
   }
 }

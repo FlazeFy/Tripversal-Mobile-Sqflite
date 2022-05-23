@@ -24,6 +24,18 @@ class NavDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.message, color: Color(0xFF4169E1)),
+            title: const Text('Message'),
+            textColor: const Color(0xFF4169E1),
+            onTap: () {
+              Navigator.push(
+                context, MaterialPageRoute(
+                  builder: (context) => MessagePage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.app_settings_alt, color: Color(0xFF4169E1)),
             title: const Text('Settings'),
             textColor: const Color(0xFF4169E1),

@@ -14,4 +14,7 @@ class carServices{
   readCarwReview() async{
     return await _repository.readReviewCar('car');
   }
+  readCarwMessage() async{
+    return await _repository.readMessageCar('message');
+  }
 }
