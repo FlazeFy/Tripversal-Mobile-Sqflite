@@ -63,6 +63,7 @@ class _NavBarState extends State<NavBar> {
       RentACarPage(pass_username: widget.pass_usernameNav),
       TourGuidePage(pass_username: widget.pass_usernameNav),
       MyResPage(pass_username: widget.pass_usernameNav),
+      MessagePage(pass_username: widget.pass_usernameNav),
     ];
   
     return Scaffold(
@@ -82,12 +83,15 @@ class _NavBarState extends State<NavBar> {
               icon: Icon(Icons.book),
               label: 'Reservation',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.message),
+              label: 'Message',
+            ),
           ],
           //Selected menu style.
-          selectedLabelStyle: TextStyle(fontSize: 15),
-          selectedItemColor: Colors.white,
-          backgroundColor: Color(0xFF22A7F0),
-          unselectedItemColor: Colors.white,
+          showUnselectedLabels: true,
+          selectedItemColor: Color(0xFF4169E1),
+          unselectedItemColor: Color(0xFF414141),
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
@@ -5053,28 +5057,101 @@ class _MapsPageState extends State<MapsPage> {
 }
 
 class MessagePage extends StatefulWidget {
-  MessagePage({Key key}) : super(key: key);
+  MessagePage({Key key, this.pass_username}) : super(key: key);
+  final String pass_username;
 
   @override
   _MessagePageState createState() => _MessagePageState();
 }
 class _MessagePageState extends State<MessagePage> {
+  var _message = messageModel();
+  var _carServices = carServices();
+
+  List<messageModel> _contactList = <messageModel>[];
+  
+  @override
+  void initState(){
+    super.initState();
+    getAllContact1();
+    getAllContact2();
+  }
+
+  getAllContact1() async {
+    _contactList = <messageModel>[];
+    var messages = await _carServices.readCarwContact1();
+
+    messages.forEach((message){
+      if((message['type'] == 'Car Rental')&&((message['sender'] == 'flazefy')||(message['receiver'] == 'flazefy'))){
+      setState((){
+        var messageModels = messageModel();
+        messageModels.idMessage = message['id_message'];
+        messageModels.sender = message['sender'];
+        messageModels.receiver = message['receiver'];
+        messageModels.type = message['type'];
+        messageModels.body = message['body'];
+        messageModels.imageURL = message['imageURL'];
+        messageModels.datetime = DateTime.tryParse(message['datetime']);
+        _contactList.add(messageModels);
+      });
+    
+      }
+    });
+  
+  }
+  getAllContact2() async {
+    _contactList = <messageModel>[];
+    var messages = await _carServices.readCarwContact2();
+
+    messages.forEach((message){
+      if((message['type'] == 'Car Rental')&&((message['sender'] == 'flazefy')||(message['receiver'] == 'flazefy'))){
+      setState((){
+        var messageModels = messageModel();
+        messageModels.idMessage = message['id_message'];
+        messageModels.sender = message['sender'];
+        messageModels.receiver = message['receiver'];
+        messageModels.type = message['type'];
+        messageModels.body = message['body'];
+        messageModels.imageURL = message['imageURL'];
+        messageModels.datetime = DateTime.tryParse(message['datetime']);
+        _contactList.add(messageModels);
+      });
+    
+      }
+    });
+  
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(     
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-          title: Text("Message", 
-          style: TextStyle(
-            color: Color(0xFF4169E1),
-            fontWeight: FontWeight.w800,
-            fontSize: 16,
-          ),
+        title: Text("Welcome, ${widget.pass_username}", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
         ),
+      ),
+      
+      actions: [
+        IconButton(
+          icon: Image.asset('assets/images/User.jpg'),
+          iconSize: 50,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
+            );
+          },
+        )
+      ],//error image blur so badly and not round yet
+
         //Transparent setting.
         backgroundColor: Color(0x44FFFFFF),
         elevation: 0,
@@ -5102,10 +5179,11 @@ class _MessagePageState extends State<MessagePage> {
           ),
           
           Flexible(
-            child : ListView(
-              children: <Widget>[
+            child : ListView.builder(
+              itemCount : _contactList.length,
+              itemBuilder: (context, index){
 
-                InkWell(
+                return InkWell(
                   child: Card(
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -5126,7 +5204,7 @@ class _MessagePageState extends State<MessagePage> {
                                   alignment: Alignment.centerLeft,
                                   child: RichText(
                                     text: TextSpan(                     
-                                      text: 'Ben Parker',
+                                      text: _contactList[index].sender,
                                       style: TextStyle(
                                         color: Color(0xFF212121),
                                         fontWeight: FontWeight.w500,
@@ -5137,7 +5215,7 @@ class _MessagePageState extends State<MessagePage> {
                                 ),
                                 RichText(
                                   text: TextSpan(                     
-                                    text: '${"Hello. can you meet me in 3.pm at Transmart Buah Batu"}...',
+                                    text: '${_contactList[index].body}...',
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 128, 128, 128),
                                       fontWeight: FontWeight.w400,
@@ -5152,8 +5230,8 @@ class _MessagePageState extends State<MessagePage> {
                             alignment: Alignment.topLeft,
                             child: Container(
                               margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                              child: const Text(
-                                "12/4/22", 
+                              child: Text(
+                                _contactList[index].datetime.toString(), 
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
@@ -5169,12 +5247,12 @@ class _MessagePageState extends State<MessagePage> {
                   onTap: () { 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ChatPage()),
+                      MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: _contactList[index].sender, pass_username: widget.pass_username)),
                     );
                   },                   
-                ),
+                );
 
-              ]
+              }
             )
           )
           
@@ -5196,7 +5274,9 @@ class _MessagePageState extends State<MessagePage> {
 }
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({key}) : super(key: key);
+  const ChatPage({key, this.pass_sender_receiver, this.pass_username}) : super(key: key);
+  final String pass_sender_receiver;
+  final String pass_username;
 
   @override
 
@@ -5206,6 +5286,8 @@ class ChatPage extends StatefulWidget {
 class _ChatPage extends State<ChatPage> {
   var _message = messageModel();
   var _carServices = carServices();
+  final _messageTextCtrl = TextEditingController();
+  var type;
 
   List<messageModel> _messageList = <messageModel>[];
   
@@ -5220,13 +5302,14 @@ class _ChatPage extends State<ChatPage> {
     var messages = await _carServices.readCarwMessage();
 
     messages.forEach((message){
-      if((message['type'] == 'Car Rental')&&((message['sender'] == 'flazefy')||(message['receiver'] == 'flazefy'))){
+      if((message['type'] == 'Car Rental')&&(((message['sender'] == widget.pass_username)&&(message['receiver'] == widget.pass_sender_receiver))||((message['sender'] == widget.pass_sender_receiver)&&(message['receiver'] == widget.pass_username)))){
       setState((){
         var messageModels = messageModel();
         messageModels.idMessage = message['id_message'];
         messageModels.sender = message['sender'];
         messageModels.receiver = message['receiver'];
         messageModels.type = message['type'];
+        type = message['type'];
         messageModels.body = message['body'];
         messageModels.imageURL = message['imageURL'];
         messageModels.datetime = DateTime.tryParse(message['datetime']);
@@ -5244,7 +5327,7 @@ class _ChatPage extends State<ChatPage> {
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-          title: Text("Ben Parker", 
+          title: Text(widget.pass_sender_receiver, 
           style: TextStyle(
             color: Color(0xFF4169E1),
             fontWeight: FontWeight.w800,
@@ -5266,14 +5349,14 @@ class _ChatPage extends State<ChatPage> {
                 child: ListView.builder(
                   itemCount : _messageList.length,
                   itemBuilder: (context, index){
-                    if(_messageList[index].sender == 'flazefy'){
+                    if(_messageList[index].sender == widget.pass_username){
                       return Column(
                         children:[
                           ChatBubble(
                             clipper: ChatBubbleClipper1(type: BubbleType.sendBubble),
                             alignment: Alignment.topRight,
                             margin: const EdgeInsets.only(top: 20),
-                            backGroundColor: Colors.blue,
+                            backGroundColor: Colors.lightBlue,
                             child: Container(
                               constraints: BoxConstraints(
                                 maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -5294,14 +5377,14 @@ class _ChatPage extends State<ChatPage> {
                           )
                         ]
                       );
-                    } else if (_messageList[index].receiver == 'flazefy'){
+                    } else if (_messageList[index].receiver == widget.pass_username){
                       return Column(
                         children:[
                           ChatBubble(
                             clipper: ChatBubbleClipper1(type: BubbleType.receiverBubble),
                             alignment: Alignment.topLeft,
                             margin: const EdgeInsets.only(top: 20),
-                            backGroundColor: Colors.blue,
+                            backGroundColor: Colors.blueAccent,
                             child: Container(
                               constraints: BoxConstraints(
                                 maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -5353,7 +5436,7 @@ class _ChatPage extends State<ChatPage> {
                     const SizedBox(width: 15,),
                     Expanded(
                       child: TextField(
-                        // controller: _messageTextCtrl,
+                        controller: _messageTextCtrl,
                         decoration: const InputDecoration(
                           hintText: "Type your message...",
                           hintStyle: TextStyle(color: Colors.black54),
@@ -5364,18 +5447,28 @@ class _ChatPage extends State<ChatPage> {
                     const SizedBox(width: 15,),
                     FloatingActionButton(
                       onPressed: () async{
-                        // _message.message = _messageTextCtrl.text;
+                        var dt = DateTime.now();
 
-                        // var result = await _messageServices.sendMessage(_message);
-                        // print(result);
-                        // if(result != null){
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(builder: (context) => const MessagePage()),
-                        //   );
-                        // } else {
+                        // String
+                        var dtStr = dt.toIso8601String();
+                        dt = DateTime.tryParse(dtStr);
+                        _message.sender = widget.pass_username;
+                        _message.receiver = widget.pass_sender_receiver;
+                        _message.type = type;
+                        _message.body = _messageTextCtrl.text;
+                        _message.imageURL = 'null'; //for now
+                        _message.datetime = dt;
 
-                        // }
+                        var result = await _carServices.sendMessage(_message);
+                        print(result);
+                        if(result != null){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: widget.pass_sender_receiver, pass_username: widget.pass_username)),
+                          );
+                        } else {
+
+                        }
                       },
                       child: const Icon(Icons.send,color: Colors.white,size: 18,),
                       backgroundColor: Colors.green,

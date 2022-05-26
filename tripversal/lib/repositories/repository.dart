@@ -73,4 +73,17 @@ class Repository{
     var connection = await database;
     return await connection.rawQuery('SELECT * FROM message');
   }
+  readContact1Car(table) async{
+    var connection = await database;
+    return await connection.rawQuery('SELECT * FROM message GROUP BY sender ORDER BY datetime ASC');
+  }
+  readContact2Car(table) async{
+    var connection = await database;
+    return await connection.rawQuery('SELECT * FROM message GROUP BY receiver ORDER BY datetime ASC');
+  }
+  insertMessage(table, data) async{
+    var connection = await database;
+  
+    return await connection.insert(table, data);
+  }
 }

@@ -21,4 +21,17 @@ class messageModel{
 
     return mapping;
   }
+  messageMap2(){
+    var mapping = Map<String, dynamic>();
+
+    mapping['id_message'] = null;
+    mapping['sender'] = sender;
+    mapping['receiver'] = receiver;
+    mapping['type'] = type;
+    mapping['body'] = body;
+    mapping['imageURL'] = imageURL;
+    mapping['datetime'] = datetime.toIso8601String();
+
+    return mapping;
+  }
 }
