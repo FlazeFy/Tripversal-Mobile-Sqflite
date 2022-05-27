@@ -30,7 +30,7 @@ class Repository{
   readCarData(table) async{
     var connection = await database;
     // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM car where type=?',['City Car']);
+    return await connection.rawQuery('SELECT * FROM car');
   }
   readGuideData(table) async{
     var connection = await database;

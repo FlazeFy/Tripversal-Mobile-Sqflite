@@ -63,7 +63,7 @@ class _NavBarState extends State<NavBar> {
       RentACarPage(pass_username: widget.pass_usernameNav),
       TourGuidePage(pass_username: widget.pass_usernameNav),
       MyResPage(pass_username: widget.pass_usernameNav),
-      MessagePage(pass_username: widget.pass_usernameNav),
+      ContactPage(pass_username: widget.pass_usernameNav),
     ];
   
     return Scaffold(
@@ -116,39 +116,95 @@ class RentACarPage extends StatefulWidget {
 class _RentACarPage extends State<RentACarPage> {
   var _car = carModel();
   var _carServices = carServices();
-  var categorySearch = 'null';
+  String categorySearch = 'City Car';
 
   List<carModel> _carList = <carModel>[];
   
   @override
   void initState(){
     super.initState();
-    getAllCarData();
+    getAllCityCarData();
   }
 
-  getAllCarData() async {
+  getAllCityCarData() async {
     _carList = <carModel>[];
     var cars = await _carServices.readCar();
 
     cars.forEach((car){
-      setState((){
-        var carModels = carModel();
-        carModels.idCar = car['id_car'];
-        carModels.plate = car['plate'];
-        carModels.type = car['type'];
-        carModels.carname = car['carname'];
-        carModels.location = car['location'];
-        carModels.price = car['price'];
-        carModels.rating = car['rating'];
-        carModels.driver = car['driver'];
-        carModels.seat = car['seat'];
-        carModels.tank = car['tank'];
-        carModels.distance = car['distance'];
-        carModels.desc = car['desc'];
-        carModels.coordinate_lan = car['coordinate_lan'];
-        carModels.coordinate_lng = car['coordinate_lng'];
-        _carList.add(carModels);
-      });
+      if(car['type'] == 'City Car'){
+        setState((){
+          var carModels = carModel();
+          carModels.idCar = car['id_car'];
+          carModels.plate = car['plate'];
+          carModels.type = car['type'];
+          carModels.carname = car['carname'];
+          carModels.location = car['location'];
+          carModels.price = car['price'];
+          carModels.rating = car['rating'];
+          carModels.driver = car['driver'];
+          carModels.seat = car['seat'];
+          carModels.tank = car['tank'];
+          carModels.distance = car['distance'];
+          carModels.desc = car['desc'];
+          carModels.coordinate_lan = car['coordinate_lan'];
+          carModels.coordinate_lng = car['coordinate_lng'];
+          _carList.add(carModels);
+        });
+      }
+    });
+  }
+  getAllMinibusData() async {
+    _carList = <carModel>[];
+    var cars = await _carServices.readCar();
+
+    cars.forEach((car){
+      if(car['type'] == 'Minibus'){
+        setState((){
+          var carModels = carModel();
+          carModels.idCar = car['id_car'];
+          carModels.plate = car['plate'];
+          carModels.type = car['type'];
+          carModels.carname = car['carname'];
+          carModels.location = car['location'];
+          carModels.price = car['price'];
+          carModels.rating = car['rating'];
+          carModels.driver = car['driver'];
+          carModels.seat = car['seat'];
+          carModels.tank = car['tank'];
+          carModels.distance = car['distance'];
+          carModels.desc = car['desc'];
+          carModels.coordinate_lan = car['coordinate_lan'];
+          carModels.coordinate_lng = car['coordinate_lng'];
+          _carList.add(carModels);
+        });
+      }
+    });
+  }
+  getAllOtherData() async {
+    _carList = <carModel>[];
+    var cars = await _carServices.readCar();
+
+    cars.forEach((car){
+      if(car['type'] == 'Other'){
+        setState((){
+          var carModels = carModel();
+          carModels.idCar = car['id_car'];
+          carModels.plate = car['plate'];
+          carModels.type = car['type'];
+          carModels.carname = car['carname'];
+          carModels.location = car['location'];
+          carModels.price = car['price'];
+          carModels.rating = car['rating'];
+          carModels.driver = car['driver'];
+          carModels.seat = car['seat'];
+          carModels.tank = car['tank'];
+          carModels.distance = car['distance'];
+          carModels.desc = car['desc'];
+          carModels.coordinate_lan = car['coordinate_lan'];
+          carModels.coordinate_lng = car['coordinate_lng'];
+          _carList.add(carModels);
+        });
+      }
     });
   }
 
@@ -190,1122 +246,427 @@ class _RentACarPage extends State<RentACarPage> {
 
       //Body.
       body: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                //Text.
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25.0),
-                    transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                    child: Text(
-                      "Location", 
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15,
-                        color: Color(0xFF808080)
-                      ),
-                    ),
-                  ),
-                ),
-                
-                //Text.
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: [
-                      //Drop down.
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 15.0),
-                        transform: Matrix4.translationValues(0.0, -5.0, 0.0),
-                        child: MyStatefulWidget(),
-                      ),
-
-                      //Text entry search.
-                      Container(   
-                        width: 200,
-                        transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                            ),
-                            border: OutlineInputBorder(),
-                            hintText: 'search by driver, car...',
-                            hintStyle: TextStyle(
-                              fontStyle: FontStyle.italic
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      //Sort by button.
-                      Container(
-                        //Button properties.
-                        decoration: BoxDecoration(
-                          borderRadius : BorderRadius.circular(10),
-                          color: Color(0xFF4169E1),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.grey,
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: Offset(0, 3)
-                            )
-                          ],
-                        ),
-                        margin: EdgeInsets.symmetric(horizontal: 10.0),
-                        transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                        
-                        child: PopupMenuButton( 
-                          iconSize: 35,
-                          icon: Icon(Icons.sort, color: Colors.white),
-                          enabled: true,
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              child: ListTile(
-                                leading: IconButton(
-                                  iconSize: 30,
-                                  icon: Icon(Icons.arrow_drop_up,
-                                  color: Color(0xFF4169E1)),
-                                  onPressed: () {},
-                                ),
-                                title: Text('Sort by Price'),
-                              ),
-                            ),
-                            PopupMenuItem(
-                              child: ListTile(
-                                leading: IconButton(
-                                  iconSize: 30,
-                                  icon: Icon(Icons.arrow_drop_down,
-                                  color: Color(0xFF4169E1)),
-                                  onPressed: () {},
-                                ),
-                                title: Text('Sort by Price'),
-                              ),
-                            )
-                          ]
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-
-                //Text.
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25.0),
-                    //transform: Matrix4.translationValues(0.0, -10.0, 0.0),
-                    child: Text(
-                      "Categories", 
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15,
-                        color: Color(0xFF808080)
-                      ),
-                    ),
-                  ),
-                ),  
-
-                Align(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: <Widget>[
-                        //Button item.
-                        //Button / Container color must changed when selected.
-                        Container(
-                          margin: const EdgeInsets.only(right: 10.0),
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              categorySearch = 'City Car';
-                              setState(() {});
-                            },
-                            icon: Icon(Icons.motorcycle, size: 30),
-                            label: Text("City Car")
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 10.0),
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              categorySearch = 'Minibus';
-                              setState(() {});
-                            },
-                            icon: Icon(Icons.airport_shuttle, size: 30),
-                            label: Text("Minibus")
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 10.0),
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              categorySearch = 'Other';
-                              setState(() {});
-                            },
-                            icon: Icon(Icons.motorcycle, size: 30),
-                            label: Text("Other")
-                          ),
-                        ),
-                      ]
-                    )
-                  )
-                ),
-
-                //Car Item.
-                Align(
-                  child: Text("Showing ${_carList.length.toString()} result...",
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              //Text.
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 25.0),
+                  transform: Matrix4.translationValues(0.0, 5.0, 0.0),
+                  child: Text(
+                    "Location", 
                     style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 13,
-                        color: Color(0xFF808080)
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                      color: Color(0xFF808080)
+                    ),
+                  ),
+                ),
+              ),
+              
+              //Text.
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  children: [
+                    //Drop down.
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 15.0),
+                      transform: Matrix4.translationValues(0.0, -5.0, 0.0),
+                      child: MyStatefulWidget(),
+                    ),
+
+                    //Text entry search.
+                    Container(   
+                      width: 200,
+                      transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                          ),
+                          border: OutlineInputBorder(),
+                          hintText: 'search by driver, car...',
+                          hintStyle: TextStyle(
+                            fontStyle: FontStyle.italic
+                          ),
+                        ),
                       ),
                     ),
+
+                    //Sort by button.
+                    Container(
+                      //Button properties.
+                      decoration: BoxDecoration(
+                        borderRadius : BorderRadius.circular(10),
+                        color: Color(0xFF4169E1),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, 3)
+                          )
+                        ],
+                      ),
+                      margin: EdgeInsets.symmetric(horizontal: 10.0),
+                      transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                      
+                      child: PopupMenuButton( 
+                        iconSize: 35,
+                        icon: Icon(Icons.sort, color: Colors.white),
+                        enabled: true,
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            child: ListTile(
+                              leading: IconButton(
+                                iconSize: 30,
+                                icon: Icon(Icons.arrow_drop_up,
+                                color: Color(0xFF4169E1)),
+                                onPressed: () {},
+                              ),
+                              title: Text('Sort by Price'),
+                            ),
+                          ),
+                          PopupMenuItem(
+                            child: ListTile(
+                              leading: IconButton(
+                                iconSize: 30,
+                                icon: Icon(Icons.arrow_drop_down,
+                                color: Color(0xFF4169E1)),
+                                onPressed: () {},
+                              ),
+                              title: Text('Sort by Price'),
+                            ),
+                          )
+                        ]
+                      ),
+                    ),
+
+                  ],
                 ),
+              ),
 
-                Flexible(
-                  child: ListView.builder(
-                    itemCount : _carList.length,
-                    itemBuilder: (context, index){
-                      if(categorySearch == 'null'){
-                        return Card(
-                          child:Container(
-                            height: 140,
-                            child: Row(
-                              children: [
-                                Center(
-                                  child:Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10), 
-                                            child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
-                                          ),
-                                          flex:2 ,
-                                        ),
-                                      
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                                            
-                                            //Left section.
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Driver", 
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 14,
-                                                    color: Color(0xFF4169E1)
-                                                  ),
-                                                ),
-                                                Container(
-                                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                                  child: Text(
-                                                    _carList[index].driver, 
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize: 13,
-                                                      color: Color(0xFF808080)
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+              //Text.
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 25.0),
+                  //transform: Matrix4.translationValues(0.0, -10.0, 0.0),
+                  child: Text(
+                    "Categories", 
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                      color: Color(0xFF808080)
+                    ),
+                  ),
+                ),
+              ),  
 
-                                            )
-                                          ),
-                                        ),
-
-                                      ]
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child:Container(
-                                    alignment: Alignment.topLeft,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                                          alignment: Alignment.topLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.car_rental,   
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].carname, 
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          alignment: Alignment.topLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.location_on, 
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].location, 
-                                                  style: TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                // flex: 5, //if expanded
-                                                alignment: Alignment.topLeft,
-                                                margin: EdgeInsets.symmetric(horizontal: 10.0),
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: "Rp. ",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF808080),
-                                                          fontSize: 21,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                      TextSpan(
-                                                        text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                      TextSpan(
-                                                        text: " / Day",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF808080),
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              // flex: 5, //if expanded
-                                              alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    WidgetSpan(
-                                                      child: Icon(Icons.star, 
-                                                        size: 20,
-                                                        color: Color(0xFF4169E1),
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: _carList[index].rating.toString(), 
-                                                      style: TextStyle(
-                                                        color: Color(0xFF4169E1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  PageRouteBuilder(
-                                                    pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
-                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
-                                                      final curvedAnimation = CurvedAnimation(
-                                                        parent: animation,
-                                                        curve: Curves.ease,
-                                                      );
-
-                                                      return SlideTransition(
-                                                        position: tween.animate(curvedAnimation),
-                                                        child: child,
-                                                      );
-                                                    }
-                                                  ),
-                                                );
-                                              },
-                                              icon: Icon(Icons.book, size: 18),
-                                              label: Text("Book now"),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                              ),
-                                            ),
-                                            SizedBox(width: 8,),
-                                          ],
-                                        )
-
-                                      ],
-                                    ),
-                                  ),
-                                  flex:8 ,
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                          ),
-                          elevation: 6,
-                          margin: EdgeInsets.all(6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ); 
-                        //End of card.
-                      } else if((categorySearch == 'City Car')&&(_carList[index].type == 'City Car')){
-                        return Card(
-                          child:Container(
-                            height: 140,
-                            child: Row(
-                              children: [
-                                Center(
-                                  child:Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10), 
-                                            child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
-                                          ),
-                                          flex:2 ,
-                                        ),
-                                      
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                                            
-                                            //Left section.
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Driver", 
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 14,
-                                                    color: Color(0xFF4169E1)
-                                                  ),
-                                                ),
-                                                Container(
-                                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                                  child: Text(
-                                                    _carList[index].driver, 
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize: 13,
-                                                      color: Color(0xFF808080)
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-
-                                            )
-                                          ),
-                                        ),
-
-                                      ]
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child:Container(
-                                    alignment: Alignment.topLeft,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                                          alignment: Alignment.topLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.car_rental,   
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].carname, 
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          alignment: Alignment.topLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.location_on, 
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].location, 
-                                                  style: TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                // flex: 5, //if expanded
-                                                alignment: Alignment.topLeft,
-                                                margin: EdgeInsets.symmetric(horizontal: 10.0),
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: "Rp. ",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF808080),
-                                                          fontSize: 21,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                      TextSpan(
-                                                        text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                      TextSpan(
-                                                        text: " / Day",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF808080),
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              // flex: 5, //if expanded
-                                              alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    WidgetSpan(
-                                                      child: Icon(Icons.star, 
-                                                        size: 20,
-                                                        color: Color(0xFF4169E1),
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: _carList[index].rating.toString(), 
-                                                      style: TextStyle(
-                                                        color: Color(0xFF4169E1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  PageRouteBuilder(
-                                                    pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
-                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
-                                                      final curvedAnimation = CurvedAnimation(
-                                                        parent: animation,
-                                                        curve: Curves.ease,
-                                                      );
-
-                                                      return SlideTransition(
-                                                        position: tween.animate(curvedAnimation),
-                                                        child: child,
-                                                      );
-                                                    }
-                                                  ),
-                                                );
-                                              },
-                                              icon: Icon(Icons.book, size: 18),
-                                              label: Text("Book now"),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                              ),
-                                            ),
-                                            SizedBox(width: 8,),
-                                          ],
-                                        )
-
-                                      ],
-                                    ),
-                                  ),
-                                  flex:8 ,
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                          ),
-                          elevation: 6,
-                          margin: EdgeInsets.all(6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ); 
-                        //End of card.
-                      } else if((categorySearch == 'Minibus')&&(_carList[index].type == 'Minibus')){
-                        return Card(
-                          child:Container(
-                            height: 140,
-                            child: Row(
-                              children: [
-                                Center(
-                                  child:Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10), 
-                                            child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
-                                          ),
-                                          flex:2 ,
-                                        ),
-                                      
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                                            
-                                            //Left section.
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Driver", 
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 14,
-                                                    color: Color(0xFF4169E1)
-                                                  ),
-                                                ),
-                                                Container(
-                                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                                  child: Text(
-                                                    _carList[index].driver, 
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize: 13,
-                                                      color: Color(0xFF808080)
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-
-                                            )
-                                          ),
-                                        ),
-
-                                      ]
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child:Container(
-                                    alignment: Alignment.topLeft,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                                          alignment: Alignment.topLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.car_rental,   
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].carname, 
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          alignment: Alignment.topLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.location_on, 
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].location, 
-                                                  style: TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                // flex: 5, //if expanded
-                                                alignment: Alignment.topLeft,
-                                                margin: EdgeInsets.symmetric(horizontal: 10.0),
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: "Rp. ",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF808080),
-                                                          fontSize: 21,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                      TextSpan(
-                                                        text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                      TextSpan(
-                                                        text: " / Day",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF808080),
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              // flex: 5, //if expanded
-                                              alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    WidgetSpan(
-                                                      child: Icon(Icons.star, 
-                                                        size: 20,
-                                                        color: Color(0xFF4169E1),
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: _carList[index].rating.toString(), 
-                                                      style: TextStyle(
-                                                        color: Color(0xFF4169E1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  PageRouteBuilder(
-                                                    pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
-                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
-                                                      final curvedAnimation = CurvedAnimation(
-                                                        parent: animation,
-                                                        curve: Curves.ease,
-                                                      );
-
-                                                      return SlideTransition(
-                                                        position: tween.animate(curvedAnimation),
-                                                        child: child,
-                                                      );
-                                                    }
-                                                  ),
-                                                );
-                                              },
-                                              icon: Icon(Icons.book, size: 18),
-                                              label: Text("Book now"),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                              ),
-                                            ),
-                                            SizedBox(width: 8,),
-                                          ],
-                                        )
-
-                                      ],
-                                    ),
-                                  ),
-                                  flex:8 ,
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                          ),
-                          elevation: 6,
-                          margin: EdgeInsets.all(6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ); 
-                        //End of card.
-                      }else if((categorySearch == 'Other')&&(_carList[index].type == 'Other')){
-                        return Card(
-                          child:Container(
-                            height: 140,
-                            child: Row(
-                              children: [
-                                Center(
-                                  child:Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10), 
-                                            child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
-                                          ),
-                                          flex:2 ,
-                                        ),
-                                      
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                                            
-                                            //Left section.
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Driver", 
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 14,
-                                                    color: Color(0xFF4169E1)
-                                                  ),
-                                                ),
-                                                Container(
-                                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                                  child: Text(
-                                                    _carList[index].driver, 
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize: 13,
-                                                      color: Color(0xFF808080)
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-
-                                            )
-                                          ),
-                                        ),
-
-                                      ]
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child:Container(
-                                    alignment: Alignment.topLeft,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                                          alignment: Alignment.topLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.car_rental,   
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].carname, 
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          alignment: Alignment.topLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Icon(Icons.location_on, 
-                                                    size: 20,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].location, 
-                                                  style: TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-
-                                        Container(
-                                          // flex: 5, //if expanded
-                                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                // flex: 5, //if expanded
-                                                alignment: Alignment.topLeft,
-                                                margin: EdgeInsets.symmetric(horizontal: 10.0),
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: "Rp. ",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF808080),
-                                                          fontSize: 21,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                      TextSpan(
-                                                        text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                      TextSpan(
-                                                        text: " / Day",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF808080),
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w700,
-                                                        )
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              // flex: 5, //if expanded
-                                              alignment: Alignment.topLeft,
-                                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    WidgetSpan(
-                                                      child: Icon(Icons.star, 
-                                                        size: 20,
-                                                        color: Color(0xFF4169E1),
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: _carList[index].rating.toString(), 
-                                                      style: TextStyle(
-                                                        color: Color(0xFF4169E1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w700,
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  PageRouteBuilder(
-                                                    pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
-                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
-                                                      final curvedAnimation = CurvedAnimation(
-                                                        parent: animation,
-                                                        curve: Curves.ease,
-                                                      );
-
-                                                      return SlideTransition(
-                                                        position: tween.animate(curvedAnimation),
-                                                        child: child,
-                                                      );
-                                                    }
-                                                  ),
-                                                );
-                                              },
-                                              icon: Icon(Icons.book, size: 18),
-                                              label: Text("Book now"),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                              ),
-                                            ),
-                                            SizedBox(width: 8,),
-                                          ],
-                                        )
-
-                                      ],
-                                    ),
-                                  ),
-                                  flex:8 ,
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                          ),
-                          elevation: 6,
-                          margin: EdgeInsets.all(6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ); 
-                        //End of card.
-                      }
-                      print(categorySearch);
-                  }
-                //End of item list.
+              Align(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: <Widget>[
+                      //Button item.
+                      //Button / Container color must changed when selected.
+                      Container(
+                        margin: const EdgeInsets.only(right: 10.0),
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            // categorySearch = 'City Car';
+                            getAllCityCarData();
+                            setState(() {});
+                          },
+                          icon: Icon(Icons.motorcycle, size: 30),
+                          label: Text("City Car")
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(right: 10.0),
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            // categorySearch = 'Minibus';
+                            getAllMinibusData();
+                            setState(() {});
+                          },
+                          icon: Icon(Icons.airport_shuttle, size: 30),
+                          label: Text("Minibus")
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(right: 10.0),
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            // categorySearch = 'Other';
+                            getAllOtherData();
+                            setState(() {});
+                          },
+                          icon: Icon(Icons.motorcycle, size: 30),
+                          label: Text("Other")
+                        ),
+                      ),
+                    ]
+                  )
                 )
+              ),
+
+              //Car Item.
+              Align(
+                child: Text("Showing ${_carList.length.toString()} result...",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 13,
+                      color: Color(0xFF808080)
+                    ),
+                  ),
+              ),
+
+              Flexible(
+                child: ListView.builder(
+                  itemCount : _carList.length,
+                  itemBuilder: (context, index){
+                  
+                    return Card(
+                    child:Container(
+                      height: 140,
+                      child: Row(
+                        children: [
+                          Center(
+                            child:Container(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10), 
+                                      child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
+                                    ),
+                                    flex:2 ,
+                                  ),
+                                
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      transform: Matrix4.translationValues(0.0, 5.0, 0.0),
+                                      
+                                      //Left section.
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Driver", 
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 14,
+                                              color: Color(0xFF4169E1)
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                            child: Text(
+                                              _carList[index].driver, 
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13,
+                                                color: Color(0xFF808080)
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+
+                                      )
+                                    ),
+                                  ),
+
+                                ]
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child:Container(
+                              alignment: Alignment.topLeft,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    // flex: 5, //if expanded
+                                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                                    alignment: Alignment.topLeft,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          WidgetSpan(
+                                            child: Icon(Icons.car_rental,   
+                                              size: 20,
+                                              color: Color(0xFF4169E1),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: _carList[index].carname, 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                            )
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ),
+                                  Container(
+                                    // flex: 5, //if expanded
+                                    alignment: Alignment.topLeft,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          WidgetSpan(
+                                            child: Icon(Icons.location_on, 
+                                              size: 20,
+                                              color: Color(0xFF4169E1),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: _carList[index].location, 
+                                            style: TextStyle(
+                                              color: Color(0xFF808080),
+                                              fontWeight: FontWeight.w700,
+                                            )
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ),
+
+                                  Container(
+                                    // flex: 5, //if expanded
+                                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          // flex: 5, //if expanded
+                                          alignment: Alignment.topLeft,
+                                          margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Rp. ",
+                                                  style: TextStyle(
+                                                    color: Color(0xFF808080),
+                                                    fontSize: 21,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                                TextSpan(
+                                                  text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                                TextSpan(
+                                                  text: " / Day",
+                                                  style: TextStyle(
+                                                    color: Color(0xFF808080),
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        // flex: 5, //if expanded
+                                        alignment: Alignment.topLeft,
+                                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              WidgetSpan(
+                                                child: Icon(Icons.star, 
+                                                  size: 20,
+                                                  color: Color(0xFF4169E1),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: _carList[index].rating.toString(), 
+                                                style: TextStyle(
+                                                  color: Color(0xFF4169E1),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ),
+                                      ElevatedButton.icon(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            PageRouteBuilder(
+                                              pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
+                                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                                final curvedAnimation = CurvedAnimation(
+                                                  parent: animation,
+                                                  curve: Curves.ease,
+                                                );
+
+                                                return SlideTransition(
+                                                  position: tween.animate(curvedAnimation),
+                                                  child: child,
+                                                );
+                                              }
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.book, size: 18),
+                                        label: Text("Book now"),
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                        ),
+                                      ),
+                                      SizedBox(width: 8,),
+                                    ],
+                                  )
+
+                                ],
+                              ),
+                            ),
+                            flex:8 ,
+                          ),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                      ),
+                    ),
+                    elevation: 6,
+                    margin: EdgeInsets.all(5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ); 
+                  //End of card.
+                }
+              //End of item list.
               )
-            ], 
+            )
+          ], 
 
         )
       )
@@ -2616,7 +1977,7 @@ class _MyResPage extends State<MyResPage> {
                                   ListTile(
                                     title: Text(_onGoingList[index].type, style: TextStyle(fontWeight: FontWeight.w800)),
                                     subtitle: Text(
-                                      "${_onGoingList[index].desc} ~ end on ${_onGoingList[index].dateEnd}",
+                                      "${_onGoingList[index].desc} ~ end on ${DateFormat('yyyy-MM-dd – kk:mm').format(_onGoingList[index].dateEnd).toString()}",
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ),
@@ -2791,7 +2152,7 @@ class _MyResPage extends State<MyResPage> {
                                                         text: TextSpan(
                                                           children: [
                                                             TextSpan(
-                                                              text: "~on ${_historyList[index].dateStart.toString()}",
+                                                              text: "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()}",
                                                               style: TextStyle(
                                                                 color: Color(0xFF808080),
                                                                 fontWeight: FontWeight.w500,
@@ -2945,7 +2306,7 @@ class _MyResPage extends State<MyResPage> {
                                                                   text: TextSpan(
                                                                     children: [
                                                                       TextSpan(
-                                                                        text: "~on ${_historyList[index].dateComment.toString()}",
+                                                                        text: "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateComment).toString()}",
                                                                         style: TextStyle(
                                                                           color: Color(0xFF808080),
                                                                           fontWeight: FontWeight.w500,
@@ -3019,7 +2380,7 @@ class _MyResPage extends State<MyResPage> {
                                                       text: TextSpan(
                                                         children: [
                                                           TextSpan(
-                                                            text: "${_historyList[index].dateStart.toString()} - ${_historyList[index].dateEnd.toString()}",
+                                                            text: "${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()} - ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateEnd).toString()}",
                                                             style: TextStyle(
                                                               color: Color(0xFF808080),
                                                               fontWeight: FontWeight.w500,
@@ -3756,7 +3117,7 @@ class _BookCarPage extends State<BookCarPage> {
                                           alignment: Alignment.topLeft,
                                           child: ElevatedButton.icon(
                                             onPressed: () {
-                                              //MessagePage
+                                              //ContactPage
                                             },
                                             icon: Icon(Icons.chat, size: 18),
                                             label: Text("Chat Now"),
@@ -3875,7 +3236,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                             text: TextSpan(
                                                               children: [
                                                                 TextSpan(
-                                                                  text: "~${_reviewList[index].fullname} on ${_reviewList[index].dateReview}",
+                                                                  text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
                                                                   style: TextStyle(
                                                                     color: Color(0xFF808080),
                                                                     fontWeight: FontWeight.w500,
@@ -4397,7 +3758,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                         alignment: Alignment.topLeft,
                                         child: ElevatedButton.icon(
                                           onPressed: () {
-                                            //MessagePage
+                                            //ContactPage
                                           },
                                           icon: Icon(Icons.chat, size: 18),
                                           label: Text("Chat Now"),
@@ -4516,7 +3877,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                                           text: TextSpan(
                                                             children: [
                                                               TextSpan(
-                                                                text: "~${_reviewList[index].fullname} on ${_reviewList[index].dateReview}",
+                                                                text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
                                                                 style: TextStyle(
                                                                   color: Color(0xFF808080),
                                                                   fontWeight: FontWeight.w500,
@@ -5056,14 +4417,14 @@ class _MapsPageState extends State<MapsPage> {
   }
 }
 
-class MessagePage extends StatefulWidget {
-  MessagePage({Key key, this.pass_username}) : super(key: key);
+class ContactPage extends StatefulWidget {
+  ContactPage({Key key, this.pass_username}) : super(key: key);
   final String pass_username;
 
   @override
-  _MessagePageState createState() => _MessagePageState();
+  _ContactPageState createState() => _ContactPageState();
 }
-class _MessagePageState extends State<MessagePage> {
+class _ContactPageState extends State<ContactPage> {
   var _message = messageModel();
   var _carServices = carServices();
 
@@ -5081,7 +4442,7 @@ class _MessagePageState extends State<MessagePage> {
     var messages = await _carServices.readCarwContact1();
 
     messages.forEach((message){
-      if((message['type'] == 'Car Rental')&&((message['sender'] == 'flazefy')||(message['receiver'] == 'flazefy'))){
+      if((message['type'] == 'Car Rental')&&((message['sender'] == widget.pass_username)||(message['receiver'] == widget.pass_username))){
       setState((){
         var messageModels = messageModel();
         messageModels.idMessage = message['id_message'];
@@ -5103,7 +4464,7 @@ class _MessagePageState extends State<MessagePage> {
     var messages = await _carServices.readCarwContact2();
 
     messages.forEach((message){
-      if((message['type'] == 'Car Rental')&&((message['sender'] == 'flazefy')||(message['receiver'] == 'flazefy'))){
+      if((message['type'] == 'Car Rental')&&((message['sender'] == widget.pass_username)||(message['receiver'] == widget.pass_username))){
       setState((){
         var messageModels = messageModel();
         messageModels.idMessage = message['id_message'];
@@ -5156,107 +4517,111 @@ class _MessagePageState extends State<MessagePage> {
         backgroundColor: Color(0x44FFFFFF),
         elevation: 0,
       ),
-      body:  Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(   
-              width: MediaQuery.of(context).size.width*0.75,
-              transform: Matrix4.translationValues(15.0, -5.0, 0.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                  ),
-                  border: OutlineInputBorder(),
-                  hintText: 'search by driver, car...',
-                  hintStyle: TextStyle(
-                    fontStyle: FontStyle.italic
+      body:  SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(   
+                width: MediaQuery.of(context).size.width*0.75,
+                transform: Matrix4.translationValues(15.0, -5.0, 0.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                    ),
+                    border: OutlineInputBorder(),
+                    hintText: 'search by driver, car...',
+                    hintStyle: TextStyle(
+                      fontStyle: FontStyle.italic
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          
-          Flexible(
-            child : ListView.builder(
-              itemCount : _contactList.length,
-              itemBuilder: (context, index){
-
-                return InkWell(
-                  child: Card(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                      child: Row(
-                        children: [ 
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: Image.asset(
-                                'assets/images/Ben Parker.jpg', width: 50),
-                              ),
-                          ),
-                          Expanded(                 
-                            child: Column (
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: RichText(
+            
+            Flexible(
+              child : ListView.builder(
+                itemCount : _contactList.length,
+                itemBuilder: (context, index){
+                  
+                  return InkWell(
+                    child: Card(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                        child: Row(
+                          children: [ 
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: Image.asset(
+                                  'assets/images/Ben Parker.jpg', width: 50),
+                                ),
+                            ),
+                            Expanded(                 
+                              child: Column (
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: RichText(
+                                      text: TextSpan(                     
+                                        text: _contactList[index].receiver,
+                                        style: TextStyle(
+                                          color: Color(0xFF212121),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                        )
+                                      ),                              
+                                    ),
+                                  ),
+                                  RichText(
                                     text: TextSpan(                     
-                                      text: _contactList[index].sender,
+                                      text: '${_contactList[index].body}...',
                                       style: TextStyle(
-                                        color: Color(0xFF212121),
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 17,
+                                        color: Color.fromARGB(255, 128, 128, 128),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
                                       )
                                     ),                              
+                                  )
+                                ]
+                              )
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 5.0),
+                                child: Text(
+                                  DateFormat('yyyy-MM-dd kk:mm').format(_contactList[index].datetime).toString(), 
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: Color(0xFF808080)
                                   ),
                                 ),
-                                RichText(
-                                  text: TextSpan(                     
-                                    text: '${_contactList[index].body}...',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 128, 128, 128),
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                    )
-                                  ),                              
-                                )
-                              ]
-                            )
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                              child: Text(
-                                _contactList[index].datetime.toString(), 
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: Color(0xFF808080)
-                                ),
-                              ),
-                            )
-                          ), 
-                        ]
-                      )    
-                    )
-                  ),
-                  onTap: () { 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: _contactList[index].sender, pass_username: widget.pass_username)),
-                    );
-                  },                   
-                );
+                              )
+                            ), 
+                          ]
+                        )    
+                      )
+                    ),
+                    onTap: () { 
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: _contactList[index].receiver, pass_username: widget.pass_username)),
+                      );
+                    },                   
+                  );
+                  
 
-              }
+                }
+              )
             )
-          )
-          
-        ], 
+            
+          ],
+        ) 
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF1F9F2F),
@@ -5334,6 +4699,18 @@ class _ChatPage extends State<ChatPage> {
             fontSize: 16,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+            iconSize: 40,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavBar(pass_usernameNav: widget.pass_username)),
+              );
+            },
+          )
+        ],
         //Transparent setting.
         backgroundColor: Color(0x44FFFFFF),
         elevation: 0,
@@ -5371,7 +4748,7 @@ class _ChatPage extends State<ChatPage> {
                             alignment: Alignment.bottomRight,
                             child: Container(
                               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
-                              child: Text(_messageList[index].datetime.toString(),
+                              child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
                                 style: const TextStyle(color: Colors.grey, fontSize:14))
                             )
                           )
@@ -5399,7 +4776,7 @@ class _ChatPage extends State<ChatPage> {
                             alignment: Alignment.bottomLeft,
                             child: Container(
                               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
-                              child: Text(_messageList[index].datetime.toString(),
+                              child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
                                 style: const TextStyle(color: Colors.grey, fontSize:14))
                             )
                           )

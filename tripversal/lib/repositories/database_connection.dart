@@ -23,9 +23,7 @@ class DatabaseConnection{
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 1670 VZB', 'City Car', 'Honda Brio RS/2020', 'Bojongsoang', 290000, 5, 'Ben Parker', 5, 35, 12000, 'Lorem ipsum', '-6.972278953671738', '107.6412048707937')");
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 1140 AAB', 'City Car', 'Toyota Raize/2022', 'Bojongsoang', 340000, 5, 'none', 5, 35, 7000, 'Lorem ipsum', '-6.9703190663757475', '107.63220124971892')");
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 1910 CDB', 'City Car', 'Toyota Agya/2018', 'Baleendah', 275000, 5, 'Ben Parker', 5, 30, 52000, 'Lorem ipsum', '-6.966456347108785', '107.63854276840046')");
-    await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 2410 VBZ', 'City Car', 'Honda Brio Satya/2019', 'Baleendah', 270000, 5, 'Craig Mckay', 5, 30, 31000, 'Lorem ipsum', '-6.99522817304474', '107.62474584142296')");
-  
-    //Insert Minibus Item 
+    await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 2410 VBZ', 'City Car', 'Honda Brio Satya/2019', 'Baleendah', 270000, 5, 'Craig Mckay', 5, 30, 31000, 'Lorem ipsum', '-6.99522817304474', '107.62474584142296')");  
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 3410 AAC', 'Minibus', 'Toyota Innova/2015', 'Buah Batu', 400000, 5, 'Ben Parker', 8, 50, 127000, 'Lorem ipsum', '-6.966456347108785', '107.63854276840046')");
 
     //Insert Tour Guide Item 
