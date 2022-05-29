@@ -30,12 +30,27 @@ class Repository{
   readCarData(table) async{
     var connection = await database;
     // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM car');
+    return await connection.rawQuery('SELECT * FROM car ORDER BY price ASC');
   }
   readGuideData(table) async{
     var connection = await database;
     // return await connection.query(table);
     return await connection.rawQuery('SELECT * FROM guide');
+  }
+  readGuideDataID(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM guide where language like?', ['%ID%']);
+  }
+  readGuideDataEN(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM guide where language like?', ['%EN%']);
+  }
+  readGuideDataES(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM guide where language like?', ['%ES%']);
   }
   
   readHistoryDataById(table) async{

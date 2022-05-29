@@ -13,7 +13,7 @@ class DatabaseConnection{
   _onCreatingDatabase(Database database, int version) async{
     await database.execute("CREATE TABLE user (id_user INTEGER PRIMARY KEY AUTOINCREMENT, id_card TEXT NOT NULL , fullname TEXT NOT NULL , password TEXT NOT NULL , email TEXT NOT NULL , phone TEXT NOT NULL)");
     await database.execute("CREATE TABLE car (id_car INTEGER PRIMARY KEY AUTOINCREMENT, plate TEXT NOT NULL, type TEXT NOT NULL, carname TEXT NOT NULL , location TEXT NOT NULL , price INTEGER NOT NULL , rating INTEGER, driver TEXT NOT NULL, seat INTEGER NOT NULL, tank INTEGER NOT NULL, distance INTEGER NOT NULL, desc TEXT NOT NULL, coordinate_lan TEXT NOT NULL, coordinate_lng TEXT NOT NULL)");
-    await database.execute("CREATE TABLE guide (id_guide INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, price INTEGER NOT NULL , rating INTEGER, customer INTEGER NOT NULL, desc TEXT NOT NULL, phone TEXT NOT NULL, address TEXT NOT NULL, email TEXT NOT NULL)");
+    await database.execute("CREATE TABLE guide (id_guide INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, language TEXT NOT NULL, price INTEGER NOT NULL , rating INTEGER, customer INTEGER NOT NULL, desc TEXT NOT NULL, phone TEXT NOT NULL, address TEXT NOT NULL, email TEXT NOT NULL)");
     await database.execute("CREATE TABLE history (id_history INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, type TEXT NOT NULL, price INTEGER NOT NULL , rating INTEGER, name TEXT NOT NULL, phone TEXT NOT NULL, location TEXT NOT NULL, barcode TEXT NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL, dateComment DATETIME NOT NULL, comment TEXT NOT NULL)");
     await database.execute("CREATE TABLE ongoing (id_ongoing INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, desc TEXT NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL)");
     await database.execute("CREATE TABLE review (id_review INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, comment TEXT NOT NULL, rating INTEGER NOT NULL, dateReview DATETIME NOT NULL)");
@@ -27,8 +27,8 @@ class DatabaseConnection{
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 3410 AAC', 'Minibus', 'Toyota Innova/2015', 'Buah Batu', 400000, 5, 'Ben Parker', 8, 50, 127000, 'Lorem ipsum', '-6.966456347108785', '107.63854276840046')");
 
     //Insert Tour Guide Item 
-    await database.execute("INSERT INTO guide(id_guide, name, price, rating, customer, desc, phone, address, email) VALUES(null, 'Ben Parker', 450000, 5, 0, 'Lorem ipsum', '81248857138', 'Jl. Telekomunikasi No.1', 'parkerben02@gmail.com')");
-    await database.execute("INSERT INTO guide(id_guide, name, price, rating, customer, desc, phone, address, email) VALUES(null, 'Craig Mckay', 420000, 5, 0, 'Lorem ipsum', '8114881021', 'Jl. Mawar No.14', 'craigelll@gmail.com')");
+    await database.execute("INSERT INTO guide(id_guide, name, language, price, rating, customer, desc, phone, address, email) VALUES(null, 'Ben Parker', 'ID, EN, ES', 450000, 5, 0, 'Lorem ipsum', '81248857138', 'Jl. Telekomunikasi No.1', 'parkerben02@gmail.com')");
+    await database.execute("INSERT INTO guide(id_guide, name, language, price, rating, customer, desc, phone, address, email) VALUES(null, 'Craig Mckay', 'ID, EN, FR', 420000, 5, 0, 'Lorem ipsum', '8114881021', 'Jl. Mawar No.14', 'craigelll@gmail.com')");
 
     //Insert History Item 
     await database.execute("INSERT INTO history(id_history, id_user, type, price, rating, name, phone, location, barcode, dateStart, dateEnd, dateComment, comment) VALUES(null, 1, 'Honda Brio RS/2020', 290000, 5, 'Ben Parker', '81248857138', 'Bojongsoang', 'A9J48FHJS', '2022-05-04 10:37:20', '2022-05-05 10:10:45', '2022-05-06 13:40:20', 'Lorem ipsum')");

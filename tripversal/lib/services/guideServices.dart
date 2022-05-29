@@ -7,9 +7,17 @@ class guideServices{
   guideServices(){
     _repository = Repository();
   }
-
   readGuide() async{
     return await _repository.readGuideData('guide');
+  }
+  readGuideID() async{
+    return await _repository.readGuideDataID('guide');
+  }
+  readGuideEN() async{
+    return await _repository.readGuideDataEN('guide');
+  }
+  readGuideES() async{
+    return await _repository.readGuideDataES('guide');
   }
   readGuidewReview() async{
     return await _repository.readReviewGuide('guide');

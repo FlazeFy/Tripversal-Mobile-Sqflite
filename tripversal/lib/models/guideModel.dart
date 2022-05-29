@@ -2,6 +2,7 @@ class guideModel{
    int idGuide;
 
    String name;
+   String language;
    int price;
    int rating;
    int customer;
@@ -15,6 +16,7 @@ class guideModel{
 
     mapping['id_guide'] = idGuide;
     mapping['name'] = name;
+    mapping['language'] = language;
     mapping['price'] = price;
     mapping['rating'] = rating;
     mapping['customer'] = customer;

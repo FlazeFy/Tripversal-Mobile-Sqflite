@@ -378,7 +378,6 @@ class _RentACarPage extends State<RentACarPage> {
                         margin: const EdgeInsets.only(right: 10.0),
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            // categorySearch = 'City Car';
                             getAllCityCarData();
                             setState(() {});
                           },
@@ -390,7 +389,6 @@ class _RentACarPage extends State<RentACarPage> {
                         margin: const EdgeInsets.only(right: 10.0),
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            // categorySearch = 'Minibus';
                             getAllMinibusData();
                             setState(() {});
                           },
@@ -402,7 +400,6 @@ class _RentACarPage extends State<RentACarPage> {
                         margin: const EdgeInsets.only(right: 10.0),
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            // categorySearch = 'Other';
                             getAllOtherData();
                             setState(() {});
                           },
@@ -1102,24 +1099,71 @@ class TourGuidePage extends StatefulWidget {
 class _TourGuidePage extends State<TourGuidePage> {
   var _guide = guideModel();
   var _guideServices = guideServices();
+  bool value = false;
+  bool value1 = true;
+  bool value2 = false;
+  bool value3 = false;
 
   List<guideModel> _guideList = <guideModel>[];
   
   @override
   void initState(){
     super.initState();
-    getAllGuideData();
+    getAllGuideData_ID();
   }
 
-  getAllGuideData() async {
+  getAllGuideData_ID() async {
     _guideList = <guideModel>[];
-    var guides = await _guideServices.readGuide();
+    var guides = await _guideServices.readGuideID();
 
     guides.forEach((guide){
       setState((){
         var guideModels = guideModel();
         guideModels.idGuide = guide['id_guide'];
         guideModels.name = guide['name'];
+        guideModels.language = guide['language'];
+        guideModels.price = guide['price'];
+        guideModels.rating = guide['rating'];
+        guideModels.customer = guide['customer'];
+        guideModels.desc = guide['desc'];
+        guideModels.phone = guide['phone'];
+        guideModels.address = guide['address'];
+        guideModels.email = guide['email'];
+        _guideList.add(guideModels);
+      });
+    });
+  }
+  getAllGuideData_EN() async {
+    _guideList = <guideModel>[];
+    var guides = await _guideServices.readGuideEN();
+
+    guides.forEach((guide){
+      setState((){
+        var guideModels = guideModel();
+        guideModels.idGuide = guide['id_guide'];
+        guideModels.name = guide['name'];
+        guideModels.language = guide['language'];
+        guideModels.price = guide['price'];
+        guideModels.rating = guide['rating'];
+        guideModels.customer = guide['customer'];
+        guideModels.desc = guide['desc'];
+        guideModels.phone = guide['phone'];
+        guideModels.address = guide['address'];
+        guideModels.email = guide['email'];
+        _guideList.add(guideModels);
+      });
+    });
+  }
+  getAllGuideData_ES() async {
+    _guideList = <guideModel>[];
+    var guides = await _guideServices.readGuideES();
+
+    guides.forEach((guide){
+      setState((){
+        var guideModels = guideModel();
+        guideModels.idGuide = guide['id_guide'];
+        guideModels.name = guide['name'];
+        guideModels.language = guide['language'];
         guideModels.price = guide['price'];
         guideModels.rating = guide['rating'];
         guideModels.customer = guide['customer'];
@@ -1299,9 +1343,15 @@ class _TourGuidePage extends State<TourGuidePage> {
                       margin: const EdgeInsets.symmetric(horizontal: 4.0),
                       child: Row(
                         children:  [
-                          Align(
-                            child: MyStatefulWidget2(),
-                          ),  
+                          Checkbox(
+                            value: this.value1,
+                            onChanged: (bool value1) {
+                              getAllGuideData_ID();
+                              setState(() {
+                                this.value1 = value1;
+                              });
+                            },
+                          ), 
                           Align(
                             child: Container(
                               transform: Matrix4.translationValues(-5.0, 0.0, 0.0),
@@ -1338,8 +1388,14 @@ class _TourGuidePage extends State<TourGuidePage> {
                       margin: const EdgeInsets.symmetric(horizontal: 4.0),
                       child: Row(
                         children:  [
-                          Align(
-                            child: MyStatefulWidget2(),
+                          Checkbox(
+                            value: this.value2,
+                            onChanged: (bool value2) {
+                              getAllGuideData_EN();
+                              setState(() {
+                                this.value2 = value2;
+                              });
+                            },
                           ),  
                           Align(
                             child: Container(
@@ -1377,9 +1433,15 @@ class _TourGuidePage extends State<TourGuidePage> {
                       margin: const EdgeInsets.symmetric(horizontal: 4.0),
                       child: Row(
                         children:  [
-                          Align(
-                            child: MyStatefulWidget2(),
-                          ),  
+                          Checkbox(
+                            value: this.value3,
+                            onChanged: (bool value3) {
+                              getAllGuideData_ES();
+                              setState(() {
+                                this.value3 = value3;
+                              });
+                            },
+                          ), 
                           Align(
                             child: Container(
                               transform: Matrix4.translationValues(-5.0, 0.0, 0.0),
@@ -1505,7 +1567,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                       alignment: Alignment.topLeft,
                                       child: RichText(
                                         text: TextSpan(
-                                          children: const [
+                                          children: [
                                             WidgetSpan(
                                               child: Icon(Icons.message, 
                                                 size: 20,
@@ -1513,7 +1575,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                               ),
                                             ),
                                             TextSpan(
-                                              text: " ID, EN, ES, FR",
+                                              text: _guideList[index].language,
                                               style: TextStyle(
                                                 color: Color(0xFF808080),
                                                 fontWeight: FontWeight.w700,
@@ -2591,6 +2653,7 @@ class _BookCarPage extends State<BookCarPage> {
   var _review = reviewModel();
   var _carServices = carServices();
   var carname; var coordinate_lan; var coordinate_lng;
+  int idCarGuide; var price;
 
   List<carModel> _carList = <carModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
@@ -2617,6 +2680,7 @@ class _BookCarPage extends State<BookCarPage> {
           carname = car['carname'];
           carModels.location = car['location'];
           carModels.price = car['price'];
+          price = car['price'];
           carModels.rating = car['rating'];
           carModels.driver = car['driver'];
           carModels.seat = car['seat'];
@@ -3288,7 +3352,7 @@ class _BookCarPage extends State<BookCarPage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(),
+              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idCar, pass_carguidename: carname, pass_fullname: widget.pass_fullname, pass_price: price, type: 'Car Rental'),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
@@ -3348,6 +3412,7 @@ class _BookGuidePage extends State<BookGuidePage> {
         var guideModels = guideModel();
         guideModels.idGuide = guide['id_guide'];
         guideModels.name = guide['name'];
+        guideModels.language = guide['language'];
         guideModels.price = guide['price'];
         guideModels.rating = guide['rating'];
         guideModels.customer = guide['customer'];
@@ -3611,7 +3676,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 10.0),
                               child: RichText(
-                                text: const TextSpan(
+                                text: TextSpan(
                                   children: [
                                     WidgetSpan(
                                       child: Icon(Icons.message, 
@@ -3620,7 +3685,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: "ID, EN, ES, FR",
+                                      text: _guideList[index].language,
                                       style: TextStyle(
                                         color: Color(0xFF808080),
                                         fontSize: 16
@@ -3949,10 +4014,33 @@ class _BookGuidePage extends State<BookGuidePage> {
     );
   }
 }
+class OrderPage extends StatefulWidget {
+  const OrderPage({Key key, this.pass_fullname, this.pass_idCarGuide, this.pass_carguidename, this.pass_price, this.type}) : super(key: key);
 
-class OrderPage extends StatelessWidget {
-  const OrderPage({Key key}) : super(key: key);
+  final String pass_fullname;
+  final String pass_carguidename;
+  final int pass_idCarGuide;
+  final int pass_price;
+  final String type;
 
+  @override
+
+  _OrderPage createState() => _OrderPage();
+}
+
+class _OrderPage extends State<OrderPage> {
+  TimeOfDay selectedTime = TimeOfDay.now();
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2015, 8), lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -3962,7 +4050,7 @@ class OrderPage extends StatelessWidget {
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Honda Brio RS / 2020", 
+        title: Text(widget.pass_carguidename,
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -3975,7 +4063,570 @@ class OrderPage extends StatelessWidget {
     ),
 
       body: Center(
-        child: Order()
+        child: Container(
+        alignment: Alignment.topCenter,
+        child: Flexible(
+          child : SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                ExpansionTile( //Collapse-1 ===========================================
+                  title: const Text(
+                    "   Customer Detail",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Color(0xFF4169E1)
+                    ),
+                  ),
+                  initiallyExpanded: true,
+                  children: <Widget>[                     
+                    SingleChildScrollView(               
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: <Widget>[
+
+                        //Full name section.
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                            child: const Text(
+                              "Fullname", 
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                                color: Color(0xFF212121)
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                            height: 35,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                ),
+                                hintText: widget.pass_fullname,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //Phone number section.
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                            child: const Text(
+                              "Phone Number", 
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                                color: Color(0xFF212121)
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
+                            height: 35,
+                            child: const TextField(
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                ),
+                            
+                                hintText: '08114882001',
+                              ),
+                            ),
+                          ),
+                        ),
+                        ]
+                      )
+                    )   
+                    
+                  ],
+                ),
+                const Divider(
+                  height: 20,
+                  thickness: 4,
+                  indent: 0,
+                  endIndent: 15,
+                  color: Color.fromARGB(255, 185, 185, 185),
+                ),
+
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
+                    child: const Text(
+                      "Order Detail", 
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Color(0xFF4169E1)
+                      ),
+                    ),
+                  ),
+                ),
+
+                //Date section.
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                            child: const Text(
+                              "Date", 
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                                color: Color(0xFF212121)
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                            width: 90,
+                            height: 35,
+                            child: TextField(
+                              onTap: () {
+                                _selectDate(context);
+                              },
+                              decoration: const InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                ),             
+                                hintText: '16/4/2022',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]
+                    ),
+
+                    Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                            child: const Text(
+                              "Time", 
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                                color: Color(0xFF212121)
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            width: 60,
+                            height: 35,
+                            child: TextField(
+                              onTap: () {
+                                _selectTime(context);
+                              },
+                              decoration: const InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                ),        
+                                hintText: '12:30',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]
+                    ),
+                  ]
+                ),
+
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                    child: const Text(
+                      "Pick-Up Location", 
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        color: Color(0xFF212121)
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal:15.0, vertical: 3.0),
+                        height: 45,
+                        width: 50,
+                        child: IconButton(
+                        onPressed: () {
+                            // Respond to button press
+                          },
+                          icon: const Icon(Icons.location_on, size: 30),
+                          color: const Color(0xFF00B0FF),
+                          padding: const EdgeInsets.all(0.0)
+                        )
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 3.0),
+                        height: 35,
+                        width: MediaQuery.of(context).size.width* 0.60,
+                        child: const TextField(
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                            ),
+                        
+                            hintText: 'Bojongsoang',
+                          ),
+                        ),
+                      ),
+                    ]
+                  ),
+                ),
+
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                    child: const Text(
+                      "Note (Optional)", 
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        color: Color(0xFF212121)
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  child: Container(
+                    transform: Matrix4.translationValues(0.0, -10.0, 0.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                    height: 65,
+                    child: TextFormField(
+                      minLines: 10,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: const InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                        ),
+                        hintText: 'Please arrive at the location five minutes early.',
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width* 0.9,
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    color: Colors.lightGreen.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(10), 
+                  ),  
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                        child: const Icon(
+                          Icons.info,
+                          color: Colors.green,
+                          size: 30.0,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width* 0.65,
+                          margin: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: const Text(
+                            "Make sure the order detail is right. You can't change it in the future", 
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                              color: Color(0xFF212121)
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]
+                  ),
+                ),
+                const Divider(
+                  height: 20,
+                  thickness: 4,
+                  indent: 0,
+                  endIndent: 15,
+                  color: Color.fromARGB(255, 185, 185, 185),
+                ),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(color: Color(0xFF4169E1), width: 2),
+                    ),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                            child: const Text(
+                              "Payment Detail", 
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.black
+                              ),
+                            ),
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
+                                    child: const Text(
+                                      "Payment Method", 
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: const PaymentMethod(),
+                                  
+                                ),
+                              ]
+                            ),
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
+                                    child: const Text(
+                                      "Price", 
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                                    child: const Text(
+                                      "Rp. 325.000", 
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            ),
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                                    child: const Text(
+                                      "Pick-up addition", 
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                                    child: const Text(
+                                      "Rp. 20.000", 
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            ),
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                                    child: const Text(
+                                      "Tax", 
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                                    child: const Text(
+                                      "Rp. 5.000", 
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            ),
+                            const Divider(
+                              height: 20,
+                              thickness: 2,
+                              indent: 20,
+                              endIndent: 30,
+                              color: Color.fromARGB(255, 185, 185, 185),
+                            ),
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                                    child: const Text(
+                                      "Total", 
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20,
+                                        color: Colors.black
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                                    child: Text(
+                                      "Rp. ${widget.pass_price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20,
+                                        color: Colors.black
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            ),
+                          ]
+
+                        ),
+                      ]
+                    ),
+                  ),
+                ),
+
+                const Divider(
+                  height: 20,
+                  thickness: 4,
+                  indent: 0,
+                  endIndent: 15,
+                  color: Color.fromARGB(255, 185, 185, 185),
+                ),
+                Column(
+                  children: <Widget>[
+
+                    ExpansionTile( //Collapse-2 ===========================================
+                      leading: IconButton(
+                        iconSize: 30,
+                        icon: const Icon(Icons.price_change,
+                        color: Color(0xFF808080)),
+                        onPressed: () {},
+                      ),
+                      title: const Text(
+                        "What is pick-up addition?",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w800
+                        ),
+                      ),
+                      children: <Widget>[
+                        SingleChildScrollView(               
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            children: const <Widget>[
+                                
+                              
+                            ]
+                          )
+                        )  
+                      ],
+                    ),
+
+                    ExpansionTile( //Collapse-3 ===========================================
+                      leading: IconButton(
+                        iconSize: 30,
+                        icon: const Icon(Icons.price_check,
+                        color: Color(0xFF808080)),
+                        onPressed: () {},
+                      ),
+                      title: const Text(
+                        "How much the tax is charged?",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w800
+                        ),
+                      ),
+                      children: <Widget>[                     
+                        SingleChildScrollView(               
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            children: const <Widget>[
+                                
+                              
+                            ]
+                          )
+                        )   
+                        
+                      ],
+                    ),
+
+                  ],
+                ),
+
+              ]
+            )
+          )
+        )
+      ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -3988,6 +4639,20 @@ class OrderPage extends StatelessWidget {
         backgroundColor: const Color(0xFF00B0FF),
       ),
     );
+  }
+  //Time picker
+  _selectTime(BuildContext context) async {          
+  final TimeOfDay timeOfDay = await showTimePicker(
+    context: context,
+    initialTime: selectedTime,
+    initialEntryMode: TimePickerEntryMode.dial,
+  );
+  if(timeOfDay != null && timeOfDay != selectedTime)
+    {
+      setState(() {
+        selectedTime = timeOfDay;
+      });
+    }
   }
 }
 
@@ -4442,7 +5107,7 @@ class _ContactPageState extends State<ContactPage> {
     var messages = await _carServices.readCarwContact1();
 
     messages.forEach((message){
-      if((message['type'] == 'Car Rental')&&((message['sender'] == widget.pass_username)||(message['receiver'] == widget.pass_username))){
+      if((message['type'] == 'Car Rental')&&(message['sender'] == widget.pass_username)){
       setState((){
         var messageModels = messageModel();
         messageModels.idMessage = message['id_message'];
@@ -4464,7 +5129,7 @@ class _ContactPageState extends State<ContactPage> {
     var messages = await _carServices.readCarwContact2();
 
     messages.forEach((message){
-      if((message['type'] == 'Car Rental')&&((message['sender'] == widget.pass_username)||(message['receiver'] == widget.pass_username))){
+      if((message['type'] == 'Car Rental')&&(message['receiver'] == widget.pass_username)){
       setState((){
         var messageModels = messageModel();
         messageModels.idMessage = message['id_message'];
@@ -4546,76 +5211,146 @@ class _ContactPageState extends State<ContactPage> {
                 itemCount : _contactList.length,
                 itemBuilder: (context, index){
                   
-                  return InkWell(
-                    child: Card(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
-                        child: Row(
-                          children: [ 
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
-                                child: Image.asset(
-                                  'assets/images/Ben Parker.jpg', width: 50),
-                                ),
-                            ),
-                            Expanded(                 
-                              child: Column (
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: RichText(
+                  if(_contactList[index].receiver == widget.pass_username){
+                    return InkWell(
+                      child: Card(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                          child: Row(
+                            children: [ 
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(25),
+                                  child: Image.asset(
+                                    'assets/images/Ben Parker.jpg', width: 50),
+                                  ),
+                              ),
+                              Expanded(                 
+                                child: Column (
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: RichText(
+                                        text: TextSpan(                     
+                                          text: _contactList[index].sender,
+                                          style: TextStyle(
+                                            color: Color(0xFF212121),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                          )
+                                        ),                              
+                                      ),
+                                    ),
+                                    RichText(
                                       text: TextSpan(                     
-                                        text: _contactList[index].receiver,
+                                        text: '${_contactList[index].body}...',
                                         style: TextStyle(
-                                          color: Color(0xFF212121),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
+                                          color: Color.fromARGB(255, 128, 128, 128),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14,
                                         )
                                       ),                              
+                                    )
+                                  ]
+                                )
+                              ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Text(
+                                    DateFormat('yyyy-MM-dd kk:mm').format(_contactList[index].datetime).toString(), 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12,
+                                      color: Color(0xFF808080)
                                     ),
                                   ),
-                                  RichText(
-                                    text: TextSpan(                     
-                                      text: '${_contactList[index].body}...',
-                                      style: TextStyle(
-                                        color: Color.fromARGB(255, 128, 128, 128),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                      )
-                                    ),                              
-                                  )
-                                ]
-                              )
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5.0),
-                                child: Text(
-                                  DateFormat('yyyy-MM-dd kk:mm').format(_contactList[index].datetime).toString(), 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: Color(0xFF808080)
+                                )
+                              ), 
+                            ]
+                          )    
+                        )
+                      ),
+                      onTap: () { 
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: _contactList[index].sender, pass_username: widget.pass_username)),
+                        );
+                      },                   
+                    );
+                  } else {
+                    return InkWell(
+                      child: Card(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                          child: Row(
+                            children: [ 
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(25),
+                                  child: Image.asset(
+                                    'assets/images/Ben Parker.jpg', width: 50),
                                   ),
-                                ),
-                              )
-                            ), 
-                          ]
-                        )    
-                      )
-                    ),
-                    onTap: () { 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: _contactList[index].receiver, pass_username: widget.pass_username)),
-                      );
-                    },                   
-                  );
-                  
-
+                              ),
+                              Expanded(                 
+                                child: Column (
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: RichText(
+                                        text: TextSpan(                     
+                                          text: _contactList[index].receiver,
+                                          style: TextStyle(
+                                            color: Color(0xFF212121),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                          )
+                                        ),                              
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(                     
+                                        text: '${_contactList[index].body}...',
+                                        style: TextStyle(
+                                          color: Color.fromARGB(255, 128, 128, 128),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14,
+                                        )
+                                      ),                              
+                                    )
+                                  ]
+                                )
+                              ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Text(
+                                    DateFormat('yyyy-MM-dd kk:mm').format(_contactList[index].datetime).toString(), 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12,
+                                      color: Color(0xFF808080)
+                                    ),
+                                  ),
+                                )
+                              ), 
+                            ]
+                          )    
+                        )
+                      ),
+                      onTap: () { 
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: _contactList[index].receiver, pass_username: widget.pass_username)),
+                        );
+                      },                   
+                    );
+                  }
+              
                 }
               )
             )
@@ -4860,6 +5595,46 @@ class _ChatPage extends State<ChatPage> {
       
         ),
       )
+    );
+  }
+}
+
+//Drop down location or city.
+class PaymentMethod extends StatefulWidget {
+  const PaymentMethod({Key key}) : super(key: key);
+  
+  @override
+  State<PaymentMethod> createState() => _PaymentMethodState();
+}
+
+class _PaymentMethodState extends State<PaymentMethod> {
+  String dropdownValue = 'Transfer Mandiri';
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      elevation: 16,
+      style: const TextStyle(
+        color: Color(0xFF4169E1),
+        fontSize: 15,
+      ),
+      underline: Container(
+        height: 2,
+        color: const Color(0xFF4169E1),
+      ),
+      onChanged: (String newValue) {
+        setState(() {
+          dropdownValue = newValue;
+        });
+      },
+      items: <String>["Transfer Mandiri", "Transfer BNI", "Transfer BRI", "Link Aja", "Ovo", "Dana"]
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 }
