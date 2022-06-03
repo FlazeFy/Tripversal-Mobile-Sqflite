@@ -354,7 +354,7 @@ class _RentACarPage extends State<RentACarPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 25.0),
+                  margin: EdgeInsets.symmetric(horizontal: 15.0),
                   //transform: Matrix4.translationValues(0.0, -10.0, 0.0),
                   child: Text(
                     "Categories", 
@@ -367,45 +367,115 @@ class _RentACarPage extends State<RentACarPage> {
                 ),
               ),  
 
-              Align(
+              Container(
+                transform: Matrix4.translationValues(-15.0, 0.0, 0.0),
+                margin: EdgeInsets.symmetric(vertical: 5.0),
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: <Widget>[
                       //Button item.
                       //Button / Container color must changed when selected.
                       Container(
-                        margin: const EdgeInsets.only(right: 10.0),
-                        child: OutlinedButton.icon(
+                        width: 100,
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: RaisedButton(
+                          color: Color(0xFF4183D7),
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Icon(
+                                  Icons.car_rental,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text(
+                                  "City Car",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           onPressed: () {
                             getAllCityCarData();
                             setState(() {});
                           },
-                          icon: Icon(Icons.motorcycle, size: 30),
-                          label: Text("City Car")
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(right: 10.0),
-                        child: OutlinedButton.icon(
+                        width: 100,
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: RaisedButton(
+                          color: Color(0xFF4183D7),
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Icon(
+                                  Icons.airport_shuttle,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text(
+                                  "Minibus",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           onPressed: () {
                             getAllMinibusData();
                             setState(() {});
                           },
-                          icon: Icon(Icons.airport_shuttle, size: 30),
-                          label: Text("Minibus")
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(right: 10.0),
-                        child: OutlinedButton.icon(
+                        width: 100,
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: RaisedButton(
+                          color: Color(0xFF4183D7),
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Icon(
+                                  Icons.motorcycle,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text(
+                                  "Motorcycle",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           onPressed: () {
                             getAllOtherData();
                             setState(() {});
                           },
-                          icon: Icon(Icons.motorcycle, size: 30),
-                          label: Text("Other")
                         ),
                       ),
                     ]
@@ -3428,6 +3498,7 @@ class _BookGuidePage extends State<BookGuidePage> {
   var _guide = guideModel();
   var _guideServices = guideServices();
   var _review = reviewModel();
+  var guideName; var price;
 
   List<guideModel> _guideList = <guideModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
@@ -3449,8 +3520,10 @@ class _BookGuidePage extends State<BookGuidePage> {
         var guideModels = guideModel();
         guideModels.idGuide = guide['id_guide'];
         guideModels.name = guide['name'];
+        guideName = guide['name'];
         guideModels.language = guide['language'];
         guideModels.price = guide['price'];
+        price = guide['price'];
         guideModels.rating = guide['rating'];
         guideModels.customer = guide['customer'];
         guideModels.desc = guide['desc'];
@@ -4028,7 +4101,7 @@ class _BookGuidePage extends State<BookGuidePage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(),
+              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idGuide, pass_carguidename: guideName, pass_fullname: widget.pass_fullname, pass_price: price, type: 'Tour Guide'),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
@@ -4077,6 +4150,34 @@ class _OrderPage extends State<OrderPage> {
       });
     }
   }
+  getNextDay(){
+    var date = new DateTime.now();
+    var newDate = new DateTime(date.year, date.month, date.day + 1);
+    return newDate;
+  }
+
+  int add = 0;
+  getAddition(){
+    if(widget.type == 'Car Rental'){
+      add = 20000;
+    } else {
+      add = 0;
+    }
+    return add;
+  }
+  getTotal(){
+    bool pickup = false; 
+    int price = widget.pass_price;
+    int total = 0;
+
+    if((!pickup)&&(widget.type == 'Car Rental')){
+      total = price + 5000 + getAddition();
+    } else {
+      total = price + 5000;
+    }
+    return total;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -4196,214 +4297,250 @@ class _OrderPage extends State<OrderPage> {
                   color: Color.fromARGB(255, 185, 185, 185),
                 ),
 
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
-                    child: const Text(
-                      "Order Detail", 
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: Color(0xFF4169E1)
-                      ),
+                ExpansionTile( //Collapse-1 ===========================================
+                  title: const Text(
+                    "   Order Detail",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Color(0xFF4169E1)
                     ),
                   ),
-                ),
-
-                //Date section.
-                Row(
-                  children: [
+                  initiallyExpanded: true,
+                  children: <Widget>[    
+                    //Date section.
                     Row(
                       children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                            child: const Text(
-                              "Date", 
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: Color(0xFF212121)
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                                child: const Text(
+                                  "Date Start", 
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: Color(0xFF212121)
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Align(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                                width: 90,
+                                height: 35,
+                                child: TextField(
+                                  onTap: () {
+                                    _selectDate(context);
+                                  },
+                                  decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                    ),             
+                                    hintText: (DateFormat('yyyy-MM-dd').format(DateTime.now())).toString(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]
                         ),
-                        Align(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                            width: 90,
-                            height: 35,
-                            child: TextField(
-                              onTap: () {
-                                _selectDate(context);
-                              },
-                              decoration: const InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                                ),             
-                                hintText: '16/4/2022',
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                                child: const Text(
+                                  "End", 
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: Color(0xFF212121)
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Align(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                                width: 90,
+                                height: 35,
+                                child: TextField(
+                                  onTap: () {
+                                    _selectDate(context);
+                                  },
+                                  decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                    ),             
+                                    hintText: (DateFormat('yyyy-MM-dd').format(getNextDay())).toString(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]
                         ),
                       ]
                     ),
 
-                    Row(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                            child: const Text(
-                              "Time", 
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: Color(0xFF212121)
-                              ),
-                            ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                        child: const Text(
+                          "Pick-Up Location", 
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                            color: Color(0xFF212121)
                           ),
                         ),
-                        Align(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                            width: 60,
-                            height: 35,
-                            child: TextField(
-                              onTap: () {
-                                _selectTime(context);
+                      ),
+                    ),
+                    Align(
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal:15.0, vertical: 3.0),
+                            height: 45,
+                            width: 30,
+                            child: IconButton(
+                            onPressed: () {
+                                // Respond to button press
                               },
-                              decoration: const InputDecoration(
+                              icon: const Icon(Icons.location_on, size: 30),
+                              color: const Color(0xFF00B0FF),
+                              padding: const EdgeInsets.all(0.0)
+                            )
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 3.0),
+                            height: 35,
+                            width: MediaQuery.of(context).size.width* 0.45,
+                            child: const TextField(
+                              decoration: InputDecoration(
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                                ),        
-                                hintText: '12:30',
+                                ),
+                            
+                                hintText: 'Bojongsoang',
                               ),
                             ),
                           ),
-                        ),
-                      ]
+                          Row(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                                  child: const Text(
+                                    "Time", 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      color: Color(0xFF212121)
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                  width: 60,
+                                  height: 35,
+                                  child: TextField(
+                                    onTap: () {
+                                      _selectTime(context);
+                                    },
+                                    decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                      ),        
+                                      hintText: (DateFormat('hh:mm').format(DateTime.now())).toString(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]
+                          ),
+                        ]
+                      ),
                     ),
-                  ]
-                ),
 
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                    child: const Text(
-                      "Pick-Up Location", 
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                        color: Color(0xFF212121)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                        child: const Text(
+                          "Note (Optional)", 
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                            color: Color(0xFF212121)
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Align(
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal:15.0, vertical: 3.0),
-                        height: 45,
-                        width: 50,
-                        child: IconButton(
-                        onPressed: () {
-                            // Respond to button press
-                          },
-                          icon: const Icon(Icons.location_on, size: 30),
-                          color: const Color(0xFF00B0FF),
-                          padding: const EdgeInsets.all(0.0)
-                        )
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 3.0),
-                        height: 35,
-                        width: MediaQuery.of(context).size.width* 0.60,
-                        child: const TextField(
-                          decoration: InputDecoration(
+                    Align(
+                      child: Container(
+                        transform: Matrix4.translationValues(0.0, -10.0, 0.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                        height: 65,
+                        child: TextFormField(
+                          minLines: 10,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                             ),
-                        
-                            hintText: 'Bojongsoang',
+                            hintText: 'Please arrive at the location five minutes early.',
                           ),
                         ),
                       ),
-                    ]
-                  ),
-                ),
-
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                    child: const Text(
-                      "Note (Optional)", 
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                        color: Color(0xFF212121)
-                      ),
                     ),
-                  ),
-                ),
-                Align(
-                  child: Container(
-                    transform: Matrix4.translationValues(0.0, -10.0, 0.0),
-                    margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                    height: 65,
-                    child: TextFormField(
-                      minLines: 10,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                        ),
-                        hintText: 'Please arrive at the location five minutes early.',
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width* 0.9,
-                  padding: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    color: Colors.lightGreen.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10), 
-                  ),  
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                        child: const Icon(
-                          Icons.info,
-                          color: Colors.green,
-                          size: 30.0,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width* 0.65,
-                          margin: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: const Text(
-                            "Make sure the order detail is right. You can't change it in the future", 
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 13,
-                              color: Color(0xFF212121)
+                    Container(
+                      width: MediaQuery.of(context).size.width* 0.9,
+                      padding: const EdgeInsets.all(4.0),
+                      decoration: BoxDecoration(
+                        color: Colors.lightGreen.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10), 
+                      ),  
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                            child: const Icon(
+                              Icons.info,
+                              color: Colors.green,
+                              size: 30.0,
                             ),
                           ),
-                        ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width* 0.65,
+                              margin: const EdgeInsets.symmetric(vertical: 5.0),
+                              child: const Text(
+                                "Make sure the order detail is right. You can't change it in the future", 
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13,
+                                  color: Color(0xFF212121)
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]
                       ),
-                    ]
-                  ),
+                    ),
+                  ]
                 ),
                 const Divider(
                   height: 20,
@@ -4412,7 +4549,6 @@ class _OrderPage extends State<OrderPage> {
                   endIndent: 15,
                   color: Color.fromARGB(255, 185, 185, 185),
                 ),
-
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Card(
@@ -4452,6 +4588,7 @@ class _OrderPage extends State<OrderPage> {
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: MediaQuery.of(context).size.width* 0.07),
                                 Container(
                                   alignment: Alignment.centerRight,
                                   child: const PaymentMethod(),
@@ -4473,12 +4610,13 @@ class _OrderPage extends State<OrderPage> {
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: MediaQuery.of(context).size.width* 0.32),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: const Text(
-                                      "Rp. 325.000", 
+                                    child: Text(
+                                      "Rp. ${widget.pass_price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
                                       style: TextStyle(
                                         fontSize: 15,
                                       ),
@@ -4501,12 +4639,13 @@ class _OrderPage extends State<OrderPage> {
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: MediaQuery.of(context).size.width* 0.15),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: const Text(
-                                      "Rp. 20.000", 
+                                    child: Text(
+                                      "Rp. ${getAddition().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
                                       style: TextStyle(
                                         fontSize: 15,
                                       ),
@@ -4529,6 +4668,7 @@ class _OrderPage extends State<OrderPage> {
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: MediaQuery.of(context).size.width* 0.38),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
@@ -4566,12 +4706,13 @@ class _OrderPage extends State<OrderPage> {
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: MediaQuery.of(context).size.width* 0.18),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
                                     child: Text(
-                                      "Rp. ${widget.pass_price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
+                                      "Rp. ${getTotal().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 20,
@@ -5492,74 +5633,74 @@ class _ChatPage extends State<ChatPage> {
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: Column(
-            children: [
-              //Text.
-              Flexible(
-                child: ListView.builder(
-                  itemCount : _messageList.length,
-                  itemBuilder: (context, index){
-                    if(_messageList[index].sender == widget.pass_username){
-                      return Column(
-                        children:[
-                          ChatBubble(
-                            clipper: ChatBubbleClipper1(type: BubbleType.sendBubble),
-                            alignment: Alignment.topRight,
-                            margin: const EdgeInsets.only(top: 20),
-                            backGroundColor: Colors.lightBlue,
-                            child: Container(
-                              constraints: BoxConstraints(
-                                maxWidth: MediaQuery.of(context).size.width * 0.7,
-                              ),
-                              child: Text(
-                                _messageList[index].body,
-                                style: const TextStyle(color: Colors.white),
-                              ),
+          children: [
+            //Text.
+            Flexible(
+              child: ListView.builder(
+                itemCount : _messageList.length,
+                itemBuilder: (context, index){
+                  if(_messageList[index].sender == widget.pass_username){
+                    return Column(
+                      children:[
+                        ChatBubble(
+                          clipper: ChatBubbleClipper1(type: BubbleType.sendBubble),
+                          alignment: Alignment.topRight,
+                          margin: const EdgeInsets.only(top: 20),
+                          backGroundColor: Colors.lightBlue,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 0.7,
+                            ),
+                            child: Text(
+                              _messageList[index].body,
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
-                              child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
-                                style: const TextStyle(color: Colors.grey, fontSize:14))
-                            )
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
+                            child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
+                              style: const TextStyle(color: Colors.grey, fontSize:14))
                           )
-                        ]
-                      );
-                    } else if (_messageList[index].receiver == widget.pass_username){
-                      return Column(
-                        children:[
-                          ChatBubble(
-                            clipper: ChatBubbleClipper1(type: BubbleType.receiverBubble),
-                            alignment: Alignment.topLeft,
-                            margin: const EdgeInsets.only(top: 20),
-                            backGroundColor: Colors.blueAccent,
-                            child: Container(
-                              constraints: BoxConstraints(
-                                maxWidth: MediaQuery.of(context).size.width * 0.7,
-                              ),
-                              child: Text(
-                                _messageList[index].body,
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                        )
+                      ]
+                    );
+                  } else if (_messageList[index].receiver == widget.pass_username){
+                    return Column(
+                      children:[
+                        ChatBubble(
+                          clipper: ChatBubbleClipper1(type: BubbleType.receiverBubble),
+                          alignment: Alignment.topLeft,
+                          margin: const EdgeInsets.only(top: 20),
+                          backGroundColor: Colors.blueAccent,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 0.7,
+                            ),
+                            child: Text(
+                              _messageList[index].body,
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
-                              child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
-                                style: const TextStyle(color: Colors.grey, fontSize:14))
-                            )
+                        ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
+                            child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
+                              style: const TextStyle(color: Colors.grey, fontSize:14))
                           )
-                        ]
-                      );
-                    }
-                    //End of card.
+                        )
+                      ]
+                    );
                   }
-                )
-              //End of item list.
-              ),
+                  //End of card.
+                }
+              )
+            //End of item list.
+            ),
             Align(
               alignment: Alignment.bottomLeft,
               child: Container(
