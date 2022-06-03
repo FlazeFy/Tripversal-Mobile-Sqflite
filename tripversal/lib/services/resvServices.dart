@@ -14,4 +14,7 @@ class resvServices{
   readOnGoing() async{
     return await _repository.readOnGoingDataById('ongoing');
   }
+  readWaiting() async{
+    return await _repository.readWaitingDataById('waiting');
+  }
 }

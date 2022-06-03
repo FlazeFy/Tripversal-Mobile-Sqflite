@@ -63,6 +63,11 @@ class Repository{
     // return await connection.query(table);
     return await connection.rawQuery('SELECT * FROM ongoing WHERE id_user=?', ['1']);
   }
+  readWaitingDataById(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM waiting JOIN car ON waiting.id_car_guide = car.id_car WHERE id_user=?', ['1']);
+  }
 
   // readCarDataById(table) async{
   //   var connection = await database;

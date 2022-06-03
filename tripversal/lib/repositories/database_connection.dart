@@ -18,7 +18,8 @@ class DatabaseConnection{
     await database.execute("CREATE TABLE ongoing (id_ongoing INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, desc TEXT NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL)");
     await database.execute("CREATE TABLE review (id_review INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, comment TEXT NOT NULL, rating INTEGER NOT NULL, dateReview DATETIME NOT NULL)");
     await database.execute("CREATE TABLE message (id_message INTEGER PRIMARY KEY AUTOINCREMENT, sender TEXT NOT NULL, receiver TEXT NOT NULL, type TEXT NOT NULL, body TEXT NOT NULL, imageURL TEXT NOT NULL, datetime DATETIME)");
-    
+    await database.execute("CREATE TABLE waiting (id_waiting INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, price INTEGER NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL, status TEXT NOT NULL)");
+
     //Insert City Car Item 
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 1670 VZB', 'City Car', 'Honda Brio RS/2020', 'Bojongsoang', 290000, 5, 'Ben Parker', 5, 35, 12000, 'Lorem ipsum', '-6.972278953671738', '107.6412048707937')");
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng) VALUES(null, 'D 1140 AAB', 'City Car', 'Toyota Raize/2022', 'Bojongsoang', 340000, 5, 'none', 5, 35, 7000, 'Lorem ipsum', '-6.9703190663757475', '107.63220124971892')");
@@ -36,6 +37,9 @@ class DatabaseConnection{
 
     //Insert OnGoing Item 
     await database.execute("INSERT INTO ongoing(id_ongoing, id_user, id_car_guide, type, desc, dateStart, dateEnd) VALUES(null, 1, 1, 'Car Rental', 'D 1670 VZB', '2022-05-01 10:37:20', '2022-05-03 10:10:45')");
+
+    //Insert Waiting 4 Payment Item
+    await database.execute("INSERT INTO waiting (id_waiting, id_user, id_car_guide, type, price, status, dateStart, dateEnd) VALUES(null, 1, 3, 'Car Rental', 550000, 'waiting', '2022-05-01 12:10:00', '2022-05-03 12:10:00')");
 
     //Insert Review Item 
     await database.execute("INSERT INTO review(id_review, id_user, id_car_guide, type, comment, rating, dateReview) VALUES(null, 1, 1, 'Car Rental', 'This car is well maintained by the owner, have clean interior, and also experienced driver', 5, '2022-05-02 10:10:45')");

@@ -11,6 +11,7 @@ import 'package:tripversal/models/onGoingModel.dart';
 import 'package:tripversal/models/resvModel.dart';
 import 'package:tripversal/models/reviewModel.dart';
 import 'package:tripversal/models/userModel.dart';
+import 'package:tripversal/models/waitingModel.dart';
 import 'package:tripversal/orderBody.dart';
 import 'package:tripversal/paymentBody.dart';
 import 'package:tripversal/services/guideServices.dart';
@@ -1708,18 +1709,42 @@ class MyResPage extends StatefulWidget {
 class _MyResPage extends State<MyResPage> {
   var _resv = resvModel();
   var _ongoing = onGoingModel();
+  var _waiting = waitingModel();
   var _resvServices = resvServices();
 
   List<resvModel> _historyList = <resvModel>[];
   List<onGoingModel> _onGoingList = <onGoingModel>[];
+  List<waitingModel> _waitingList = <waitingModel>[];
   
   @override
   void initState(){
     super.initState();
+    getAllWaitingData();
     getAllHistoryData();
     getAllOnGoingData();
   }
 
+  getAllWaitingData() async {
+    _waitingList = <waitingModel>[];
+    var waiting = await _resvServices.readWaiting();
+
+    waiting.forEach((waiting){
+      setState((){
+        var waitingModels = waitingModel();
+        waitingModels.idWaiting = waiting['id_waiting'];
+        waitingModels.idUser = waiting['id_user'];
+        waitingModels.idCarGuide = waiting['id_car_guide'];
+        waitingModels.type = waiting['type'];
+        waitingModels.price = waiting['price'];
+        waitingModels.status = waiting['status'];
+        waitingModels.carname = waiting['carname'];
+        waitingModels.dateStart= DateTime.tryParse(waiting['dateStart']);
+        waitingModels.dateEnd= DateTime.tryParse(waiting['dateEnd']);
+
+        _waitingList.add(waitingModels);
+      });
+    });
+  }
   getAllHistoryData() async {
     _historyList = <resvModel>[];
     var history = await _resvServices.readHistory();
@@ -1827,174 +1852,176 @@ class _MyResPage extends State<MyResPage> {
                       fontWeight: FontWeight.w800
                     ),
                   ),
-                  children: <Widget>[                     
-                    SingleChildScrollView(               
+                  children: <Widget>[ 
+                    //Can use flexible error flex
+                    ListView.builder(     
+                      shrinkWrap: true,          
                       scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: <Widget>[
+                      itemCount : _waitingList.length,
+                      itemBuilder: (context, index){
                             
-                          Card( //item-1 -----------------------------------------
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        return Card( //item-1 -----------------------------------------
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child:Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius : BorderRadius.circular(10),             
+                              color: const Color(0xFF4169E1),
                             ),
-                            child:Container(
-                              height: 100,
-                              decoration: BoxDecoration(
-                                borderRadius : BorderRadius.circular(10),             
-                                color: const Color(0xFF4169E1),
-                              ),
-                              child: Row(
-                                children: [  
-                                  Expanded(
-                                    child:Container(
-                                      alignment: Alignment.topLeft,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            alignment: Alignment.topLeft,
-                                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                            child: RichText(
-                                              text: const TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: " Toyota Innova / 2015",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.w500,
-                                                      fontSize: 18
-                                                    )
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ),
-                                          Container(
-                                            alignment: Alignment.bottomLeft,
-                                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                                            child: Row(
+                            child: Row(
+                              children: [  
+                                Expanded(
+                                  child:Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                          child: RichText(
+                                            text: TextSpan(
                                               children: [
-                                                Container(
-                                                  alignment: Alignment.bottomLeft,
-                                               
-                                                  child: RichText(
-                                                    text: const TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "Rp.",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18,
-                                                          )
-                                                        ),
-                                                        TextSpan(
-                                                          text: " 400.000",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 22,
-                                                            fontWeight: FontWeight.bold
-                                                          )
-                                                        ),
-                                                        TextSpan(
-                                                          text: " / Day",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18,
-                                                          )
-                                                        ),
-                                                      ],
-                                                    ),
+                                                TextSpan(
+                                                  text: " ${_waitingList[index].carname}",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 18
                                                   )
                                                 ),
                                               ],
                                             ),
+                                          )
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                            
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Rp.",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18,
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: " ${_waitingList[index].price.toString()}",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 22,
+                                                          fontWeight: FontWeight.bold
+                                                        )
+                                                      ),
+                                                      TextSpan(
+                                                        text: " / Day",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18,
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    flex:8 ,
                                   ),
-                                  Container(
-                                    //Timer with minute and second.
-                                  ),
-                                  Container(
-                                    height: 60,
-                                    width: 80,
-                                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                    child: RaisedButton(
-                                      color: const Color(0xFFe33b51),
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: const <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(1.0),
-                                            child: Icon(
-                                              Icons.cancel,
+                                  flex:8 ,
+                                ),
+                                Container(
+                                  //Timer with minute and second.
+                                ),
+                                Container(
+                                  height: 60,
+                                  width: 80,
+                                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                  child: RaisedButton(
+                                    color: const Color(0xFFe33b51),
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: const <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.all(1.0),
+                                          child: Icon(
+                                            Icons.cancel,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(0),
+                                          child: Text(
+                                            "Cancel",
+                                            style: TextStyle(
                                               color: Colors.white,
                                             ),
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.all(0),
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                    },
+                                  )
+                                ),
+                                Container(
+                                  height: 60,
+                                  width: 80,
+                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: RaisedButton(
+                                    color: const Color(0xFF13B402),
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: const <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.all(1.0),
+                                          child: Icon(
+                                            Icons.info,
+                                            color: Colors.white,
                                           ),
-                                        ],
-                                      ),
-                                      onPressed: () {
-                                      },
-                                    )
-                                  ),
-                                  Container(
-                                    height: 60,
-                                    width: 80,
-                                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                    child: RaisedButton(
-                                      color: const Color(0xFF13B402),
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: const <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(1.0),
-                                            child: Icon(
-                                              Icons.info,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(0),
+                                          child: Text(
+                                            "Details",
+                                            style: TextStyle(
                                               color: Colors.white,
                                             ),
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.all(0),
-                                            child: Text(
-                                              "Details",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context, MaterialPageRoute(
-                                            builder: (context) => const PaymentPage(),
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  ),
-                                ],
-                              ),
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context, MaterialPageRoute(
+                                          builder: (context) => const PaymentPage(),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                ),
+                              ],
                             ),
-                            elevation: 8,
-                            margin: const EdgeInsets.all(10),
                           ),
-
-                        ]
+                          elevation: 8,
+                          margin: const EdgeInsets.all(10),
+                        );
+                      }  
+                    
                       )
-                    )   
+                    
                     
                   ],
                 ),
@@ -2018,7 +2045,8 @@ class _MyResPage extends State<MyResPage> {
                     Container(
                       height: 260, 
                       margin: EdgeInsets.symmetric(horizontal: 5), 
-                      child: ListView.builder(               
+                      child: ListView.builder(
+                        //shrinkWrap: true,                  
                         scrollDirection: Axis.horizontal,
                         itemCount : _onGoingList.length,
                         itemBuilder: (context, index){
@@ -2128,460 +2156,458 @@ class _MyResPage extends State<MyResPage> {
                   ],
                 ),
 
-                    ExpansionTile( //Collapse-3 ===========================================
-                      leading: IconButton(
-                        iconSize: 30,
-                        icon: const Icon(Icons.history,
-                        color: Color(0xFF808080)),
-                        onPressed: () {},
-                      ),
-                      title: const Text(
-                        "History",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w800
-                        ),
-                      ),
-                      children: <Widget>[ 
-                        Container(
-                        //Can use flexible error flex
-                        height: MediaQuery.of(context).size.height,                    
-                        child: ListView.builder(               
-                          scrollDirection: Axis.vertical,
-                          itemCount : _historyList.length,
-                          itemBuilder: (context, index){
-                              return Card( //item-1 -----------------------------------------
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child:Container(
-                                  // height: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius : BorderRadius.circular(10),             
-                                    color: Colors.white,
+                ExpansionTile( //Collapse-3 ===========================================
+                  leading: IconButton(
+                    iconSize: 30,
+                    icon: const Icon(Icons.history,
+                    color: Color(0xFF808080)),
+                    onPressed: () {},
+                  ),
+                  title: const Text(
+                    "History",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w800
+                    ),
+                  ),
+                  children: <Widget>[ 
+                    ListView.builder(      
+                      shrinkWrap: true,            
+                      scrollDirection: Axis.vertical,
+                      itemCount : _historyList.length,
+                      itemBuilder: (context, index){
+                          return Card( //item-1 -----------------------------------------
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child:Container(
+                              // height: 100,
+                              decoration: BoxDecoration(
+                                borderRadius : BorderRadius.circular(10),             
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                children: [ 
+                                  Align( 
+                                    child: Row(
+                                      children: [  
+                                        Expanded(
+                                          child:Container(
+                                            alignment: Alignment.topLeft,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  alignment: Alignment.topLeft,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: _historyList[index].type,
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight: FontWeight.w500,
+                                                            fontSize: 18
+                                                          )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ),
+                                                Container(
+                                                  alignment: Alignment.topLeft,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: _historyList[index].location,
+                                                          style: TextStyle(
+                                                            color: Color(0xFF808080),
+                                                            fontWeight: FontWeight.w500,
+                                                            fontSize: 16
+                                                          )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ),
+                                                Container(
+                                                  alignment: Alignment.topLeft,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()}",
+                                                          style: TextStyle(
+                                                            color: Color(0xFF808080),
+                                                            fontWeight: FontWeight.w500,
+                                                            fontStyle: FontStyle.italic,
+                                                            fontSize: 16
+                                                          )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          flex:8 ,
+                                        ),
+                                        Container(
+                                          height: 60,
+                                          width: 80,
+                                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                          child: OutlineButton(
+                                            onPressed: () {
+                                                // Respond to button press
+                                            },
+                                            borderSide: const BorderSide(
+                                              color: Color(0xFF4169E1),
+                                              width: 2,
+                                            ),
+                                            child: const Text("Review", 
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF4169E1),
+                                              ),
+                                            ), 
+                                          )
+                                        ),
+                                        Container(
+                                          height: 60,
+                                          width: 80,
+                                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                                // Respond to button press
+                                            },
+                                            child: const Text("Book Again", 
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF4169E1)),
+                                            ), 
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  child: Column(
-                                    children: [ 
-                                      Align( 
-                                        child: Row(
-                                          children: [  
-                                            Expanded(
-                                              child:Container(
-                                                alignment: Alignment.topLeft,
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: _historyList[index].type,
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: 18
-                                                              )
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: _historyList[index].location,
-                                                              style: TextStyle(
-                                                                color: Color(0xFF808080),
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: 16
-                                                              )
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()}",
-                                                              style: TextStyle(
-                                                                color: Color(0xFF808080),
-                                                                fontWeight: FontWeight.w500,
-                                                                fontStyle: FontStyle.italic,
-                                                                fontSize: 16
-                                                              )
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              flex:8 ,
-                                            ),
-                                            Container(
-                                              height: 60,
-                                              width: 80,
-                                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                              child: OutlineButton(
-                                                onPressed: () {
-                                                    // Respond to button press
-                                                },
-                                                borderSide: const BorderSide(
-                                                  color: Color(0xFF4169E1),
-                                                  width: 2,
-                                                ),
-                                                child: const Text("Review", 
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xFF4169E1),
-                                                  ),
-                                                ), 
-                                              )
-                                            ),
-                                            Container(
-                                              height: 60,
-                                              width: 80,
-                                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                    // Respond to button press
-                                                },
-                                                child: const Text("Book Again", 
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                                style: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF4169E1)),
-                                                ), 
-                                              ),
-                                            )
-                                          ],
+                                  //Review section
+                                  Align(
+                                    child: ExpansionTile( 
+                                      leading: IconButton(
+                                        iconSize: 30,
+                                        icon: const Icon(Icons.star,
+                                        color: Color(0xFF808080)),
+                                        onPressed: () {},
+                                      ),
+                                      title: const Text(
+                                        "My Review",
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w800
                                         ),
                                       ),
-                                      //Review section
-                                      Align(
-                                        child: ExpansionTile( 
-                                          leading: IconButton(
-                                            iconSize: 30,
-                                            icon: const Icon(Icons.star,
-                                            color: Color(0xFF808080)),
-                                            onPressed: () {},
-                                          ),
-                                          title: const Text(
-                                            "My Review",
-                                            style: TextStyle(
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w800
-                                            ),
-                                          ),
-                                          children: <Widget>[
-                                            SingleChildScrollView(               
-                                              scrollDirection: Axis.vertical,
-                                              child: Column(
-                                                children: <Widget>[
-                                                
-                                                  Row(
-                                                    children: [  
-                                                      Expanded(
-                                                        child:Container(
-                                                          alignment: Alignment.topLeft,
-                                                          child: Column(
-                                                            children: [
-                                                              Container(
-                                                                alignment: Alignment.topLeft,
-                                                                margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
-                                                                child: RichText(
-                                                                  text: const TextSpan(
-                                                                    children: [
-                                                                    WidgetSpan(
-                                                                      child: Icon(Icons.star, 
-                                                                        size: 20,
-                                                                        color: Color(0xFF4169E1),
-                                                                      ),
-                                                                    ),
-                                                                    WidgetSpan(
-                                                                      child: Icon(Icons.star, 
-                                                                        size: 20,
-                                                                        color: Color(0xFF4169E1),
-                                                                      ),
-                                                                    ),
-                                                                    WidgetSpan(
-                                                                      child: Icon(Icons.star, 
-                                                                        size: 20,
-                                                                        color: Color(0xFF4169E1),
-                                                                      ),
-                                                                    ),
-                                                                    WidgetSpan(
-                                                                      child: Icon(Icons.star, 
-                                                                        size: 20,
-                                                                        color: Color(0xFF4169E1),
-                                                                      ),
-                                                                    ),
-                                                                    WidgetSpan(
-                                                                      child: Icon(Icons.star, 
-                                                                        size: 20,
-                                                                        color: Color(0xFF4169E1),
-                                                                      ),
-                                                                    ),
-                                    
-                                                                    ],
+                                      children: <Widget>[
+                                        SingleChildScrollView(               
+                                          scrollDirection: Axis.vertical,
+                                          child: Column(
+                                            children: <Widget>[
+                                            
+                                              Row(
+                                                children: [  
+                                                  Expanded(
+                                                    child:Container(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            alignment: Alignment.topLeft,
+                                                            margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                                                            child: RichText(
+                                                              text: const TextSpan(
+                                                                children: [
+                                                                WidgetSpan(
+                                                                  child: Icon(Icons.star, 
+                                                                    size: 20,
+                                                                    color: Color(0xFF4169E1),
                                                                   ),
-                                                                )
-                                                              ),
-                                                              Container(
-                                                                alignment: Alignment.topLeft,
-                                                                margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                                                                child: RichText(
-                                                                  text: TextSpan(
-                                                                    children: [
-                                                                      TextSpan(
-                                                                        text: _historyList[index].comment,
-                                                                        style: TextStyle(
-                                                                          color: Color.fromARGB(255, 77, 77, 77),
-                                                                          fontWeight: FontWeight.w500,
-                                                                          fontSize: 16
-                                                                        )
-                                                                      ),
-                                                                    ],
+                                                                ),
+                                                                WidgetSpan(
+                                                                  child: Icon(Icons.star, 
+                                                                    size: 20,
+                                                                    color: Color(0xFF4169E1),
                                                                   ),
-                                                                )
-                                                              ),
-                                                              Container(
-                                                                alignment: Alignment.topLeft,
-                                                                margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
-                                                                child: RichText(
-                                                                  text: TextSpan(
-                                                                    children: [
-                                                                      TextSpan(
-                                                                        text: "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateComment).toString()}",
-                                                                        style: TextStyle(
-                                                                          color: Color(0xFF808080),
-                                                                          fontWeight: FontWeight.w500,
-                                                                          fontStyle: FontStyle.italic,
-                                                                          fontSize: 13
-                                                                        )
-                                                                      ),
-                                                                    ],
+                                                                ),
+                                                                WidgetSpan(
+                                                                  child: Icon(Icons.star, 
+                                                                    size: 20,
+                                                                    color: Color(0xFF4169E1),
                                                                   ),
-                                                                )
+                                                                ),
+                                                                WidgetSpan(
+                                                                  child: Icon(Icons.star, 
+                                                                    size: 20,
+                                                                    color: Color(0xFF4169E1),
+                                                                  ),
+                                                                ),
+                                                                WidgetSpan(
+                                                                  child: Icon(Icons.star, 
+                                                                    size: 20,
+                                                                    color: Color(0xFF4169E1),
+                                                                  ),
+                                                                ),
+                                
+                                                                ],
                                                               ),
-
-                                                            ],
+                                                            )
                                                           ),
-                                                        ),
-                                                        flex:8 ,
+                                                          Container(
+                                                            alignment: Alignment.topLeft,
+                                                            margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                    text: _historyList[index].comment,
+                                                                    style: TextStyle(
+                                                                      color: Color.fromARGB(255, 77, 77, 77),
+                                                                      fontWeight: FontWeight.w500,
+                                                                      fontSize: 16
+                                                                    )
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ),
+                                                          Container(
+                                                            alignment: Alignment.topLeft,
+                                                            margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                    text: "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateComment).toString()}",
+                                                                    style: TextStyle(
+                                                                      color: Color(0xFF808080),
+                                                                      fontWeight: FontWeight.w500,
+                                                                      fontStyle: FontStyle.italic,
+                                                                      fontSize: 13
+                                                                    )
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    flex:8 ,
+                                                  ),
+                                                ],
+                                              ),
+                                                
+                                            ]
+                                          )
+                                        )  
+                                      ],
+                                    ),
+                                  ),
+
+                                  //Review section
+                                  Align(
+                                    child: ExpansionTile( 
+                                      leading: IconButton(
+                                        iconSize: 30,
+                                        icon: const Icon(Icons.info,
+                                        color: Color(0xFF808080)),
+                                        onPressed: () {},
+                                      ),
+                                      title: const Text(
+                                        "Detail",
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w800
+                                        ),
+                                      ),
+                                      children: <Widget>[
+                                        SingleChildScrollView(               
+                                          scrollDirection: Axis.vertical,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                child: RichText(
+                                                  text: const TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Period :",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF212121),
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 16
+                                                        )
                                                       ),
                                                     ],
                                                   ),
-                                                    
+                                                )
+                                              ),
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()} - ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateEnd).toString()}",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontWeight: FontWeight.w500,
+                                                          fontStyle: FontStyle.italic,
+                                                          fontSize: 16
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ),
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                child: RichText(
+                                                  text: const TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Price :",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF212121),
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 16
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ),
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Rp. ${_historyList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF808080),
+                                                          fontWeight: FontWeight.w500,
+                                                          fontStyle: FontStyle.italic,
+                                                          fontSize: 16
+                                                        )
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ),
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                child: RichText(
+                                                  text: const TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Driver :",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF212121),
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 16
+                                                        )
+                                                      ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: _historyList[index].name,
+                                                            style: TextStyle(
+                                                              color: Color(0xFF808080),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontStyle: FontStyle.italic,
+                                                              fontSize: 16
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    child: RichText(
+                                                      text: const TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: "Barcode :",
+                                                            style: TextStyle(
+                                                              color: Color(0xFF212121),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize: 16
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: _historyList[index].barcode,
+                                                            style: TextStyle(
+                                                              color: Color(0xFF212121),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize: 20
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(margin: const EdgeInsets.symmetric(vertical: 5.0))
+                                                  
                                                 ]
                                               )
                                             )  
                                           ],
                                         ),
-                                      ),
+                                      )
 
-                                      //Review section
-                                      Align(
-                                        child: ExpansionTile( 
-                                          leading: IconButton(
-                                            iconSize: 30,
-                                            icon: const Icon(Icons.info,
-                                            color: Color(0xFF808080)),
-                                            onPressed: () {},
-                                          ),
-                                          title: const Text(
-                                            "Detail",
-                                            style: TextStyle(
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w800
-                                            ),
-                                          ),
-                                          children: <Widget>[
-                                            SingleChildScrollView(               
-                                              scrollDirection: Axis.vertical,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Container(
-                                                    alignment: Alignment.topLeft,
-                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                                                    child: RichText(
-                                                      text: const TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "Period :",
-                                                            style: TextStyle(
-                                                              color: Color(0xFF212121),
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 16
-                                                            )
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.topLeft,
-                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()} - ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateEnd).toString()}",
-                                                            style: TextStyle(
-                                                              color: Color(0xFF808080),
-                                                              fontWeight: FontWeight.w500,
-                                                              fontStyle: FontStyle.italic,
-                                                              fontSize: 16
-                                                            )
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.topLeft,
-                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                                                    child: RichText(
-                                                      text: const TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "Price :",
-                                                            style: TextStyle(
-                                                              color: Color(0xFF212121),
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 16
-                                                            )
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.topLeft,
-                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "Rp. ${_historyList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                            style: TextStyle(
-                                                              color: Color(0xFF808080),
-                                                              fontWeight: FontWeight.w500,
-                                                              fontStyle: FontStyle.italic,
-                                                              fontSize: 16
-                                                            )
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.topLeft,
-                                                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                                                    child: RichText(
-                                                      text: const TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "Driver :",
-                                                            style: TextStyle(
-                                                              color: Color(0xFF212121),
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 16
-                                                            )
-                                                          ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text: _historyList[index].name,
-                                                                style: TextStyle(
-                                                                  color: Color(0xFF808080),
-                                                                  fontWeight: FontWeight.w500,
-                                                                  fontStyle: FontStyle.italic,
-                                                                  fontSize: 16
-                                                                )
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.center,
-                                                        child: RichText(
-                                                          text: const TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text: "Barcode :",
-                                                                style: TextStyle(
-                                                                  color: Color(0xFF212121),
-                                                                  fontWeight: FontWeight.w500,
-                                                                  fontSize: 16
-                                                                )
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.center,
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text: _historyList[index].barcode,
-                                                                style: TextStyle(
-                                                                  color: Color(0xFF212121),
-                                                                  fontWeight: FontWeight.w500,
-                                                                  fontSize: 20
-                                                                )
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ),
-                                                      Container(margin: const EdgeInsets.symmetric(vertical: 5.0))
-                                                      
-                                                    ]
-                                                  )
-                                                )  
-                                              ],
-                                            ),
-                                          )
+                                    ],
+                                  ),
+                                ),
+                                elevation: 8,
+                                margin: const EdgeInsets.all(10),
+                              );
+                            }
 
-                                        ],
-                                      ),
-                                    ),
-                                    elevation: 8,
-                                    margin: const EdgeInsets.all(10),
-                                  );
-                                }
-
-                              )   
+                          )   
                         
-                        ),
+                      
                       ]
                     )
 
@@ -2653,7 +2679,7 @@ class _BookCarPage extends State<BookCarPage> {
   var _review = reviewModel();
   var _carServices = carServices();
   var carname; var coordinate_lan; var coordinate_lng;
-  int idCarGuide; var price;
+  int idCarGuide; var price; var driver;
 
   List<carModel> _carList = <carModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
@@ -2683,6 +2709,7 @@ class _BookCarPage extends State<BookCarPage> {
           price = car['price'];
           carModels.rating = car['rating'];
           carModels.driver = car['driver'];
+          driver = car['driver'];
           carModels.seat = car['seat'];
           carModels.tank = car['tank'];
           carModels.distance = car['distance'];
@@ -2722,6 +2749,20 @@ class _BookCarPage extends State<BookCarPage> {
         });
       }
     });
+  }
+  Widget getDriverImage() {
+    if(driver != 'none'){
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.asset(
+            'assets/images/${driver}.jpg', width: 40),
+          ),
+      );
+    } else {
+      return SizedBox();
+    }
   }
   
   @override
@@ -3052,12 +3093,9 @@ class _BookCarPage extends State<BookCarPage> {
                                 ), 
                                 Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Image.asset(
-                                      'assets/images/${_carList[index].driver}.jpg', width: 40),
-                                    ),
+                                  child: getDriverImage()
                                 ),
+                                
                                 Expanded(                 
                                   child: Row (
                                     children: [
@@ -3066,8 +3104,8 @@ class _BookCarPage extends State<BookCarPage> {
                                           text: _carList[index].driver,
                                           style: TextStyle(
                                             color: Color(0xFF4169E1),
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
                                           )
                                         ),                              
                                       )
@@ -3215,118 +3253,117 @@ class _BookCarPage extends State<BookCarPage> {
                                 ),
                               ),
                               children: [
-                                SizedBox(
-                                  height: MediaQuery.of(context).size.height*0.5,
-                                  child: ListView.builder(
-                                    itemCount : _reviewList.length,
-                                    itemBuilder: (context, index){
-                                            
-                                      return Card( //item-1 -----------------------------------------
-                                          shape: RoundedRectangleBorder(
-                                            side: const BorderSide(color: Colors.white),
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child:Flexible(
-                                            child: Row(
-                                              children: [  
-                                                Expanded(
-                                                  child:Container(
-                                                    alignment: Alignment.topLeft,
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          alignment: Alignment.topLeft,
-                                                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                          child: RichText(
-                                                            text: const TextSpan(
-                                                              children: [
-                                                              WidgetSpan(
-                                                                child: Icon(Icons.star, 
-                                                                  size: 20,
-                                                                  color: Color(0xFF4169E1),
-                                                                ),
-                                                              ),
-                                                              WidgetSpan(
-                                                                child: Icon(Icons.star, 
-                                                                  size: 20,
-                                                                  color: Color(0xFF4169E1),
-                                                                ),
-                                                              ),
-                                                              WidgetSpan(
-                                                                child: Icon(Icons.star, 
-                                                                  size: 20,
-                                                                  color: Color(0xFF4169E1),
-                                                                ),
-                                                              ),
-                                                              WidgetSpan(
-                                                                child: Icon(Icons.star, 
-                                                                  size: 20,
-                                                                  color: Color(0xFF4169E1),
-                                                                ),
-                                                              ),
-                                                              WidgetSpan(
-                                                                child: Icon(Icons.star, 
-                                                                  size: 20,
-                                                                  color: Color(0xFF4169E1),
-                                                                ),
-                                                              ),
-                                
-                                                              ],
+                                ListView.builder(
+                                  shrinkWrap: true,   
+                                  itemCount : _reviewList.length,
+                                  itemBuilder: (context, index){
+                                          
+                                  return Card( //item-1 -----------------------------------------
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child:Flexible(
+                                        child: Row(
+                                          children: [  
+                                            Expanded(
+                                              child:Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                      child: RichText(
+                                                        text: const TextSpan(
+                                                          children: [
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
                                                             ),
-                                                          )
-                                                        ),
-                                                        Container(
-                                                          alignment: Alignment.topLeft,
-                                                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                          child: RichText(
-                                                            text: TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text: _reviewList[index].comment,
-                                                                  style: TextStyle(
-                                                                    color: Color.fromARGB(255, 77, 77, 77),
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontSize: 16
-                                                                  )
-                                                                ),
-                                                              ],
+                                                          ),
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
                                                             ),
-                                                          )
-                                                        ),
-                                                        Container(
-                                                          alignment: Alignment.topLeft,
-                                                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                          child: RichText(
-                                                            text: TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
-                                                                  style: TextStyle(
-                                                                    color: Color(0xFF808080),
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontStyle: FontStyle.italic,
-                                                                    fontSize: 13
-                                                                  )
-                                                                ),
-                                                              ],
+                                                          ),
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
                                                             ),
-                                                          )
+                                                          ),
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
+                                                            ),
+                                                          ),
+                                                          WidgetSpan(
+                                                            child: Icon(Icons.star, 
+                                                              size: 20,
+                                                              color: Color(0xFF4169E1),
+                                                            ),
+                                                          ),
+                            
+                                                          ],
                                                         ),
-                                                      ],
+                                                      )
                                                     ),
-                                                  ),
-                                                  flex:8 ,
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: _reviewList[index].comment,
+                                                              style: TextStyle(
+                                                                color: Color.fromARGB(255, 77, 77, 77),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: 16
+                                                              )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ),
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
+                                                              style: TextStyle(
+                                                                color: Color(0xFF808080),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontStyle: FontStyle.italic,
+                                                                fontSize: 13
+                                                              )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
+                                              ),
+                                              flex:8 ,
                                             ),
-                                          ),
-                                          elevation: 8,
-                                          margin: const EdgeInsets.all(10),
-                                        );
+                                          ],
+                                        ),
+                                      ),
+                                      elevation: 8,
+                                      margin: const EdgeInsets.all(10),
+                                    );
 
-                                      }  
-                                    )
+                                  }  
                                 )
+                                
                               ],
                             )
                           ]
@@ -3857,118 +3894,117 @@ class _BookGuidePage extends State<BookGuidePage> {
                               ),
                             ),
                             children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height*0.5,
-                                child: ListView.builder(
-                                  itemCount : _reviewList.length,
-                                  itemBuilder: (context, index){
-                                          
-                                    return Card( //item-1 -----------------------------------------
-                                        shape: RoundedRectangleBorder(
-                                          side: const BorderSide(color: Colors.white),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child:Flexible(
-                                          child: Row(
-                                            children: [  
-                                              Expanded(
-                                                child:Container(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                        child: RichText(
-                                                          text: const TextSpan(
-                                                            children: [
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                                                            WidgetSpan(
-                                                              child: Icon(Icons.star, 
-                                                                size: 20,
-                                                                color: Color(0xFF4169E1),
-                                                              ),
-                                                            ),
-                              
-                                                            ],
+                              ListView.builder(
+                                shrinkWrap: true,   
+                                itemCount : _reviewList.length,
+                                itemBuilder: (context, index){
+                                        
+                                  return Card( //item-1 -----------------------------------------
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child:Flexible(
+                                      child: Row(
+                                        children: [  
+                                          Expanded(
+                                            child:Container(
+                                              alignment: Alignment.topLeft,
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                    child: RichText(
+                                                      text: const TextSpan(
+                                                        children: [
+                                                        WidgetSpan(
+                                                          child: Icon(Icons.star, 
+                                                            size: 20,
+                                                            color: Color(0xFF4169E1),
                                                           ),
-                                                        )
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text: _reviewList[index].comment,
-                                                                style: TextStyle(
-                                                                  color: Color.fromARGB(255, 77, 77, 77),
-                                                                  fontWeight: FontWeight.w500,
-                                                                  fontSize: 16
-                                                                )
-                                                              ),
-                                                            ],
+                                                        ),
+                                                        WidgetSpan(
+                                                          child: Icon(Icons.star, 
+                                                            size: 20,
+                                                            color: Color(0xFF4169E1),
                                                           ),
-                                                        )
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
-                                                                style: TextStyle(
-                                                                  color: Color(0xFF808080),
-                                                                  fontWeight: FontWeight.w500,
-                                                                  fontStyle: FontStyle.italic,
-                                                                  fontSize: 13
-                                                                )
-                                                              ),
-                                                            ],
+                                                        ),
+                                                        WidgetSpan(
+                                                          child: Icon(Icons.star, 
+                                                            size: 20,
+                                                            color: Color(0xFF4169E1),
                                                           ),
-                                                        )
+                                                        ),
+                                                        WidgetSpan(
+                                                          child: Icon(Icons.star, 
+                                                            size: 20,
+                                                            color: Color(0xFF4169E1),
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          child: Icon(Icons.star, 
+                                                            size: 20,
+                                                            color: Color(0xFF4169E1),
+                                                          ),
+                                                        ),
+                          
+                                                        ],
                                                       ),
-                                                    ],
+                                                    )
                                                   ),
-                                                ),
-                                                flex:8 ,
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: _reviewList[index].comment,
+                                                            style: TextStyle(
+                                                              color: Color.fromARGB(255, 77, 77, 77),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize: 16
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.topLeft,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
+                                                            style: TextStyle(
+                                                              color: Color(0xFF808080),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontStyle: FontStyle.italic,
+                                                              fontSize: 13
+                                                            )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
+                                            flex:8 ,
                                           ),
-                                        ),
-                                        elevation: 8,
-                                        margin: const EdgeInsets.all(10),
-                                      );
+                                        ],
+                                      ),
+                                    ),
+                                    elevation: 8,
+                                    margin: const EdgeInsets.all(10),
+                                  );
 
-                                    }  
-                                  )
+                                }  
                               )
+                              
                             ],
                           ),
 
@@ -5208,6 +5244,7 @@ class _ContactPageState extends State<ContactPage> {
             
             Flexible(
               child : ListView.builder(
+                shrinkWrap: true,   
                 itemCount : _contactList.length,
                 itemBuilder: (context, index){
                   
@@ -5224,7 +5261,7 @@ class _ContactPageState extends State<ContactPage> {
                                   borderRadius: BorderRadius.circular(25),
                                   child: Image.asset(
                                     'assets/images/Ben Parker.jpg', width: 50),
-                                  ),
+                                ),
                               ),
                               Expanded(                 
                                 child: Column (
