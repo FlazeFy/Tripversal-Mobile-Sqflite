@@ -20,4 +20,7 @@ class userServices{
   loginAccount(userModel user) async{
     return await _repository.checkData('user', user.userMap());
   }
+  editAccount(userModel user) async{
+    return await _repository.updateData('user', user.userEditMap());
+  }
 }

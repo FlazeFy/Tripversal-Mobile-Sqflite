@@ -292,9 +292,8 @@ class CreateAcc extends StatelessWidget {
                       _user.phone = _phoneCtrl.text;
 
                       //_userservices.createAccount(_user);
-                      //ERROR!!! User still can create account with no data
                       
-                      if((_user.fullname.isNotEmpty)&&(_user.fullname.length < 20)&&(_user.password.length > 6)&&(_user.email.isNotEmpty)&&(_user.phone.length > 9)){
+                      if((_fullnameCtrl.text.isNotEmpty)&&(_idCardCtrl.text.length == 16)&&(_fullnameCtrl.text.length < 20)&&(_passwordCtrl.text.length > 6)&&(_emailCtrl.text.isNotEmpty)&&(_phoneCtrl.text.length > 9)&&(_phoneCtrl.text.length < 14)){
                         var result = await _userservices.createAccount(_user);
                         print(result);
                         Navigator.push(

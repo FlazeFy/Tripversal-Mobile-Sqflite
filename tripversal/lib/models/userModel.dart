@@ -20,6 +20,19 @@ class userModel{
     return mapping;
   }
 
+  userEditMap(){
+    var mapping = Map<String, dynamic>();
+
+    mapping['id_user'] = idUser;
+    mapping['id_Card'] = idCard;
+    mapping['fullname'] = fullname;
+    mapping['password'] = password;
+    mapping['email'] = email;
+    mapping['phone'] = phone;
+
+    return mapping;
+  }
+
   // //New.
   // loginuserMap(){
   //   var mapping = Map<String, dynamic>();

@@ -755,6 +755,11 @@ class _AccountPage extends State<AccountPage> {
   //const AccountPage({Key key}) : super(key: key);
   var _user = userModel();
   var _userServices = userServices();
+  var _fullnameCtrl = TextEditingController();
+  var _idCardCtrl = TextEditingController();
+  var _passwordCtrl = TextEditingController();
+  var _emailCtrl = TextEditingController();
+  var _phoneCtrl = TextEditingController();
 
   List<userModel> _userList = <userModel>[];
   
@@ -772,6 +777,7 @@ class _AccountPage extends State<AccountPage> {
       if(user['fullname'] == widget.pass_username){
       setState((){
         var userModels = userModel();
+        userModels.idUser = user['id_user'];
         userModels.fullname = user['fullname'];
         userModels.idCard = user['id_card'].toString();
         userModels.password = user['password'];
@@ -866,6 +872,7 @@ class _AccountPage extends State<AccountPage> {
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
                       height: 35,
                       child: TextField(
+                        enabled: false,
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -897,6 +904,7 @@ class _AccountPage extends State<AccountPage> {
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
                       height: 35,
                       child: TextField(
+                        controller: _idCardCtrl,
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -928,11 +936,11 @@ class _AccountPage extends State<AccountPage> {
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
                       height: 35,
                       child: TextField(
+                        controller: _passwordCtrl,
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
-                      
                           hintText: _userList[index].password,
                         ),
                       ),
@@ -959,6 +967,7 @@ class _AccountPage extends State<AccountPage> {
                       margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
                       height: 35,
                       child: TextField(
+                        controller: _emailCtrl,
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -990,6 +999,7 @@ class _AccountPage extends State<AccountPage> {
                       margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
                       height: 35,
                       child: TextField(
+                        controller: _phoneCtrl,
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -1048,8 +1058,41 @@ class _AccountPage extends State<AccountPage> {
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 25.0),
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                              // Respond to button press
+                          onPressed: () async {
+                            _user.idUser = _userList[index].idUser;
+                            _user.fullname = _userList[index].fullname;
+
+                            if(_idCardCtrl.text.isEmpty){
+                              _user.idCard = _userList[index].idCard;
+                            } else {
+                              _user.idCard = _idCardCtrl.text;
+                            }
+                            if(_passwordCtrl.text.isEmpty){
+                              _user.password = _userList[index].password;
+                            } else {
+                              _user.password = _passwordCtrl.text;
+                            }
+                            if(_emailCtrl.text.isEmpty){
+                              _user.email = _userList[index].email;
+                            } else {
+                              _user.email = _emailCtrl.text;
+                            }
+                            if(_phoneCtrl.text.isEmpty){
+                              _user.phone = _userList[index].phone;
+                            } else {
+                              _user.phone = _phoneCtrl.text;
+                            }
+                            
+                            if((_user.password.length > 6)&&(_user.idCard.length == 16)&&(_user.phone.length > 9)&&(_user.phone.length < 14)){
+                              var result = await _userServices.editAccount(_user);
+                              print(result);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => NavBar(pass_usernameNav: _user.fullname)),
+                              );
+                            } else {
+                              print('Create Account Failed');
+                            }
                           },
                           icon: Icon(Icons.save, size: 20),
                           label: Text("Save Changes"),
@@ -2264,73 +2307,65 @@ class _MyResPage extends State<MyResPage> {
                                       children: [  
                                         Expanded(
                                           child:Container(
+                                            width: MediaQuery.of(context).size.width*0.8,
                                             alignment: Alignment.topLeft,
                                             child: Column(
                                               children: [
-                                                Container(
-                                                  alignment: Alignment.topLeft,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: _historyList[index].type,
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 18
-                                                          )
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Container(
+                                                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                    child: Text(                     
+                                                      _historyList[index].type,
+                                                      style: const TextStyle(
+                                                        color: Color(0xFF212121),
+                                                        fontWeight: FontWeight.w600,
+                                                        fontSize: 15,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                    ),   
+                                                  ),
                                                 ),
-                                                Container(
-                                                  alignment: Alignment.topLeft,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: _historyList[index].location,
-                                                          style: TextStyle(
-                                                            color: Color(0xFF808080),
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 16
-                                                          )
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Container(
+                                                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                    child: Text(                     
+                                                      _historyList[index].location,
+                                                      style: const TextStyle(
+                                                        color: Color(0xFF808080),
+                                                        fontWeight: FontWeight.w600,
+                                                        fontSize: 14,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                    ),   
+                                                  ),
                                                 ),
-                                                Container(
-                                                  alignment: Alignment.topLeft,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()}",
-                                                          style: TextStyle(
-                                                            color: Color(0xFF808080),
-                                                            fontWeight: FontWeight.w500,
-                                                            fontStyle: FontStyle.italic,
-                                                            fontSize: 16
-                                                          )
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Container(
+                                                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                    child: Text(                     
+                                                      "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()}",
+                                                      style: const TextStyle(
+                                                        color: Color(0xFF808080),
+                                                        fontWeight: FontWeight.w600,
+                                                        fontSize: 14,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                    ),   
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          flex:8 ,
                                         ),
                                         Container(
                                           height: 60,
                                           width: 80,
-                                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
                                           child: OutlineButton(
                                             onPressed: () {
                                                 // Respond to button press
@@ -2347,6 +2382,7 @@ class _MyResPage extends State<MyResPage> {
                                             ), 
                                           )
                                         ),
+                                        SizedBox(width:5),
                                         Container(
                                           height: 60,
                                           width: 80,
@@ -2373,7 +2409,7 @@ class _MyResPage extends State<MyResPage> {
                                   Align(
                                     child: ExpansionTile( 
                                       leading: IconButton(
-                                        iconSize: 30,
+                                        iconSize: 25,
                                         icon: const Icon(Icons.star,
                                         color: Color(0xFF808080)),
                                         onPressed: () {},
@@ -2496,7 +2532,7 @@ class _MyResPage extends State<MyResPage> {
                                   Align(
                                     child: ExpansionTile( 
                                       leading: IconButton(
-                                        iconSize: 30,
+                                        iconSize: 23,
                                         icon: const Icon(Icons.info,
                                         color: Color(0xFF808080)),
                                         onPressed: () {},
@@ -2788,6 +2824,11 @@ class _BookCarPage extends State<BookCarPage> {
           carModels.coordinate_lng = car['coordinate_lng'];
           coordinate_lan = car['coordinate_lan'];
           coordinate_lng = car['coordinate_lng'];
+          carModels.idOwner = car['id_owner'];
+          carModels.owner_name = car['owner_name'];
+          carModels.owner_phone = car['owner_phone'];
+          carModels.owner_location = car['owner_location'];
+          carModels.owner_email = car['owner_email'];
           _carList.add(carModels);
         });
       }
@@ -3213,7 +3254,7 @@ class _BookCarPage extends State<BookCarPage> {
                                         child: Container(
                                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
                                           child: RichText(
-                                            text: const TextSpan(
+                                            text: TextSpan(
                                               children: [
                                                 WidgetSpan(
                                                   child: Icon(Icons.call, 
@@ -3222,7 +3263,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: "+62 811-4882-001",
+                                                  text: " ${_carList[index].owner_phone}",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
@@ -3238,7 +3279,7 @@ class _BookCarPage extends State<BookCarPage> {
                                         child: Container(
                                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
                                           child: RichText(
-                                            text: const TextSpan(
+                                            text: TextSpan(
                                               children: [
                                                 WidgetSpan(
                                                   child: Icon(Icons.location_on, 
@@ -3247,7 +3288,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: "Jl. Telekomunikasi No.1",
+                                                  text: " ${_carList[index].owner_location}",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
@@ -3263,7 +3304,7 @@ class _BookCarPage extends State<BookCarPage> {
                                         child: Container(
                                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
                                           child: RichText(
-                                            text: const TextSpan(
+                                            text: TextSpan(
                                               children: [
                                                 WidgetSpan(
                                                   child: Icon(Icons.email, 
@@ -3272,7 +3313,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: " parkerben02@gmail.com",
+                                                  text: " ${_carList[index].owner_email}",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
@@ -3284,12 +3325,29 @@ class _BookCarPage extends State<BookCarPage> {
                                         ),
                                       ),
                                       Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                        margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical:5),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: ElevatedButton.icon(
                                             onPressed: () {
-                                              //ContactPage
+                                              Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                  pageBuilder: (c, a1, a2) => ChatPage(pass_sender_receiver: _carList[index].owner_name, pass_username: widget.pass_fullname),
+                                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                    final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
+                                                    final curvedAnimation = CurvedAnimation(
+                                                      parent: animation,
+                                                      curve: Curves.ease,
+                                                    );
+
+                                                    return SlideTransition(
+                                                      position: tween.animate(curvedAnimation),
+                                                      child: child,
+                                                    );
+                                                  }
+                                                ),
+                                              );
                                             },
                                             icon: Icon(Icons.chat, size: 18),
                                             label: Text("Chat Now"),
@@ -3299,8 +3357,7 @@ class _BookCarPage extends State<BookCarPage> {
                                           ),
                                         ),
                                       ),
-                                      Container(margin: const EdgeInsets.symmetric(vertical: 10.0))
-
+                                      SizedBox(height: 5)
                                     ]
                                   )
                                 )   
@@ -5600,6 +5657,7 @@ class _ChatPage extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         iconTheme: 
           IconThemeData(
             color: Color(0xFF4169E1),
