@@ -15,14 +15,11 @@ class carServices{
   readCarwReview() async{
     return await _repository.readReviewCar('car');
   }
-  readCarwMessage() async{
-    return await _repository.readMessageCar('message');
+  readMessage() async{
+    return await _repository.readMessageAll('message');
   }
-  readCarwContact1() async{
-    return await _repository.readContact1Car('message');
-  }
-  readCarwContact2() async{
-    return await _repository.readContact2Car('message');
+  readContact() async{
+    return await _repository.readSocial('social');
   }
   sendMessage(messageModel message) async{
     return await _repository.insertMessage('message', message.messageMap2());

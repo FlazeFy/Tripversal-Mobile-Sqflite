@@ -20,6 +20,8 @@ class DatabaseConnection{
     await database.execute("CREATE TABLE message (id_message INTEGER PRIMARY KEY AUTOINCREMENT, sender TEXT NOT NULL, receiver TEXT NOT NULL, type TEXT NOT NULL, body TEXT NOT NULL, imageURL TEXT NOT NULL, datetime DATETIME)");
     await database.execute("CREATE TABLE waiting (id_waiting INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, price INTEGER NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL, status TEXT NOT NULL)");
     await database.execute("CREATE TABLE owner (id_owner INTEGER PRIMARY KEY AUTOINCREMENT, owner_name TEXT NOT NULL, owner_phone TEXT NOT NULL, owner_location TEXT NOT NULL, owner_email TEXT NOT NULL)");
+    await database.execute("CREATE TABLE social (id_social INTEGER PRIMARY KEY AUTOINCREMENT, garage_guide TEXT NOT NULL, username TEXT NOT NULL)");
+
 
     //Insert City Car Item 
     await database.execute("INSERT INTO car(id_car, plate, type, carname, location, price, rating, driver, seat, tank, distance, desc, coordinate_lan, coordinate_lng, id_owner) VALUES(null, 'D 1670 VZB', 'City Car', 'Honda Brio RS/2020', 'Bojongsoang', 290000, 5, 'Ben Parker', 5, 35, 12000, 'Lorem ipsum', '-6.972278953671738', '107.6412048707937', 1)");
@@ -50,10 +52,15 @@ class DatabaseConnection{
     await database.execute("INSERT INTO message(id_message, sender, receiver, type, body, imageURL, datetime) VALUES(null, 'Maju Jaya Rent', 'flazefy', 'Car Rental', 'Hello my name is Ben. And i will be ur driver for the next 24 hr', 'null', '2022-05-23 12:10:45')");
     await database.execute("INSERT INTO message(id_message, sender, receiver, type, body, imageURL, datetime) VALUES(null, 'Maju Jaya Rent', 'flazefy', 'Car Rental', 'Where should i pick u up tommorow?', 'null', '2022-05-23 12:11:31')");
     await database.execute("INSERT INTO message(id_message, sender, receiver, type, body, imageURL, datetime) VALUES(null, 'Maju Jaya Rent', 'richardkyle', 'Car Rental', 'Hello Richard, im already at the lobby', 'null', '2022-05-24 06:10:31')");
+    await database.execute("INSERT INTO message(id_message, sender, receiver, type, body, imageURL, datetime) VALUES(null, 'Cahya Trans', 'flazefy', 'Car Rental', 'Hello flazen, im already at the lobby', 'null', '2022-05-27 02:10:31')");
+    await database.execute("INSERT INTO message(id_message, sender, receiver, type, body, imageURL, datetime) VALUES(null, 'flazefy', 'Cahya Trans', 'Car Rental', 'Give me 5 min', 'null', '2022-05-27 02:12:41')");
 
     //Insert Owner Item
     await database.execute("INSERT INTO owner(id_owner, owner_name, owner_phone, owner_location, owner_email) VALUES(null, 'Maju Jaya Rent', '08114891203', 'Jl. Terusan Buah Batu No.24', 'majujaya@gmail.com')");
     await database.execute("INSERT INTO owner(id_owner, owner_name, owner_phone, owner_location, owner_email) VALUES(null, 'Cahya Trans', '08114899012', 'Jl. Telekomukasi No.17', 'cahyatrans@gmail.com')");
 
+    //Insert Social Item
+    await database.execute("INSERT INTO social(id_social, garage_guide, username) VALUES(null, 'Maju Jaya Rent', 'flazefy')");
+    await database.execute("INSERT INTO social(id_social, garage_guide, username) VALUES(null, 'Cahya Trans', 'flazefy')");
   }
 }

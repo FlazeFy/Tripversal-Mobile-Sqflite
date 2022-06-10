@@ -212,22 +212,33 @@ class _RentACarPage extends State<RentACarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: NavDrawer(pass_username: widget.pass_username),
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-        title: Text("Welcome, ${widget.pass_username}", 
-        style: TextStyle(
+        IconThemeData(
           color: Color(0xFF4169E1),
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
+          size: 35.0,
         ),
-      ),
       
       actions: [
+        //Text entry search.
+        Container(   
+          width: MediaQuery.of(context).size.width*0.5, 
+          transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
+          child: TextField(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal:5),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+              ),
+              border: OutlineInputBorder(),
+              hintText: 'search by driver, car...',
+              hintStyle: TextStyle(
+                fontStyle: FontStyle.italic
+              ),
+            ),
+          ),
+        ),
         IconButton(
           icon: Image.asset('assets/images/User.jpg'),
           iconSize: 50,
@@ -275,223 +286,210 @@ class _RentACarPage extends State<RentACarPage> {
                     //Drop down.
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 15.0),
-                      transform: Matrix4.translationValues(0.0, -5.0, 0.0),
+                      transform: Matrix4.translationValues(0.0, -15.0, 0.0),
                       child: MyStatefulWidget(),
                     ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                            child: Text(
+                              "Categories", 
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 15,
+                                color: Color(0xFF808080)
+                              ),
+                            ),
+                          ),
+                        ),  
 
-                    //Text entry search.
-                    Container(   
-                      width: 200,
-                      transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                          ),
-                          border: OutlineInputBorder(),
-                          hintText: 'search by driver, car...',
-                          hintStyle: TextStyle(
-                            fontStyle: FontStyle.italic
-                          ),
+                        Container(
+                          transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                //Button item.
+                                //Button / Container color must changed when selected.
+                                Container(
+                                  width: 80,
+                                  margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                  child: RaisedButton(
+                                    color: Color(0xFF4183D7),
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Icon(
+                                            Icons.car_rental,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            "City Car",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      getAllCityCarData();
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  width: 80,
+                                  margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                  child: RaisedButton(
+                                    color: Color(0xFF4183D7),
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Icon(
+                                            Icons.airport_shuttle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            "Minibus",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      getAllMinibusData();
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  width: 92,
+                                  margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                  child: RaisedButton(
+                                    color: Color(0xFF4183D7),
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Icon(
+                                            Icons.motorcycle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            "Motorcycle",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      getAllOtherData();
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                              ]
+                            )
+                          )
                         ),
-                      ),
+                      ],
                     ),
 
                     //Sort by button.
-                    Container(
-                      //Button properties.
-                      decoration: BoxDecoration(
-                        borderRadius : BorderRadius.circular(10),
-                        color: Color(0xFF4169E1),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(0, 3)
-                          )
-                        ],
-                      ),
-                      margin: EdgeInsets.symmetric(horizontal: 10.0),
-                      transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                    // Container(
+                    //   //Button properties.
+                    //   decoration: BoxDecoration(
+                    //     borderRadius : BorderRadius.circular(10),
+                    //     color: Color(0xFF4169E1),
+                    //     boxShadow: const [
+                    //       BoxShadow(
+                    //         color: Colors.grey,
+                    //         spreadRadius: 1,
+                    //         blurRadius: 5,
+                    //         offset: Offset(0, 3)
+                    //       )
+                    //     ],
+                    //   ),
+                    //   margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    //   transform: Matrix4.translationValues(0.0, -15.0, 0.0),
                       
-                      child: PopupMenuButton( 
-                        iconSize: 35,
-                        icon: Icon(Icons.sort, color: Colors.white),
-                        enabled: true,
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            child: ListTile(
-                              leading: IconButton(
-                                iconSize: 30,
-                                icon: Icon(Icons.arrow_drop_up,
-                                color: Color(0xFF4169E1)),
-                                onPressed: () {},
-                              ),
-                              title: Text('Sort by Price'),
-                            ),
-                          ),
-                          PopupMenuItem(
-                            child: ListTile(
-                              leading: IconButton(
-                                iconSize: 30,
-                                icon: Icon(Icons.arrow_drop_down,
-                                color: Color(0xFF4169E1)),
-                                onPressed: () {},
-                              ),
-                              title: Text('Sort by Price'),
-                            ),
-                          )
-                        ]
-                      ),
-                    ),
+                    //   child: PopupMenuButton( 
+                    //     iconSize: 35,
+                    //     icon: Icon(Icons.sort, color: Colors.white),
+                    //     enabled: true,
+                    //     itemBuilder: (context) => [
+                    //       PopupMenuItem(
+                    //         child: ListTile(
+                    //           leading: IconButton(
+                    //             iconSize: 30,
+                    //             icon: Icon(Icons.arrow_drop_up,
+                    //             color: Color(0xFF4169E1)),
+                    //             onPressed: () {},
+                    //           ),
+                    //           title: Text('Sort by Price'),
+                    //         ),
+                    //       ),
+                    //       PopupMenuItem(
+                    //         child: ListTile(
+                    //           leading: IconButton(
+                    //             iconSize: 30,
+                    //             icon: Icon(Icons.arrow_drop_down,
+                    //             color: Color(0xFF4169E1)),
+                    //             onPressed: () {},
+                    //           ),
+                    //           title: Text('Sort by Price'),
+                    //         ),
+                    //       )
+                    //     ]
+                    //   ),
+                    // ),
 
                   ],
                 ),
               ),
 
-              //Text.
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15.0),
-                  //transform: Matrix4.translationValues(0.0, -10.0, 0.0),
-                  child: Text(
-                    "Categories", 
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
-                      color: Color(0xFF808080)
-                    ),
-                  ),
-                ),
-              ),  
-
-              Container(
-                transform: Matrix4.translationValues(-15.0, 0.0, 0.0),
-                margin: EdgeInsets.symmetric(vertical: 5.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: <Widget>[
-                      //Button item.
-                      //Button / Container color must changed when selected.
-                      Container(
-                        width: 100,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: RaisedButton(
-                          color: Color(0xFF4183D7),
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Icon(
-                                  Icons.car_rental,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Text(
-                                  "City Car",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          onPressed: () {
-                            getAllCityCarData();
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                      Container(
-                        width: 100,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: RaisedButton(
-                          color: Color(0xFF4183D7),
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Icon(
-                                  Icons.airport_shuttle,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Text(
-                                  "Minibus",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          onPressed: () {
-                            getAllMinibusData();
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                      Container(
-                        width: 100,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: RaisedButton(
-                          color: Color(0xFF4183D7),
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Icon(
-                                  Icons.motorcycle,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Text(
-                                  "Motorcycle",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          onPressed: () {
-                            getAllOtherData();
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                    ]
-                  )
-                )
-              ),
-
               //Car Item.
               Align(
-                child: Text("Showing ${_carList.length.toString()} result...",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 13,
-                      color: Color(0xFF808080)
+                child: Container(
+                  transform: Matrix4.translationValues(0.0, -10.0, 0.0),
+                  child: Text("Showing ${_carList.length.toString()} result...",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 13,
+                        color: Color(0xFF808080)
+                      ),
                     ),
-                  ),
+                ),
               ),
 
               Flexible(
@@ -685,7 +683,7 @@ class _RentACarPage extends State<RentACarPage> {
                                           Navigator.push(
                                             context,
                                             PageRouteBuilder(
-                                              pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_fullname: widget.pass_username),
+                                              pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_username: widget.pass_username),
                                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                                 final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
                                                 final curvedAnimation = CurvedAnimation(
@@ -791,7 +789,7 @@ class _AccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: NavDrawer(pass_username: widget.pass_username),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
@@ -1120,7 +1118,6 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
@@ -1293,22 +1290,32 @@ class _TourGuidePage extends State<TourGuidePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: NavDrawer(pass_username: widget.pass_username),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
-          ),
-        title: Text("Welcome, ${widget.pass_username}", 
-        style: TextStyle(
-          color: Color(0xFF4169E1),
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
         ),
-      ),
       
       actions: [
+        Container(   
+          width: MediaQuery.of(context).size.width*0.5, 
+          transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
+          child: TextField(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal:5),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+              ),
+              border: OutlineInputBorder(),
+              hintText: 'search by name...',
+              hintStyle: TextStyle(
+                fontStyle: FontStyle.italic
+              ),
+            ),
+          ),
+        ),
         IconButton(
           icon: Image.asset('assets/images/User.jpg'),
           iconSize: 50,
@@ -1357,73 +1364,179 @@ class _TourGuidePage extends State<TourGuidePage> {
                     transform: Matrix4.translationValues(0.0, -5.0, 0.0),
                     child: MyStatefulWidget(),
                   ),
-
-                  //Text entry search.
-                  Container(   
-                    width: 200,
-                    transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                        ),
-                        border: OutlineInputBorder(),
-                        hintText: 'search by name...',
-                        hintStyle: TextStyle(
-                          fontStyle: FontStyle.italic
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                          child: Text(
+                            "Language", 
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15,
+                              color: Color(0xFF808080)
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                      Align(
+                        child: Container(
+                          transform: Matrix4.translationValues(0.0, -10.0, 0.0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                //Language-1
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                                  child: Row(
+                                    children:  [
+                                      Checkbox(
+                                        value: this.value1,
+                                        onChanged: (bool value1) {
+                                          getAllGuideData_ID();
+                                          setState(() {
+                                            this.value1 = value1;
+                                          });
+                                        },
+                                      ), 
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                                        transform: Matrix4.translationValues(-5.0, 0.0, 0.0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: Image.asset(
+                                            'assets/images/indonesia.png', width: 20),
+                                        ),                      
+                                      ),
+                                    ]       
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius : BorderRadius.circular(10),
+                                    color: Color(0xFF4169E1),
+                                  ),
+                                ),
+                                
+                                //Language-2
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                                  child: Row(
+                                    children:  [
+                                      Checkbox(
+                                        value: this.value2,
+                                        onChanged: (bool value2) {
+                                          getAllGuideData_EN();
+                                          setState(() {
+                                            this.value2 = value2;
+                                          });
+                                        },
+                                      ),  
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                                        transform: Matrix4.translationValues(-5.0, 0.0, 0.0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: Image.asset(
+                                            'assets/images/united-kingdom.png', width: 20),
+                                        ),                      
+                                      ),
+                                    ]       
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius : BorderRadius.circular(10),
+                                    color: Color(0xFF4169E1),
+                                  ),
+                                ),
 
-                  //Sort by button.
-                  Container(
-                    //Button properties.
-                    decoration: BoxDecoration(
-                      borderRadius : BorderRadius.circular(10),
-                      color: Color(0xFF4169E1),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(0, 3)
-                        )
-                      ],
-                    ),
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
-                    transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                    
-                    child: PopupMenuButton( 
-                      iconSize: 35,
-                      icon: Icon(Icons.sort, color: Colors.white),
-                      enabled: true,
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: IconButton(
-                              iconSize: 30,
-                              icon: Icon(Icons.arrow_drop_up,
-                              color: Color(0xFF4169E1)),
-                              onPressed: () {},
-                            ),
-                            title: Text('Sort by Price'),
-                          ),
+                                //Language-3
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                                  child: Row(
+                                    children:  [
+                                      Checkbox(
+                                        value: this.value3,
+                                        onChanged: (bool value3) {
+                                          getAllGuideData_ES();
+                                          setState(() {
+                                            this.value3 = value3;
+                                          });
+                                        },
+                                      ), 
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                                        transform: Matrix4.translationValues(-5.0, 0.0, 0.0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: Image.asset(
+                                            'assets/images/spain.png', width: 20),
+                                        ),                      
+                                      ),
+                                    ]       
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius : BorderRadius.circular(10),
+                                    color: Color(0xFF4169E1),
+                                  ),
+                                ),
+
+
+                              ]
+                            )
+                          )
                         ),
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: IconButton(
-                              iconSize: 30,
-                              icon: Icon(Icons.arrow_drop_down,
-                              color: Color(0xFF4169E1)),
-                              onPressed: () {},
-                            ),
-                            title: Text('Sort by Price'),
-                          ),
-                        )
-                      ]
-                    ),
+                      )
+                    ]
                   ),
+                  // //Sort by button.
+                  // Container(
+                  //   //Button properties.
+                  //   decoration: BoxDecoration(
+                  //     borderRadius : BorderRadius.circular(10),
+                  //     color: Color(0xFF4169E1),
+                  //     boxShadow: const [
+                  //       BoxShadow(
+                  //         color: Colors.grey,
+                  //         spreadRadius: 1,
+                  //         blurRadius: 5,
+                  //         offset: Offset(0, 3)
+                  //       )
+                  //     ],
+                  //   ),
+                  //   margin: EdgeInsets.symmetric(horizontal: 10.0),
+                  //   transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                    
+                  //   child: PopupMenuButton( 
+                  //     iconSize: 35,
+                  //     icon: Icon(Icons.sort, color: Colors.white),
+                  //     enabled: true,
+                  //     itemBuilder: (context) => [
+                  //       PopupMenuItem(
+                  //         child: ListTile(
+                  //           leading: IconButton(
+                  //             iconSize: 30,
+                  //             icon: Icon(Icons.arrow_drop_up,
+                  //             color: Color(0xFF4169E1)),
+                  //             onPressed: () {},
+                  //           ),
+                  //           title: Text('Sort by Price'),
+                  //         ),
+                  //       ),
+                  //       PopupMenuItem(
+                  //         child: ListTile(
+                  //           leading: IconButton(
+                  //             iconSize: 30,
+                  //             icon: Icon(Icons.arrow_drop_down,
+                  //             color: Color(0xFF4169E1)),
+                  //             onPressed: () {},
+                  //           ),
+                  //           title: Text('Sort by Price'),
+                  //         ),
+                  //       )
+                  //     ]
+                  //   ),
+                  // ),
 
                 ],
               ),
@@ -1444,153 +1557,6 @@ class _TourGuidePage extends State<TourGuidePage> {
                   ),
                 ),
               ),
-            ),
-
-            Align(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(vertical: 5.0),
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: <Widget>[
-                    //Language-1
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Row(
-                        children:  [
-                          Checkbox(
-                            value: this.value1,
-                            onChanged: (bool value1) {
-                              getAllGuideData_ID();
-                              setState(() {
-                                this.value1 = value1;
-                              });
-                            },
-                          ), 
-                          Align(
-                            child: Container(
-                              transform: Matrix4.translationValues(-5.0, 0.0, 0.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  'assets/images/indonesia.png', width: 25),
-                              ),                      
-                            ),
-                          ),
-                          Align(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                              child: Text(
-                                "ID  ", 
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 15,
-                                  color: Colors.white
-                                ),
-                              ),
-                            ),
-                          ),
-                        ]       
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius : BorderRadius.circular(10),
-                        color: Color(0xFF4169E1),
-                      ),
-                    ),
-                    
-                    //Language-2
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Row(
-                        children:  [
-                          Checkbox(
-                            value: this.value2,
-                            onChanged: (bool value2) {
-                              getAllGuideData_EN();
-                              setState(() {
-                                this.value2 = value2;
-                              });
-                            },
-                          ),  
-                          Align(
-                            child: Container(
-                              transform: Matrix4.translationValues(-5.0, 0.0, 0.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  'assets/images/united-kingdom.png', width: 25),
-                              ),                      
-                            ),
-                          ),
-                          Align(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                              child: Text(
-                                "EN  ", 
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 15,
-                                  color: Colors.white
-                                ),
-                              ),
-                            ),
-                          ),
-                        ]       
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius : BorderRadius.circular(10),
-                        color: Color(0xFF4169E1),
-                      ),
-                    ),
-
-                    //Language-3
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Row(
-                        children:  [
-                          Checkbox(
-                            value: this.value3,
-                            onChanged: (bool value3) {
-                              getAllGuideData_ES();
-                              setState(() {
-                                this.value3 = value3;
-                              });
-                            },
-                          ), 
-                          Align(
-                            child: Container(
-                              transform: Matrix4.translationValues(-5.0, 0.0, 0.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  'assets/images/spain.png', width: 25),
-                              ),                      
-                            ),
-                          ),
-                          Align(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                              child: Text(
-                                "ES  ", 
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 15,
-                                  color: Colors.white
-                                ),
-                              ),
-                            ),
-                          ),
-                        ]       
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius : BorderRadius.circular(10),
-                        color: Color(0xFF4169E1),
-                      ),
-                    ),
-
-
-                  ]
-                )
-              )
             ),
 
             Align( //text
@@ -1761,7 +1727,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
-                                        pageBuilder: (c, a1, a2) => BookGuidePage(pass_idGuide: _guideList[index].idGuide, pass_fullname: widget.pass_username),
+                                        pageBuilder: (c, a1, a2) => BookGuidePage(pass_idGuide: _guideList[index].idGuide, pass_username: widget.pass_username),
                                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                           final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
                                           final curvedAnimation = CurvedAnimation(
@@ -1905,22 +1871,32 @@ class _MyResPage extends State<MyResPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: NavDrawer(pass_username: widget.pass_username),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Welcome, ${widget.pass_username}", 
-        style: TextStyle(
-          color: Color(0xFF4169E1),
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
       
       actions: [
+        Container(   
+          width: MediaQuery.of(context).size.width*0.5, 
+          transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
+          child: TextField(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal:5),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+              ),
+              border: OutlineInputBorder(),
+              hintText: 'search by car or guide name...',
+              hintStyle: TextStyle(
+                fontStyle: FontStyle.italic
+              ),
+            ),
+          ),
+        ),
         IconButton(
           icon: Image.asset('assets/images/User.jpg'),
           iconSize: 50,
@@ -2769,10 +2745,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 class BookCarPage extends StatefulWidget {
-  const BookCarPage({Key key, this.pass_idCar, this.pass_fullname}) : super(key: key);
+  const BookCarPage({Key key, this.pass_idCar, this.pass_username}) : super(key: key);
 
   final int pass_idCar;
-  final String pass_fullname;
+  final String pass_username;
 
   @override
 
@@ -2845,7 +2821,7 @@ class _BookCarPage extends State<BookCarPage> {
           var reviewModels = reviewModel();
           reviewModels.idReview = review['id_review'];
           reviewModels.idUser = review['id_user'];
-          if(review['fullname'] == widget.pass_fullname){
+          if(review['fullname'] == widget.pass_username){
             reviewModels.fullname = 'You';
           } else {
             reviewModels.fullname = review['fullname'];
@@ -2879,7 +2855,7 @@ class _BookCarPage extends State<BookCarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: NavDrawer(pass_username: widget.pass_username),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
@@ -3333,7 +3309,7 @@ class _BookCarPage extends State<BookCarPage> {
                                               Navigator.push(
                                                 context,
                                                 PageRouteBuilder(
-                                                  pageBuilder: (c, a1, a2) => ChatPage(pass_sender_receiver: _carList[index].owner_name, pass_username: widget.pass_fullname),
+                                                  pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _carList[index].owner_name, pass_username: widget.pass_username),
                                                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                                     final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                                     final curvedAnimation = CurvedAnimation(
@@ -3516,7 +3492,7 @@ class _BookCarPage extends State<BookCarPage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idCar, pass_carguidename: carname, pass_fullname: widget.pass_fullname, pass_price: price, type: 'Car Rental'),
+              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idCar, pass_carguidename: carname, pass_username: widget.pass_username, pass_price: price, type: 'Car Rental'),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
@@ -3540,10 +3516,10 @@ class _BookCarPage extends State<BookCarPage> {
 }
 
 class BookGuidePage extends StatefulWidget {
-  const BookGuidePage({Key key, this.pass_idGuide, this.pass_fullname}) : super(key: key);
+  const BookGuidePage({Key key, this.pass_idGuide, this.pass_username}) : super(key: key);
 
   final int pass_idGuide;
-  final String pass_fullname;
+  final String pass_username;
 
   @override
 
@@ -3602,7 +3578,7 @@ class _BookGuidePage extends State<BookGuidePage> {
           var reviewModels = reviewModel();
           reviewModels.idReview = review['id_review'];
           reviewModels.idUser = review['id_user'];
-          if(review['fullname'] == widget.pass_fullname){
+          if(review['fullname'] == widget.pass_username){
             reviewModels.fullname = 'You';
           } else {
             reviewModels.fullname = review['fullname'];
@@ -3623,7 +3599,7 @@ class _BookGuidePage extends State<BookGuidePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: NavDrawer(pass_username: widget.pass_username),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
@@ -3990,7 +3966,24 @@ class _BookGuidePage extends State<BookGuidePage> {
                                         alignment: Alignment.topLeft,
                                         child: ElevatedButton.icon(
                                           onPressed: () {
-                                            //ContactPage
+                                            Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _guideList[index].name, pass_username: widget.pass_username),
+                                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                  final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
+                                                  final curvedAnimation = CurvedAnimation(
+                                                    parent: animation,
+                                                    curve: Curves.ease,
+                                                  );
+
+                                                  return SlideTransition(
+                                                    position: tween.animate(curvedAnimation),
+                                                    child: child,
+                                                  );
+                                                }
+                                              ),
+                                            );                    
                                           },
                                           icon: Icon(Icons.chat, size: 18),
                                           label: Text("Chat Now"),
@@ -4158,7 +4151,7 @@ class _BookGuidePage extends State<BookGuidePage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idGuide, pass_carguidename: guideName, pass_fullname: widget.pass_fullname, pass_price: price, type: 'Tour Guide'),
+              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idGuide, pass_carguidename: guideName, pass_username: widget.pass_username, pass_price: price, type: 'Tour Guide'),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
@@ -4181,9 +4174,9 @@ class _BookGuidePage extends State<BookGuidePage> {
   }
 }
 class OrderPage extends StatefulWidget {
-  const OrderPage({Key key, this.pass_fullname, this.pass_idCarGuide, this.pass_carguidename, this.pass_price, this.type}) : super(key: key);
+  const OrderPage({Key key, this.pass_username, this.pass_idCarGuide, this.pass_carguidename, this.pass_price, this.type}) : super(key: key);
 
-  final String pass_fullname;
+  final String pass_username;
   final String pass_carguidename;
   final int pass_idCarGuide;
   final int pass_price;
@@ -4304,7 +4297,7 @@ class _OrderPage extends State<OrderPage> {
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                                 ),
-                                hintText: widget.pass_fullname,
+                                hintText: widget.pass_username,
                               ),
                             ),
                           ),
@@ -4896,7 +4889,6 @@ class PaymentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
@@ -4942,7 +4934,6 @@ class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
@@ -5188,7 +5179,6 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           IconThemeData(
@@ -5324,7 +5314,7 @@ class ContactPage extends StatefulWidget {
   _ContactPageState createState() => _ContactPageState();
 }
 class _ContactPageState extends State<ContactPage> {
-  var _message = messageModel();
+  var _contact = messageModel();
   var _carServices = carServices();
 
   List<messageModel> _contactList = <messageModel>[];
@@ -5332,25 +5322,20 @@ class _ContactPageState extends State<ContactPage> {
   @override
   void initState(){
     super.initState();
-    getAllContact1();
-    getAllContact2();
+    getAllSocial();
   }
 
-  getAllContact1() async {
+  getAllSocial() async {
     _contactList = <messageModel>[];
-    var messages = await _carServices.readCarwContact1();
+    var contact = await _carServices.readContact();
 
-    messages.forEach((message){
-      if((message['type'] == 'Car Rental')&&(message['sender'] == widget.pass_username)){
+    contact.forEach((contact){
+      if(contact['username'] == widget.pass_username){
       setState((){
         var messageModels = messageModel();
-        messageModels.idMessage = message['id_message'];
-        messageModels.sender = message['sender'];
-        messageModels.receiver = message['receiver'];
-        messageModels.type = message['type'];
-        messageModels.body = message['body'];
-        messageModels.imageURL = message['imageURL'];
-        messageModels.datetime = DateTime.tryParse(message['datetime']);
+        messageModels.idSocial = contact['idSocial'];
+        messageModels.garage_guide = contact['garage_guide'];
+        messageModels.username = contact['username'];
         _contactList.add(messageModels);
       });
     
@@ -5358,59 +5343,48 @@ class _ContactPageState extends State<ContactPage> {
     });
   
   }
-  getAllContact2() async {
-    _contactList = <messageModel>[];
-    var messages = await _carServices.readCarwContact2();
-
-    messages.forEach((message){
-      if((message['type'] == 'Car Rental')&&(message['receiver'] == widget.pass_username)){
-      setState((){
-        var messageModels = messageModel();
-        messageModels.idMessage = message['id_message'];
-        messageModels.sender = message['sender'];
-        messageModels.receiver = message['receiver'];
-        messageModels.type = message['type'];
-        messageModels.body = message['body'];
-        messageModels.imageURL = message['imageURL'];
-        messageModels.datetime = DateTime.tryParse(message['datetime']);
-        _contactList.add(messageModels);
-      });
-    
-      }
-    });
   
-  }
 
   @override
   Widget build(BuildContext context){
     return Scaffold(     
-      drawer: NavDrawer(),
+      drawer: NavDrawer(pass_username: widget.pass_username),
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-        title: Text("Welcome, ${widget.pass_username}", 
-        style: TextStyle(
+        IconThemeData(
           color: Color(0xFF4169E1),
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
+          size: 35.0,
         ),
-      ),
-      
-      actions: [
-        IconButton(
-          icon: Image.asset('assets/images/User.jpg'),
-          iconSize: 50,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
-            );
-          },
-        )
-      ],//error image blur so badly and not round yet
+        
+        actions: [
+          Container(   
+            width: MediaQuery.of(context).size.width*0.5, 
+            transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
+            child: TextField(
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal:5),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                ),
+                border: OutlineInputBorder(),
+                hintText: 'search by driver, car...',
+                hintStyle: TextStyle(
+                  fontStyle: FontStyle.italic
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Image.asset('assets/images/User.jpg'),
+            iconSize: 50,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
+              );
+            },
+          )
+        ],//error image blur so badly and not round yet
 
         //Transparent setting.
         backgroundColor: Color(0x44FFFFFF),
@@ -5420,171 +5394,81 @@ class _ContactPageState extends State<ContactPage> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(   
-                width: MediaQuery.of(context).size.width*0.75,
-                transform: Matrix4.translationValues(15.0, -5.0, 0.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                    ),
-                    border: OutlineInputBorder(),
-                    hintText: 'search by driver, car...',
-                    hintStyle: TextStyle(
-                      fontStyle: FontStyle.italic
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            
             Flexible(
               child : ListView.builder(
                 shrinkWrap: true,   
                 itemCount : _contactList.length,
                 itemBuilder: (context, index){
                   
-                  if(_contactList[index].receiver == widget.pass_username){
-                    return InkWell(
-                      child: Card(
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
-                          child: Row(
-                            children: [ 
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(25),
-                                  child: Image.asset(
-                                    'assets/images/Ben Parker.jpg', width: 50),
-                                ),
+                  return InkWell(
+                    child: Card(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                        child: Row(
+                          children: [ 
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: Image.asset(
+                                  'assets/images/garage/garage_${_contactList[index].garage_guide}.jpg', width: 50),
                               ),
-                              Expanded(                 
-                                child: Column (
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: RichText(
-                                        text: TextSpan(                     
-                                          text: _contactList[index].sender,
-                                          style: TextStyle(
-                                            color: Color(0xFF212121),
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                          )
-                                        ),                              
-                                      ),
-                                    ),
-                                    RichText(
+                            ),
+                            Expanded(                 
+                              child: Column (
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: RichText(
                                       text: TextSpan(                     
-                                        text: '${_contactList[index].body}...',
+                                        text: _contactList[index].garage_guide,
                                         style: TextStyle(
-                                          color: Color.fromARGB(255, 128, 128, 128),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14,
+                                          color: Color(0xFF212121),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
                                         )
                                       ),                              
-                                    )
-                                  ]
-                                )
-                              ),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(vertical: 5.0),
-                                  child: Text(
-                                    DateFormat('yyyy-MM-dd kk:mm').format(_contactList[index].datetime).toString(), 
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: Color(0xFF808080)
                                     ),
                                   ),
-                                )
-                              ), 
-                            ]
-                          )    
-                        )
-                      ),
-                      onTap: () { 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: _contactList[index].sender, pass_username: widget.pass_username)),
-                        );
-                      },                   
-                    );
-                  } else {
-                    return InkWell(
-                      child: Card(
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
-                          child: Row(
-                            children: [ 
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(25),
-                                  child: Image.asset(
-                                    'assets/images/Ben Parker.jpg', width: 50),
-                                  ),
-                              ),
-                              Expanded(                 
-                                child: Column (
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: RichText(
-                                        text: TextSpan(                     
-                                          text: _contactList[index].receiver,
-                                          style: TextStyle(
-                                            color: Color(0xFF212121),
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                          )
-                                        ),                              
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(                     
-                                        text: '${_contactList[index].body}...',
-                                        style: TextStyle(
-                                          color: Color.fromARGB(255, 128, 128, 128),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14,
-                                        )
-                                      ),                              
-                                    )
-                                  ]
-                                )
-                              ),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(vertical: 5.0),
-                                  child: Text(
-                                    DateFormat('yyyy-MM-dd kk:mm').format(_contactList[index].datetime).toString(), 
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: Color(0xFF808080)
-                                    ),
-                                  ),
-                                )
-                              ), 
-                            ]
-                          )    
-                        )
-                      ),
-                      onTap: () { 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: _contactList[index].receiver, pass_username: widget.pass_username)),
-                        );
-                      },                   
-                    );
-                  }
+                                  // RichText(
+                                  //   text: TextSpan(                     
+                                  //     text: '${_contactList[index].body}...',
+                                  //     style: TextStyle(
+                                  //       color: Color.fromARGB(255, 128, 128, 128),
+                                  //       fontWeight: FontWeight.w400,
+                                  //       fontSize: 14,
+                                  //     )
+                                  //   ),                              
+                                  // )
+                                ]
+                              )
+                            ),
+                            // Align(
+                            //   alignment: Alignment.topRight,
+                            //   child: Container(
+                            //     margin: const EdgeInsets.symmetric(vertical: 5.0),
+                            //     child: Text(
+                            //       DateFormat('yyyy-MM-dd kk:mm').format(_contactList[index].datetime).toString(), 
+                            //       style: TextStyle(
+                            //         fontWeight: FontWeight.w500,
+                            //         fontSize: 12,
+                            //         color: Color(0xFF808080)
+                            //       ),
+                            //     ),
+                            //   )
+                            // ), 
+                          ]
+                        )    
+                      )
+                    ),
+                    onTap: () { 
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChatPage(pass_garage_guide: _contactList[index].garage_guide, pass_username: widget.pass_username)),
+                      );
+                    },                   
+                  );
               
                 }
               )
@@ -5609,8 +5493,8 @@ class _ContactPageState extends State<ContactPage> {
 }
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({key, this.pass_sender_receiver, this.pass_username}) : super(key: key);
-  final String pass_sender_receiver;
+  const ChatPage({key, this.pass_garage_guide, this.pass_username}) : super(key: key);
+  final String pass_garage_guide;
   final String pass_username;
 
   @override
@@ -5629,15 +5513,16 @@ class _ChatPage extends State<ChatPage> {
   @override
   void initState(){
     super.initState();
-    getAllCarMessage();
+    getAllMessage();
   }
 
-  getAllCarMessage() async {
+  //Get all message for car & guide
+  getAllMessage() async {
     _messageList = <messageModel>[];
-    var messages = await _carServices.readCarwMessage();
+    var messages = await _carServices.readMessage();
 
     messages.forEach((message){
-      if((message['type'] == 'Car Rental')&&(((message['sender'] == widget.pass_username)&&(message['receiver'] == widget.pass_sender_receiver))||((message['sender'] == widget.pass_sender_receiver)&&(message['receiver'] == widget.pass_username)))){
+      if(((message['sender'] == widget.pass_username)&&(message['receiver'] == widget.pass_garage_guide))||((message['sender'] == widget.pass_garage_guide)&&(message['receiver'] == widget.pass_username))){
       setState((){
         var messageModels = messageModel();
         messageModels.idMessage = message['id_message'];
@@ -5663,7 +5548,7 @@ class _ChatPage extends State<ChatPage> {
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-          title: Text(widget.pass_sender_receiver, 
+          title: Text(widget.pass_garage_guide, 
           style: TextStyle(
             color: Color(0xFF4169E1),
             fontWeight: FontWeight.w800,
@@ -5763,9 +5648,9 @@ class _ChatPage extends State<ChatPage> {
               alignment: Alignment.bottomLeft,
               child: Container(
                 padding: const EdgeInsets.only(left: 10,bottom: 10,top: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
                 height: 60,
                 width: double.infinity,
-                color: Colors.white,
                 child: Row(
                   children: <Widget>[
                     GestureDetector(
@@ -5801,7 +5686,7 @@ class _ChatPage extends State<ChatPage> {
                         var dtStr = dt.toIso8601String();
                         dt = DateTime.tryParse(dtStr);
                         _message.sender = widget.pass_username;
-                        _message.receiver = widget.pass_sender_receiver;
+                        _message.receiver = widget.pass_garage_guide;
                         _message.type = type;
                         _message.body = _messageTextCtrl.text;
                         _message.imageURL = 'null'; //for now
@@ -5812,7 +5697,7 @@ class _ChatPage extends State<ChatPage> {
                         if(result != null){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ChatPage(pass_sender_receiver: widget.pass_sender_receiver, pass_username: widget.pass_username)),
+                            MaterialPageRoute(builder: (context) => ChatPage(pass_garage_guide: widget.pass_garage_guide, pass_username: widget.pass_username)),
                           );
                         } else {
 
@@ -5822,10 +5707,27 @@ class _ChatPage extends State<ChatPage> {
                       backgroundColor: Colors.green,
                       elevation: 0,
                     ),
+                    
                   ],
                   
                 ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white, 
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.6),
+                      blurRadius: 10.0, // soften the shadow
+                      spreadRadius: 0.0, //extend the shadow
+                      offset: const Offset(
+                        5.0, // Move to right 10  horizontally
+                        5.0, // Move to bottom 10 Vertically
+                      ),
+                    )
+                  ],
+                ),
               ),
+              
             ),
           ], 
       

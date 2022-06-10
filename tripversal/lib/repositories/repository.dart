@@ -69,12 +69,6 @@ class Repository{
     return await connection.rawQuery('SELECT * FROM waiting JOIN car ON waiting.id_car_guide = car.id_car WHERE id_user=?', ['1']);
   }
 
-  // readCarDataById(table) async{
-  //   var connection = await database;
-  //   // return await connection.query(table);
-  //   return await connection.rawQuery('SELECT * FROM car WHERE id_car=?', ['1']);
-  // }
-
   checkData(table, data) async{
     var connection = await database;
     return await connection.rawQuery('SELECT id_user FROM user WHERE fullname=? AND password=?', [data['fullname'], data['password']]);
@@ -88,18 +82,13 @@ class Repository{
     var connection = await database;
     return await connection.rawQuery('SELECT review.id_review, review.id_user, user.fullname, review.id_car_guide, review.type, review.comment, review.rating, dateReview FROM review JOIN guide ON review.id_car_guide = guide.id_guide JOIN user ON review.id_user = user.id_user');
   }
-
-  readMessageCar(table) async{
+  readSocial(table) async{
+    var connection = await database;
+    return await connection.rawQuery('SELECT * FROM social');
+  }
+  readMessageAll(table) async{
     var connection = await database;
     return await connection.rawQuery('SELECT * FROM message');
-  }
-  readContact1Car(table) async{
-    var connection = await database;
-    return await connection.rawQuery('SELECT * FROM message GROUP BY sender ORDER BY datetime ASC');
-  }
-  readContact2Car(table) async{
-    var connection = await database;
-    return await connection.rawQuery('SELECT * FROM message GROUP BY receiver ORDER BY datetime ASC');
   }
   insertMessage(table, data) async{
     var connection = await database;

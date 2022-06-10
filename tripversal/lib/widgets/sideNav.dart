@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class NavDrawer extends StatelessWidget {
-  const NavDrawer({Key key}) : super(key: key);
+  var pass_username;
+  NavDrawer({Key key, this.pass_username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +11,9 @@ class NavDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
+            DrawerHeader(
             child: Text(
-              'Rose Monde',
+              pass_username,
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             decoration: BoxDecoration(
