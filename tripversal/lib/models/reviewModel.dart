@@ -10,7 +10,7 @@ class reviewModel{
   DateTime dateReview;
    
   reviewMap(){
-    var mapping = Map<String, dynamic>();
+    var mapping = <String, dynamic>{};
 
     mapping['id_review'] = idReview;
     mapping['id_user'] = idUser;

@@ -12,7 +12,6 @@ import 'package:tripversal/models/resvModel.dart';
 import 'package:tripversal/models/reviewModel.dart';
 import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/models/waitingModel.dart';
-import 'package:tripversal/orderBody.dart';
 import 'package:tripversal/paymentBody.dart';
 import 'package:tripversal/services/guideServices.dart';
 import 'package:tripversal/services/resvServices.dart';
@@ -20,10 +19,8 @@ import 'package:tripversal/services/userServices.dart';
 import 'package:tripversal/services/carServices.dart';
 import 'package:tripversal/settingBody.dart';
 import 'package:tripversal/widgets/sideNav.dart';
-import 'package:tripversal/widgets/checkBox.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'createAccBody.dart';
-import 'forgetPassBody.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -115,8 +112,8 @@ class RentACarPage extends StatefulWidget {
 }
 
 class _RentACarPage extends State<RentACarPage> {
-  var _car = carModel();
-  var _carServices = carServices();
+  //final _car = carModel();
+  final _carServices = carServices();
   String categorySearch = 'City Car';
 
   List<carModel> _carList = <carModel>[];
@@ -257,7 +254,7 @@ class _RentACarPage extends State<RentACarPage> {
       ),
 
       //Body.
-      body: Container(
+      body: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
@@ -324,16 +321,16 @@ class _RentACarPage extends State<RentACarPage> {
                                     padding: EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
+                                      children: const <Widget>[
                                         Padding(
-                                          padding: const EdgeInsets.all(2.0),
+                                          padding: EdgeInsets.all(2.0),
                                           child: Icon(
                                             Icons.car_rental,
                                             color: Colors.white,
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.all(2.0),
+                                          padding: EdgeInsets.all(2.0),
                                           child: Text(
                                             "City Car",
                                             style: TextStyle(
@@ -358,16 +355,16 @@ class _RentACarPage extends State<RentACarPage> {
                                     padding: EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
+                                      children: const <Widget>[
                                         Padding(
-                                          padding: const EdgeInsets.all(2.0),
+                                          padding: EdgeInsets.all(2.0),
                                           child: Icon(
                                             Icons.airport_shuttle,
                                             color: Colors.white,
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.all(2.0),
+                                          padding: EdgeInsets.all(2.0),
                                           child: Text(
                                             "Minibus",
                                             style: TextStyle(
@@ -392,16 +389,16 @@ class _RentACarPage extends State<RentACarPage> {
                                     padding: EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
+                                      children: const <Widget>[
                                         Padding(
-                                          padding: const EdgeInsets.all(2.0),
+                                          padding: EdgeInsets.all(2.0),
                                           child: Icon(
                                             Icons.motorcycle,
                                             color: Colors.white,
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.all(2.0),
+                                          padding: EdgeInsets.all(2.0),
                                           child: Text(
                                             "Motorcycle",
                                             style: TextStyle(
@@ -627,7 +624,7 @@ class _RentACarPage extends State<RentACarPage> {
                                                   )
                                                 ),
                                                 TextSpan(
-                                                  text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                  text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 18,
@@ -751,13 +748,12 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPage extends State<AccountPage> {
   //const AccountPage({Key key}) : super(key: key);
-  var _user = userModel();
-  var _userServices = userServices();
-  var _fullnameCtrl = TextEditingController();
-  var _idCardCtrl = TextEditingController();
-  var _passwordCtrl = TextEditingController();
-  var _emailCtrl = TextEditingController();
-  var _phoneCtrl = TextEditingController();
+  final _user = userModel();
+  final _userServices = userServices();
+  final _idCardCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
+  final _emailCtrl = TextEditingController();
+  final _phoneCtrl = TextEditingController();
 
   List<userModel> _userList = <userModel>[];
   
@@ -1208,8 +1204,8 @@ class TourGuidePage extends StatefulWidget {
 }
 
 class _TourGuidePage extends State<TourGuidePage> {
-  var _guide = guideModel();
-  var _guideServices = guideServices();
+  //final _guide = guideModel();
+  final _guideServices = guideServices();
   bool value = false;
   bool value1 = true;
   bool value2 = false;
@@ -1394,7 +1390,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                   child: Row(
                                     children:  [
                                       Checkbox(
-                                        value: this.value1,
+                                        value: value1,
                                         onChanged: (bool value1) {
                                           getAllGuideData_ID();
                                           setState(() {
@@ -1425,7 +1421,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                   child: Row(
                                     children:  [
                                       Checkbox(
-                                        value: this.value2,
+                                        value: value2,
                                         onChanged: (bool value2) {
                                           getAllGuideData_EN();
                                           setState(() {
@@ -1456,7 +1452,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                   child: Row(
                                     children:  [
                                       Checkbox(
-                                        value: this.value3,
+                                        value: value3,
                                         onChanged: (bool value3) {
                                           getAllGuideData_ES();
                                           setState(() {
@@ -1575,7 +1571,7 @@ class _TourGuidePage extends State<TourGuidePage> {
               itemBuilder: (context, index){
                       
                   return  Card( //item-1 -----------------------------------------
-                      child:Container(
+                      child:SizedBox(
                         height: 100,
                         child: Row(
                           children: [  
@@ -1786,10 +1782,10 @@ class MyResPage extends StatefulWidget {
 }
 
 class _MyResPage extends State<MyResPage> {
-  var _resv = resvModel();
-  var _ongoing = onGoingModel();
-  var _waiting = waitingModel();
-  var _resvServices = resvServices();
+  // final _resv = resvModel();
+  // final _ongoing = onGoingModel();
+  // final _waiting = waitingModel();
+  final _resvServices = resvServices();
 
   List<resvModel> _historyList = <resvModel>[];
   List<onGoingModel> _onGoingList = <onGoingModel>[];
@@ -2201,7 +2197,7 @@ class _MyResPage extends State<MyResPage> {
                                         },
                                       )
                                     ),
-                                    Container(
+                                    SizedBox(
                                       height: 40,
                                       width: 100,
                                       child: RaisedButton(
@@ -2339,7 +2335,7 @@ class _MyResPage extends State<MyResPage> {
                                             ),
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           height: 60,
                                           width: 80,
                                           child: OutlineButton(
@@ -2757,11 +2753,11 @@ class BookCarPage extends StatefulWidget {
 
 class _BookCarPage extends State<BookCarPage> {
   /*const _BookCarPage({Key key}) : super(key: key);*/
-  var _car = carModel();
-  var _review = reviewModel();
-  var _carServices = carServices();
+  // final _car = carModel();
+  // final _review = reviewModel();
+  final _carServices = carServices();
   var carname; var coordinate_lan; var coordinate_lng;
-  int idCarGuide; var price; var driver;
+  int idCarGuide; var price; var driver; int countRev = 0;
 
   List<carModel> _carList = <carModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
@@ -2800,11 +2796,11 @@ class _BookCarPage extends State<BookCarPage> {
           carModels.coordinate_lng = car['coordinate_lng'];
           coordinate_lan = car['coordinate_lan'];
           coordinate_lng = car['coordinate_lng'];
-          carModels.idOwner = car['id_owner'];
-          carModels.owner_name = car['owner_name'];
-          carModels.owner_phone = car['owner_phone'];
-          carModels.owner_location = car['owner_location'];
-          carModels.owner_email = car['owner_email'];
+          carModels.idgarage = car['id_garage'];
+          carModels.garage_name = car['garage_name'];
+          carModels.garage_phone = car['garage_phone'];
+          carModels.garage_location = car['garage_location'];
+          carModels.garage_email = car['garage_email'];
           _carList.add(carModels);
         });
       }
@@ -2817,6 +2813,7 @@ class _BookCarPage extends State<BookCarPage> {
 
     review.forEach((review){
       if((review['id_car_guide'] == widget.pass_idCar)&&(review['type'] == 'Car Rental')){
+        countRev++;
         setState((){
           var reviewModels = reviewModel();
           reviewModels.idReview = review['id_review'];
@@ -2838,7 +2835,7 @@ class _BookCarPage extends State<BookCarPage> {
     });
   }
   Widget getDriverImage() {
-    if(driver != 'none'){
+    if(countRev == 0){
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: ClipRRect(
@@ -2851,6 +2848,33 @@ class _BookCarPage extends State<BookCarPage> {
       return SizedBox();
     }
   }
+
+  Widget getMessageReview() {
+    if(countRev == 0){
+      return Card(
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: Column(
+          children: [
+            ClipRRect(
+            child: Image.asset(
+              'assets/images/icon/Empty2.png', width: 200),
+            ),
+            Text(
+              "There's no review for this car", 
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ),
+         
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
   
   @override
   Widget build(BuildContext context) {
@@ -3011,7 +3035,7 @@ class _BookCarPage extends State<BookCarPage> {
                           )
                         ),
                         TextSpan(
-                          text: "${_carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                          text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
                           style: TextStyle(
                             color: Color(0xFF4169E1),
                             fontSize: 18,
@@ -3239,7 +3263,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: " ${_carList[index].owner_phone}",
+                                                  text: " ${_carList[index].garage_phone}",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
@@ -3264,7 +3288,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: " ${_carList[index].owner_location}",
+                                                  text: " ${_carList[index].garage_location}",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
@@ -3289,7 +3313,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: " ${_carList[index].owner_email}",
+                                                  text: " ${_carList[index].garage_email}",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
@@ -3309,7 +3333,7 @@ class _BookCarPage extends State<BookCarPage> {
                                               Navigator.push(
                                                 context,
                                                 PageRouteBuilder(
-                                                  pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _carList[index].owner_name, pass_username: widget.pass_username),
+                                                  pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _carList[index].garage_name, pass_username: widget.pass_username),
                                                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                                     final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                                     final curvedAnimation = CurvedAnimation(
@@ -3465,7 +3489,8 @@ class _BookCarPage extends State<BookCarPage> {
                                     );
 
                                   }  
-                                )
+                                ),
+                                getMessageReview()
                                 
                               ],
                             )
@@ -3528,10 +3553,10 @@ class BookGuidePage extends StatefulWidget {
 
 class _BookGuidePage extends State<BookGuidePage> {
   //const _BookGuidePage({Key key}) : super(key: key);
-  var _guide = guideModel();
-  var _guideServices = guideServices();
-  var _review = reviewModel();
-  var guideName; var price;
+  //final _guide = guideModel();
+  final _guideServices = guideServices();
+  //final _review = reviewModel();
+  var guideName; var price; int countRev = 0;
 
   List<guideModel> _guideList = <guideModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
@@ -3574,6 +3599,7 @@ class _BookGuidePage extends State<BookGuidePage> {
 
     review.forEach((review){
       if((review['id_car_guide'] == widget.pass_idGuide)&&(review['type'] == 'Tour Guide')){
+        countRev++;
         setState((){
           var reviewModels = reviewModel();
           reviewModels.idReview = review['id_review'];
@@ -3593,6 +3619,32 @@ class _BookGuidePage extends State<BookGuidePage> {
         });
       }
     });
+  }
+
+  Widget getMessageReview() {
+    if(countRev == 0){
+      return Card(
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: Column(
+          children: [
+            ClipRRect(
+            child: Image.asset(
+              'assets/images/icon/Empty2.png', width: 200),
+            ),
+            Text(
+              "There's no review for this guide", 
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ),
+         
+      );
+    } else {
+      return SizedBox();
+    }
   }
   
 
@@ -4126,7 +4178,8 @@ class _BookGuidePage extends State<BookGuidePage> {
                                   );
 
                                 }  
-                              )
+                              ),
+                              getMessageReview(),
                               
                             ],
                           ),
@@ -4201,8 +4254,8 @@ class _OrderPage extends State<OrderPage> {
     }
   }
   getNextDay(){
-    var date = new DateTime.now();
-    var newDate = new DateTime(date.year, date.month, date.day + 1);
+    var date = DateTime.now();
+    var newDate = DateTime(date.year, date.month, date.day + 1);
     return newDate;
   }
 
@@ -5219,7 +5272,7 @@ class SettingPage extends StatelessWidget {
 }
 
 class MapsPage extends StatefulWidget {
-  MapsPage({Key key, this.pass_carguidename, this.pass_coordinate_lan, this.pass_coordinate_lng}) : super(key: key);
+  const MapsPage({Key key, this.pass_carguidename, this.pass_coordinate_lan, this.pass_coordinate_lng}) : super(key: key);
 
   final String pass_carguidename;
   final double pass_coordinate_lan;
@@ -5252,7 +5305,7 @@ class _MapsPageState extends State<MapsPage> {
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-          title: Text("${widget.pass_carguidename}", 
+          title: Text(widget.pass_carguidename, 
           style: TextStyle(
             color: Color(0xFF4169E1),
             fontWeight: FontWeight.w800,
@@ -5307,15 +5360,15 @@ class _MapsPageState extends State<MapsPage> {
 }
 
 class ContactPage extends StatefulWidget {
-  ContactPage({Key key, this.pass_username}) : super(key: key);
+  const ContactPage({Key key, this.pass_username}) : super(key: key);
   final String pass_username;
 
   @override
   _ContactPageState createState() => _ContactPageState();
 }
 class _ContactPageState extends State<ContactPage> {
-  var _contact = messageModel();
-  var _carServices = carServices();
+  //final _contact = messageModel();
+  final _carServices = carServices();
 
   List<messageModel> _contactList = <messageModel>[];
   
@@ -5503,8 +5556,8 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPage extends State<ChatPage> {
-  var _message = messageModel();
-  var _carServices = carServices();
+  final _message = messageModel();
+  final _carServices = carServices();
   final _messageTextCtrl = TextEditingController();
   var type;
 

@@ -1,6 +1,6 @@
 class carModel{
    int idCar;
-   int idOwner;
+   int idgarage;
 
    String plate;
    String type;
@@ -15,10 +15,10 @@ class carModel{
     String desc;
   String coordinate_lan;
   String coordinate_lng;
-  String owner_name;
-  String owner_location;
-  String owner_phone;
-  String owner_email;
+  String garage_name;
+  String garage_location;
+  String garage_phone;
+  String garage_email;
    
   carMap(){
     var mapping = Map<String, dynamic>();
@@ -37,11 +37,11 @@ class carModel{
     mapping['desc'] = desc;
     mapping['coordinate_lan'] = coordinate_lan;
     mapping['coordinate_lng'] = coordinate_lng;
-    mapping['id_owner'] = idOwner;
-    mapping['owner_name'] = owner_name;
-    mapping['owner_phone'] = owner_phone;
-    mapping['owner_location'] = owner_location;
-    mapping['owner_email'] = owner_email;
+    mapping['id_garage'] = idgarage;
+    mapping['garage_name'] = garage_name;
+    mapping['garage_phone'] = garage_phone;
+    mapping['garage_location'] = garage_location;
+    mapping['garage_email'] = garage_email;
 
     return mapping;
   }

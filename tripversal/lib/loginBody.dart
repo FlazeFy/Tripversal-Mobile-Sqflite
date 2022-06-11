@@ -64,7 +64,7 @@ class Login extends StatelessWidget {
                 height: 35,
                 child: TextField(
                   controller: usernameCtrl,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                     ),
@@ -95,7 +95,7 @@ class Login extends StatelessWidget {
                 child: TextField(
                   obscureText: true,
                   controller: passwordCtrl,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                     ),
@@ -171,7 +171,7 @@ class Login extends StatelessWidget {
                  onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CreateAccPage()),
+                      MaterialPageRoute(builder: (context) => const CreateAccPage()),
                     );
                   },
                 )

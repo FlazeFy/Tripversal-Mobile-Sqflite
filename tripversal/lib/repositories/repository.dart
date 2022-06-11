@@ -30,7 +30,7 @@ class Repository{
   readCarData(table) async{
     var connection = await database;
     // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM car JOIN owner ON car.id_owner = owner.id_owner ORDER BY price ASC');
+    return await connection.rawQuery('SELECT * FROM car JOIN garage ON car.id_garage = garage.id_garage ORDER BY price ASC');
   }
   readGuideData(table) async{
     var connection = await database;

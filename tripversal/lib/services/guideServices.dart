@@ -1,4 +1,3 @@
-import 'package:tripversal/models/guideModel.dart';
 import 'package:tripversal/repositories/repository.dart';
 
 class guideServices{

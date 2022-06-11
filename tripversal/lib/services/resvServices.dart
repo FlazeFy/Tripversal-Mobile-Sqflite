@@ -1,4 +1,3 @@
-import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/repositories/repository.dart';
 
 class resvServices{

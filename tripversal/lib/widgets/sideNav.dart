@@ -14,9 +14,9 @@ class NavDrawer extends StatelessWidget {
             DrawerHeader(
             child: Text(
               pass_username,
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: const TextStyle(color: Colors.white, fontSize: 20),
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0xFF4169E1),
               image: DecorationImage(
                 fit: BoxFit.fill,

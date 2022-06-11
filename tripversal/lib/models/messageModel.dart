@@ -14,7 +14,7 @@ class messageModel{
   String username;
    
   messageMap(){
-    var mapping = Map<String, dynamic>();
+    var mapping = <String, dynamic>{};
 
     mapping['id_message'] = idMessage;
     mapping['sender'] = sender;
@@ -27,7 +27,7 @@ class messageModel{
     return mapping;
   }
   messageMap2(){
-    var mapping = Map<String, dynamic>();
+    var mapping = <String, dynamic>{};
 
     mapping['id_message'] = null;
     mapping['sender'] = sender;
@@ -40,7 +40,7 @@ class messageModel{
     return mapping;
   }
   socialMap(){
-    var mapping = Map<String, dynamic>();
+    var mapping = <String, dynamic>{};
 
     mapping['id_social'] = null;
     mapping['garage_guide'] = garage_guide;
