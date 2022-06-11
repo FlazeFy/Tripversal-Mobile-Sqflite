@@ -19,7 +19,7 @@ class DatabaseConnection{
     await database.execute("CREATE TABLE review (id_review INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, comment TEXT NOT NULL, rating INTEGER NOT NULL, dateReview DATETIME NOT NULL)");
     await database.execute("CREATE TABLE message (id_message INTEGER PRIMARY KEY AUTOINCREMENT, sender TEXT NOT NULL, receiver TEXT NOT NULL, type TEXT NOT NULL, body TEXT NOT NULL, imageURL TEXT NOT NULL, datetime DATETIME)");
     await database.execute("CREATE TABLE waiting (id_waiting INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_car_guide INTEGER, type TEXT NOT NULL, price INTEGER NOT NULL, dateStart DATETIME NOT NULL, dateEnd DATETIME NOT NULL, status TEXT NOT NULL)");
-    await database.execute("CREATE TABLE garage (id_garage INTEGER PRIMARY KEY AUTOINCREMENT, garage_name TEXT NOT NULL, garage_phone TEXT NOT NULL, garage_location TEXT NOT NULL, garage_email TEXT NOT NULL, garage_desc TEXT NOT NULL)");
+    await database.execute("CREATE TABLE garage (id_garage INTEGER PRIMARY KEY AUTOINCREMENT, garage_name TEXT NOT NULL, garage_phone TEXT NOT NULL, garage_location TEXT NOT NULL, garage_email TEXT NOT NULL, garage_desc TEXT NOT NULL, garage_lat TEXT NOT NULL, garage_lng TEXT NOT NULL)");
     await database.execute("CREATE TABLE social (id_social INTEGER PRIMARY KEY AUTOINCREMENT, garage_guide TEXT NOT NULL, username TEXT NOT NULL)");
 
 
@@ -56,8 +56,8 @@ class DatabaseConnection{
     await database.execute("INSERT INTO message(id_message, sender, receiver, type, body, imageURL, datetime) VALUES(null, 'flazefy', 'Cahya Trans', 'Car Rental', 'Give me 5 min', 'null', '2022-05-27 02:12:41')");
 
     //Insert garage Item
-    await database.execute("INSERT INTO garage(id_garage, garage_name, garage_phone, garage_location, garage_email, garage_desc) VALUES(null, 'Maju Jaya Rent', '08114891203', 'Jl. Terusan Buah Batu No.24', 'majujaya@gmail.com', 'Lorem ipsum')");
-    await database.execute("INSERT INTO garage(id_garage, garage_name, garage_phone, garage_location, garage_email, garage_desc) VALUES(null, 'Cahya Trans', '08114899012', 'Jl. Telekomukasi No.17', 'cahyatrans@gmail.com', 'Lorem ipsum')");
+    await database.execute("INSERT INTO garage(id_garage, garage_name, garage_phone, garage_location, garage_email, garage_desc, garage_lat, garage_lng) VALUES(null, 'Maju Jaya Rent', '08114891203', 'Jl. Terusan Buah Batu No.24', 'majujaya@gmail.com', 'Lorem ipsum', '-6.9703190663757475', '107.63220124971892')");
+    await database.execute("INSERT INTO garage(id_garage, garage_name, garage_phone, garage_location, garage_email, garage_desc, garage_lat, garage_lng) VALUES(null, 'Cahya Trans', '08114899012', 'Jl. Telekomukasi No.17', 'cahyatrans@gmail.com', 'Lorem ipsum', '-6.937433224809076', '107.61950301245027')");
 
     //Insert Social Item
     await database.execute("INSERT INTO social(id_social, garage_guide, username) VALUES(null, 'Maju Jaya Rent', 'flazefy')");

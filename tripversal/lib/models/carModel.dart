@@ -15,6 +15,8 @@ class carModel{
     String desc;
   String coordinate_lan;
   String coordinate_lng;
+  String coordinate_lan_g;
+  String coordinate_lng_g;
   String garage_name;
   String garage_location;
   String garage_phone;
@@ -42,6 +44,8 @@ class carModel{
     mapping['garage_phone'] = garage_phone;
     mapping['garage_location'] = garage_location;
     mapping['garage_email'] = garage_email;
+    mapping['garage_lat'] = coordinate_lan_g;
+    mapping['garage_lng'] = coordinate_lng_g;
 
     return mapping;
   }

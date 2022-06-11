@@ -32,6 +32,11 @@ class Repository{
     // return await connection.query(table);
     return await connection.rawQuery('SELECT * FROM car JOIN garage ON car.id_garage = garage.id_garage ORDER BY price ASC');
   }
+  readGarageData(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM garage');
+  }
   readGuideData(table) async{
     var connection = await database;
     // return await connection.query(table);

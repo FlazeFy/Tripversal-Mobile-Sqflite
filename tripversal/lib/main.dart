@@ -619,7 +619,7 @@ class _RentACarPage extends State<RentACarPage> {
                                                   text: "Rp. ",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
-                                                    fontSize: 21,
+                                                    fontSize: 16,
                                                     fontWeight: FontWeight.w700,
                                                   )
                                                 ),
@@ -635,7 +635,7 @@ class _RentACarPage extends State<RentACarPage> {
                                                   text: " / Day",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                     fontWeight: FontWeight.w700,
                                                   )
                                                 ),
@@ -696,7 +696,7 @@ class _RentACarPage extends State<RentACarPage> {
                                             ),
                                           );
                                         },
-                                        icon: Icon(Icons.book, size: 18),
+                                        icon: Icon(Icons.arrow_forward, size: 18),
                                         label: Text("Book now"),
                                         style: ButtonStyle(
                                           backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
@@ -1718,7 +1718,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                               margin: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: ButtonTheme(
                                 minWidth: 30,
-                                child: ElevatedButton.icon(
+                                child: IconButton(
                                   onPressed: () {
                                     Navigator.push(
                                       context,
@@ -1740,15 +1740,12 @@ class _TourGuidePage extends State<TourGuidePage> {
                                     );
                                   },
                                   icon: Icon(Icons.arrow_forward, size: 25),
-                                  label: Text(""),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
-                                  ),
+                                  color: Colors.white,
                                 )
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
+                                color: Color(0xFF1F9F2F),
                               ),
                             )
                           ],
@@ -3054,32 +3051,40 @@ class _BookCarPage extends State<BookCarPage> {
                     ),
                   )
                 ),
-                const Divider(
-                  height: 10,
-                  thickness: 1,
-                  indent: 15,
-                  endIndent: 15,
-                  color: Color.fromARGB(255, 185, 185, 185),
-                ),
-              
                 Flexible(            
                   child : SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
                       children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: const Text(
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                            child: new Container(
+                              margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                thickness: 1.5,
+                                height: 5,
+                              )),
+                            ),       
+                            Text(
                               "Description", 
                               style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 15,
-                                color: Color(0xFF808080)
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Color(0xFF414141)
                               ),
+                            ),    
+                            Expanded(
+                            child: new Container(
+                              margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                thickness: 1.5,
+                                height: 5,
+                              )),
                             ),
-                          )
+                          ]
                         ),
                         Align(
                           alignment: Alignment.topLeft,
@@ -3089,24 +3094,39 @@ class _BookCarPage extends State<BookCarPage> {
                               _carList[index].desc,
                               style: TextStyle(
                                 fontSize: 15,
-                                color: Color.fromARGB(255, 145, 145, 145)
                               ),
                             ),
                           )
                         ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                            child: const Text(
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                            child: new Container(
+                              margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                thickness: 1.5,
+                                height: 5,
+                              )),
+                            ),       
+                            Text(
                               "Specification", 
                               style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 15,
-                                color: Color(0xFF808080)
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Color(0xFF414141)
                               ),
+                            ),    
+                            Expanded(
+                            child: new Container(
+                              margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                thickness: 1.5,
+                                height: 5,
+                              )),
                             ),
-                          )
+                          ]
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 5.0),
@@ -3810,32 +3830,40 @@ class _BookGuidePage extends State<BookGuidePage> {
                   ],
                 ),
               ),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 15,
-                endIndent: 15,
-                color: Color.fromARGB(255, 185, 185, 185),
-              ),
-        
               Flexible(            
                 child : SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: const Text(
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                          child: new Container(
+                            margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                            child: Divider(
+                              color: Colors.grey,
+                              thickness: 1.5,
+                              height: 5,
+                            )),
+                          ),       
+                          Text(
                             "Description", 
                             style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15,
-                              color: Color(0xFF808080)
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Color(0xFF414141)
                             ),
+                          ),    
+                          Expanded(
+                          child: new Container(
+                            margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                            child: Divider(
+                              color: Colors.grey,
+                              thickness: 1.5,
+                              height: 5,
+                            )),
                           ),
-                        )
+                        ]
                       ),
                       Align(
                         alignment: Alignment.topLeft,
@@ -3850,19 +3878,35 @@ class _BookGuidePage extends State<BookGuidePage> {
                           ),
                         )
                       ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                          child: const Text(
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                          child: new Container(
+                            margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                            child: Divider(
+                              color: Colors.grey,
+                              thickness: 1.5,
+                              height: 5,
+                            )),
+                          ),       
+                          Text(
                             "Language", 
                             style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15,
-                              color: Color(0xFF808080)
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Color(0xFF414141)
                             ),
+                          ),    
+                          Expanded(
+                          child: new Container(
+                            margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                            child: Divider(
+                              color: Colors.grey,
+                              thickness: 1.5,
+                              height: 5,
+                            )),
                           ),
-                        )
+                        ]
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 5.0),
@@ -5555,19 +5599,47 @@ class ChatPage extends StatefulWidget {
   _ChatPage createState() => _ChatPage();
 }
 
-class _ChatPage extends State<ChatPage> {
+class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
   final _message = messageModel();
   final _carServices = carServices();
   final _messageTextCtrl = TextEditingController();
   var type;
 
-  List<messageModel> _messageList = <messageModel>[];
-  
+  // this variable determnines whether the back-to-top button is shown or not
+  bool _showBackToTopButton = false;
+
+  // scroll controller
+   ScrollController _scrollController;
+
   @override
-  void initState(){
+  void initState() {
+    _scrollController = ScrollController()
+      ..addListener(() {
+        setState(() {
+          if (_scrollController.offset >= 150) {
+            _showBackToTopButton = true; // show the back-to-top button
+          } else {
+            _showBackToTopButton = false; // hide the back-to-top button
+          }
+        });
+      });
     super.initState();
     getAllMessage();
   }
+
+  @override
+  void dispose() {
+    _scrollController.dispose(); // dispose the controller
+    super.dispose();
+  }
+
+  // This function is triggered when the user presses the back-to-top button
+  void _scrollToTop() {
+    _scrollController.animateTo(0,
+      duration: const Duration(seconds: 1), curve: Curves.linear);
+  }
+
+  List<messageModel> _messageList = <messageModel>[];
 
   //Get all message for car & guide
   getAllMessage() async {
@@ -5610,7 +5682,16 @@ class _ChatPage extends State<ChatPage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+            icon: Icon(Icons.warehouse, color: Color(0xFF4169E1)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GaragePage(pass_garage: widget.pass_garage_guide, pass_username: widget.pass_username)),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_back, color: Color(0xFF4169E1)),
             iconSize: 40,
             onPressed: () {
               Navigator.push(
@@ -5633,6 +5714,7 @@ class _ChatPage extends State<ChatPage> {
             //Text.
             Flexible(
               child: ListView.builder(
+                controller: _scrollController,
                 itemCount : _messageList.length,
                 itemBuilder: (context, index){
                   if(_messageList[index].sender == widget.pass_username){
@@ -5732,6 +5814,7 @@ class _ChatPage extends State<ChatPage> {
                     ),
                     const SizedBox(width: 15,),
                     FloatingActionButton(
+                      heroTag: "send",
                       onPressed: () async{
                         var dt = DateTime.now();
 
@@ -5785,6 +5868,20 @@ class _ChatPage extends State<ChatPage> {
           ], 
       
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      floatingActionButton: _showBackToTopButton == false
+          ? null
+          : Padding(
+        padding: const EdgeInsets.only(top: 70.0),
+        child: FloatingActionButton.extended(
+          heroTag: "backtotop",
+          onPressed: _scrollToTop,
+          label: const Text('Back To Top', style: TextStyle(color: Colors.white)),
+          icon: const Icon(Icons.arrow_circle_up),
+          backgroundColor: Color(0xFF555555).withOpacity(0.5),
+          elevation: 0,
+        ),
       )
     );
   }
@@ -5826,6 +5923,336 @@ class _PaymentMethodState extends State<PaymentMethod> {
           child: Text(value),
         );
       }).toList(),
+    );
+  }
+}
+
+class GaragePage extends StatefulWidget {
+  const GaragePage({Key key, this.pass_garage, this.pass_username}) : super(key: key);
+
+  final String pass_garage;
+  final String pass_username;
+
+  @override
+
+  _GaragePage createState() => _GaragePage();
+}
+
+class _GaragePage extends State<GaragePage> {
+  final _carServices = carServices();
+  var garagename; var coordinate_lat_g; var coordinate_lng_g;
+  int idCarGuide; var price; var driver; int countRev = 0;
+
+  List<carModel> _garageList = <carModel>[];
+  
+  @override
+  void initState(){
+    super.initState();
+    getGarageData();
+  }
+
+  getGarageData() async {
+    _garageList = <carModel>[];
+    var garage = await _carServices.readGarage();
+
+    garage.forEach((garage){
+      if(garage['garage_name'] == widget.pass_garage){
+        setState((){
+          var garageModels = carModel();
+          garageModels.idgarage = garage['id_garage'];
+          garageModels.garage_name = garage['garage_name'];
+          garagename = garage['garage_name'];
+          garageModels.garage_phone = garage['garage_phone'];
+          garageModels.garage_location = garage['garage_location'];
+          garageModels.garage_email = garage['garage_email'];
+          garageModels.desc = garage['garage_desc'];
+          garageModels.coordinate_lan_g = garage['garage_lat'];
+          coordinate_lat_g = garage['garage_lat'];
+          garageModels.coordinate_lng_g = garage['garage_lng'];
+          coordinate_lng_g = garage['garage_lng'];
+          _garageList.add(garageModels);
+        });
+      }
+    });
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: NavDrawer(pass_username: widget.pass_username),
+      appBar: AppBar(
+        iconTheme: 
+          IconThemeData(
+            color: Color(0xFF4169E1),
+            size: 35.0,
+          ),
+        title: Text("Book Car", 
+        style: TextStyle(
+          color: Color(0xFF4169E1),
+          fontWeight: FontWeight.w800,
+          fontSize: 16,
+        ),
+      ),
+      
+      actions: [
+        IconButton(
+          icon: Icon(Icons.map, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (c, a1, a2) => MapsPage(pass_carguidename: garagename, pass_coordinate_lan: double.tryParse(coordinate_lat_g), pass_coordinate_lng: double.tryParse(coordinate_lng_g)),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                  final curvedAnimation = CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.ease,
+                  );
+
+                  return SlideTransition(
+                    position: tween.animate(curvedAnimation),
+                    child: child,
+                  );
+                }
+              ),
+            );
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+      //Transparent setting.
+      backgroundColor: Color(0x44FFFFFF),
+      elevation: 0,
+    ),
+
+      body: ListView.builder(
+        itemCount : _garageList.length,
+        itemBuilder: (context, index){
+            return Container(
+            height: MediaQuery.of(context).size.height,
+            transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 160,
+                      margin: EdgeInsets.all(20),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(80), 
+                        child: Image.asset('assets/images/garage/garage_${_garageList[index].garage_name}.jpg'),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(80), 
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, 3)
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [           
+                          Text(
+                            _garageList[index].garage_name, 
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17,
+                              color: Color(0xFF212121)
+                            ),
+                          ),
+                          SizedBox(height:10),
+                          Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Vehicle", 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Color(0xFF808080)
+                                    ),
+                                  ),
+                                  Text(
+                                    "2", 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Color(0xFF414141)
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width:15),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Driver", 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Color(0xFF808080)
+                                    ),
+                                  ),
+                                  Text(
+                                    "2", 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Color(0xFF414141)
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width:15),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Trip", 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Color(0xFF808080)
+                                    ),
+                                  ),
+                                  Text(
+                                    "2", 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Color(0xFF414141)
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _garageList[index].garage_name, pass_username: widget.pass_username),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
+                                    final curvedAnimation = CurvedAnimation(
+                                      parent: animation,
+                                      curve: Curves.ease,
+                                    );
+
+                                    return SlideTransition(
+                                      position: tween.animate(curvedAnimation),
+                                      child: child,
+                                    );
+                                  }
+                                ),
+                              );
+                            },
+                            icon: Icon(Icons.chat, size: 18),
+                            label: Text("Chat Now"),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                            ),
+                          ),
+                        ],
+                      )
+                    )
+                  ],
+                ),   
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                     child: new Container(
+                      margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1.5,
+                        height: 5,
+                      )),
+                    ),       
+                    Text(
+                      "About Us", 
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Color(0xFF414141)
+                      ),
+                    ),    
+                    Expanded(
+                     child: new Container(
+                      margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1.5,
+                        height: 5,
+                      )),
+                    ),
+                  ]
+                ),
+                Container(
+                  margin: EdgeInsets.all(20),
+                  child: Text(
+                    _garageList[index].desc, 
+                    style: TextStyle(
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                     child: new Container(
+                      margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1.5,
+                        height: 5,
+                      )),
+                    ),       
+                    Text(
+                      "Other Vehicle", 
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Color(0xFF414141)
+                      ),
+                    ),    
+                    Expanded(
+                     child: new Container(
+                      margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1.5,
+                        height: 5,
+                      )),
+                    ),
+                  ]
+                ),
+                
+              ]
+            ),
+          );
+          
+          
+        }
+      ),
     );
   }
 }

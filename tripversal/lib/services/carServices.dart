@@ -12,6 +12,9 @@ class carServices{
   readCar() async{
     return await _repository.readCarData('car');
   }
+  readGarage() async{
+    return await _repository.readGarageData('garage');
+  }
   readCarwReview() async{
     return await _repository.readReviewCar('car');
   }
