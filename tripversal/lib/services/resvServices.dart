@@ -1,3 +1,4 @@
+import 'package:tripversal/models/waitingModel.dart';
 import 'package:tripversal/repositories/repository.dart';
 
 class resvServices{
@@ -15,5 +16,8 @@ class resvServices{
   }
   readWaiting() async{
     return await _repository.readWaitingDataById('waiting');
+  }
+  createPayment(waitingModel waiting) async{
+    return await _repository.insertWaiting('waiting', waiting.waitingMap2());
   }
 }

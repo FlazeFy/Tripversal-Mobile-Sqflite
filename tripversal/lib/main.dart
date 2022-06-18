@@ -1779,14 +1779,14 @@ class MyResPage extends StatefulWidget {
 }
 
 class _MyResPage extends State<MyResPage> {
-  // final _resv = resvModel();
-  // final _ongoing = onGoingModel();
-  // final _waiting = waitingModel();
   final _resvServices = resvServices();
+  final _userServices = userServices();
+  var passIdUser;
 
   List<resvModel> _historyList = <resvModel>[];
   List<onGoingModel> _onGoingList = <onGoingModel>[];
   List<waitingModel> _waitingList = <waitingModel>[];
+  List<userModel> _userList = <userModel>[];
   
   @override
   void initState(){
@@ -1794,6 +1794,18 @@ class _MyResPage extends State<MyResPage> {
     getAllWaitingData();
     getAllHistoryData();
     getAllOnGoingData();
+    getAllUserData();
+  }
+  getAllUserData() async {
+    _userList = <userModel>[];
+    var users = await _userServices.readUser();
+
+    users.forEach((user){
+      if(user['fullname'] == widget.pass_username){
+      setState((){
+        passIdUser = user['id_user'];
+      });
+    }});
   }
 
   getAllWaitingData() async {
@@ -2088,7 +2100,7 @@ class _MyResPage extends State<MyResPage> {
                                     onPressed: () {
                                       Navigator.push(
                                         context, MaterialPageRoute(
-                                          builder: (context) => const PaymentPage(),
+                                          builder: (context) => PaymentPage(pass_id_user: passIdUser, pass_username: widget.pass_username, pass_total:0),
                                         ),
                                       );
                                     },
@@ -2749,21 +2761,34 @@ class BookCarPage extends StatefulWidget {
 }
 
 class _BookCarPage extends State<BookCarPage> {
-  /*const _BookCarPage({Key key}) : super(key: key);*/
-  // final _car = carModel();
-  // final _review = reviewModel();
   final _carServices = carServices();
-  var carname; var coordinate_lan; var coordinate_lng;
+  final _userServices = userServices();
+  var carname; var coordinate_lan; var coordinate_lng; var garageName;
   int idCarGuide; var price; var driver; int countRev = 0;
+  var passIdUser;
 
   List<carModel> _carList = <carModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
+  List<userModel> _userList = <userModel>[];
   
   @override
   void initState(){
     super.initState();
     getAllCarData();
     getAllCarReview();
+    getAllUserData();
+  }
+
+  getAllUserData() async {
+    _userList = <userModel>[];
+    var users = await _userServices.readUser();
+
+    users.forEach((user){
+      if(user['fullname'] == widget.pass_username){
+      setState((){
+        passIdUser = user['id_user'];
+      });
+    }});
   }
 
   getAllCarData() async {
@@ -2795,6 +2820,7 @@ class _BookCarPage extends State<BookCarPage> {
           coordinate_lng = car['coordinate_lng'];
           carModels.idgarage = car['id_garage'];
           carModels.garage_name = car['garage_name'];
+          garageName = car['garage_name'];
           carModels.garage_phone = car['garage_phone'];
           carModels.garage_location = car['garage_location'];
           carModels.garage_email = car['garage_email'];
@@ -2918,13 +2944,13 @@ class _BookCarPage extends State<BookCarPage> {
           },
         ),
         IconButton(
+          icon: Icon(Icons.warehouse, color: Color(0xFF4169E1)),
           onPressed: () {
-            // Respond to button press
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => GaragePage(pass_garage: garageName, pass_username: widget.pass_username)),
+            );
           },
-          icon: Image.asset("assets/images/wishlist.png"),
-          color: const Color(0xFF00B0FF),
-          //Wishlist icon external
-          padding: const EdgeInsets.all(0.0)
         ),
         IconButton(
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
@@ -3556,7 +3582,7 @@ class _BookCarPage extends State<BookCarPage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idCar, pass_carguidename: carname, pass_username: widget.pass_username, pass_price: price, type: 'Car Rental'),
+              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idCar, pass_carguidename: carname, pass_username: widget.pass_username, pass_price: price, type: 'Car Rental', pass_idUser: passIdUser),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
@@ -3594,9 +3620,12 @@ class _BookGuidePage extends State<BookGuidePage> {
   //const _BookGuidePage({Key key}) : super(key: key);
   //final _guide = guideModel();
   final _guideServices = guideServices();
+  final _userServices = userServices();
   //final _review = reviewModel();
   var guideName; var price; int countRev = 0;
+  var passIdUser;
 
+  List<userModel> _userList = <userModel>[];
   List<guideModel> _guideList = <guideModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
   
@@ -3605,6 +3634,18 @@ class _BookGuidePage extends State<BookGuidePage> {
     super.initState();
     getAllGuideData();
     getAllGuideReview();
+    getAllUserData();
+  }
+  getAllUserData() async {
+    _userList = <userModel>[];
+    var users = await _userServices.readUser();
+
+    users.forEach((user){
+      if(user['fullname'] == widget.pass_username){
+      setState((){
+        passIdUser = user['id_user'];
+      });
+    }});
   }
 
   getAllGuideData() async {
@@ -3707,15 +3748,6 @@ class _BookGuidePage extends State<BookGuidePage> {
       ),
       
       actions: [
-        IconButton(
-          onPressed: () {
-            // Respond to button press
-          },
-          icon: Image.asset("assets/images/wishlist.png"),
-          color: const Color(0xFF00B0FF),
-          //Wishlist icon external
-          padding: const EdgeInsets.all(0.0)
-        ),
         IconButton(
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
@@ -4286,7 +4318,7 @@ class _BookGuidePage extends State<BookGuidePage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idGuide, pass_carguidename: guideName, pass_username: widget.pass_username, pass_price: price, type: 'Tour Guide'),
+              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idGuide, pass_carguidename: guideName, pass_username: widget.pass_username, pass_price: price, type: 'Tour Guide', pass_idUser: passIdUser),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
@@ -4309,11 +4341,12 @@ class _BookGuidePage extends State<BookGuidePage> {
   }
 }
 class OrderPage extends StatefulWidget {
-  const OrderPage({Key key, this.pass_username, this.pass_idCarGuide, this.pass_carguidename, this.pass_price, this.type}) : super(key: key);
+  const OrderPage({Key key, this.pass_username, this.pass_idUser, this.pass_idCarGuide, this.pass_carguidename, this.pass_price, this.type}) : super(key: key);
 
   final String pass_username;
   final String pass_carguidename;
   final int pass_idCarGuide;
+  final int pass_idUser;
   final int pass_price;
   final String type;
 
@@ -4324,8 +4357,9 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPage extends State<OrderPage> {
   TimeOfDay selectedTime = TimeOfDay.now();
-
+  var _waiting = waitingModel();
   DateTime selectedDate = DateTime.now();
+  final _resvServices = resvServices();
 
   Future<void> _selectDate(BuildContext context) async {
     final picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2015, 8), lastDate: DateTime(2101));
@@ -4342,6 +4376,9 @@ class _OrderPage extends State<OrderPage> {
   }
 
   int add = 0;
+  getDays(){
+    
+  }
   getAddition(){
     if(widget.type == 'Car Rental'){
       add = 20000;
@@ -4361,7 +4398,8 @@ class _OrderPage extends State<OrderPage> {
       total = price + 5000;
     }
     return total;
-  }
+  } 
+  int passTotal = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -4991,10 +5029,26 @@ class _OrderPage extends State<OrderPage> {
       ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
+        onPressed: () async {
+          passTotal = getTotal();
+          var dt = DateTime.now();
+
+          // String
+          var dtStr = dt.toIso8601String();
+          dt = DateTime.tryParse(dtStr);
+          _waiting.idUser = widget.pass_idUser;
+          _waiting.idCarGuide = widget.pass_idCarGuide;
+          _waiting.type = widget.type;
+          _waiting.price = widget.pass_price;
+          _waiting.status = "waiting"; 
+          _waiting.dateStart = dt; //for testing
+          _waiting.dateEnd = dt;  //for testing
+                    
+          var result = await _resvServices.createPayment(_waiting);
+          print(result);
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const PaymentPage()),
+            MaterialPageRoute(builder: (context) => PaymentPage(pass_id_user: widget.pass_idUser, pass_username: widget.pass_username, pass_total: passTotal)),
           );
         },
         label: const Text('Order Now'),
@@ -5018,8 +5072,20 @@ class _OrderPage extends State<OrderPage> {
   }
 }
 
-class PaymentPage extends StatelessWidget {
-  const PaymentPage({Key key}) : super(key: key);
+
+class PaymentPage extends StatefulWidget {
+  PaymentPage({Key key, this.pass_username, this.pass_id_user, this.pass_total}) : super(key: key);
+
+  final String pass_username;
+  final int pass_id_user;
+  final int pass_total;
+
+  @override
+
+  _PaymentPage createState() => _PaymentPage();
+}
+
+class _PaymentPage extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -5042,10 +5108,10 @@ class PaymentPage extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
-          onPressed: () {
+          onPressed: () {    
             Navigator.push(
               context, MaterialPageRoute(
-                builder: (context) => const NavBar(),
+                builder: (context) => NavBar(pass_usernameNav: widget.pass_username)
               ),
             );
           },
@@ -5057,7 +5123,284 @@ class PaymentPage extends StatelessWidget {
     ),
 
       body: Center(
-        child: payment()
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 0.0),
+            child: Flexible(            
+              child : SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: const BorderSide(color: Color(0xFF4169E1), width: 2),
+                        ),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                                child: const Text(
+                                  "Payment Detail", 
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.black
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                                    child: const Text(
+                                      "Transfer Mandiri", 
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black
+                                      ),
+                                    ),
+                                  ),
+                                ),  
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 5.0),
+                                    child: const Text(
+                                      "1300174190012", 
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20,
+                                        color: Colors.black
+                                      ),
+                                    ),
+                                  ),
+                                ),    
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Rp. ${widget.pass_total.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20,
+                                      color: Colors.black
+                                    ),
+                                  ),
+                                ),   
+                                const SizedBox(
+                                  height: 10,
+                                )                         
+                              ]
+
+                            ),
+                          ]
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        color: const Color(0xFF4169E1),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 10.0),
+                                child: const Text(
+                                  "Selesaikan sebelum : ", 
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white
+                                  ),
+                                ),
+                              ),
+                            ),  
+                            Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                //Countdown timer
+                              ),
+                            ),    
+                            const SizedBox(
+                              height: 10,
+                            )                         
+                          ]
+
+                          
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 20,
+                      thickness: 4,
+                      indent: 0,
+                      endIndent: 15,
+                      color: Color.fromARGB(255, 185, 185, 185),
+                    ),
+                    Column(
+                      children: <Widget>[
+                        ExpansionTile( //Collapse-1 ===========================================
+                          leading: IconButton(
+                            iconSize: 30,
+                            icon: const Icon(Icons.cancel,
+                            color: Color(0xFF808080)),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            "Can I canceled the order?",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w800
+                            ),
+                          ),
+                          children: <Widget>[                     
+                            SingleChildScrollView(               
+                              scrollDirection: Axis.vertical,
+                              child: Column(
+                                children: const <Widget>[
+                                    
+                                
+                                ]
+                              )
+                            )   
+                            
+                          ],
+                        ),
+
+                        ExpansionTile( //Collapse-2 ===========================================
+                          leading: IconButton(
+                            iconSize: 30,
+                            icon: const Icon(Icons.timer,
+                            color: Color(0xFF808080)),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            "What happen when the payment timer is run out?",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w800
+                            ),
+                          ),
+                          children: <Widget>[
+                            SingleChildScrollView(               
+                              scrollDirection: Axis.vertical,
+                              child: Column(
+                                children: const <Widget>[
+                                    
+                                  
+                                ]
+                              )
+                            )  
+                          ],
+                        ),
+
+                        ExpansionTile( //Collapse-3 ===========================================
+                          leading: IconButton(
+                            iconSize: 30,
+                            icon: const Icon(Icons.payment,
+                            color: Color(0xFF808080)),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            "Can I change the payment method?",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w800
+                            ),
+                          ),
+                          children: <Widget>[                     
+                            SingleChildScrollView(               
+                              scrollDirection: Axis.vertical,
+                              child: Column(
+                                children: const <Widget>[
+                                    
+                                  
+                                ]
+                              )
+                            )   
+                            
+                          ],
+                        ),
+
+                        ExpansionTile( //Collapse-3 ===========================================
+                          leading: IconButton(
+                            iconSize: 30,
+                            icon: const Icon(Icons.error,
+                            color: Color(0xFF808080)),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            "What should I do when I send the wrong payment?",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w800
+                            ),
+                          ),
+                          children: <Widget>[                     
+                            SingleChildScrollView(               
+                              scrollDirection: Axis.vertical,
+                              child: Column(
+                                children: const <Widget>[
+                                    
+                                  
+                                ]
+                              )
+                            )   
+                            
+                          ],
+                        ),
+
+                        ExpansionTile( //Collapse-3 ===========================================
+                          leading: IconButton(
+                            iconSize: 30,
+                            icon: const Icon(Icons.qr_code,
+                            color: Color(0xFF808080)),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            "When can I get the order barcode?",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w800
+                            ),
+                          ),
+                          children: <Widget>[                     
+                            SingleChildScrollView(               
+                              scrollDirection: Axis.vertical,
+                              child: Column(
+                                children: const <Widget>[
+                                    
+                                  
+                                ]
+                              )
+                            )   
+                            
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ]
+                    
+                    
+                ),
+              )
+            )
+          )
+        )
       ),
     );
   }
@@ -5502,7 +5845,7 @@ class _ContactPageState extends State<ContactPage> {
                   borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                 ),
                 border: OutlineInputBorder(),
-                hintText: 'search by driver, car...',
+                hintText: 'search by garage or guide...',
                 hintStyle: TextStyle(
                   fontStyle: FontStyle.italic
                 ),

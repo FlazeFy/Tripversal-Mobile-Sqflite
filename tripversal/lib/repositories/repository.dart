@@ -110,4 +110,9 @@ class Repository{
     var connection = await database;
     return await connection.update(table, data, where: 'id_user=?', whereArgs: [data['id_user']]);
   }
+  insertWaiting(table, data) async{
+    var connection = await database;
+  
+    return await connection.insert(table, data);
+  }
 }
