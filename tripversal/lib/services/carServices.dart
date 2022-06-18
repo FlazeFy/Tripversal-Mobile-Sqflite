@@ -27,4 +27,7 @@ class carServices{
   sendMessage(messageModel message) async{
     return await _repository.insertMessage('message', message.messageMap2());
   }
+  unSendMessage(idMessage) async{
+    return await _repository.deleteMessage('message', idMessage);
+  }
 }

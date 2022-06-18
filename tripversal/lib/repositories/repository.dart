@@ -100,6 +100,11 @@ class Repository{
   
     return await connection.insert(table, data);
   }
+  deleteMessage(table, idMessage) async{
+    var connection = await database;
+  
+    return await connection.rawQuery('DELETE FROM message WHERE id_message = $idMessage');
+  }
 
   updateData(table, data) async{
     var connection = await database;

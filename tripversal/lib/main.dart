@@ -25,7 +25,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
-
+import 'package:flutter/services.dart';
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
@@ -2849,7 +2849,7 @@ class _BookCarPage extends State<BookCarPage> {
   Widget getMessageReview() {
     if(countRev == 0){
       return Card(
-        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical:5),
         child: Column(
           children: [
             ClipRRect(
@@ -2859,8 +2859,9 @@ class _BookCarPage extends State<BookCarPage> {
             Text(
               "There's no review for this car", 
               style: TextStyle(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w600,
                 fontSize: 15,
+                color: Colors.grey,
               ),
             ),
           ],
@@ -3344,38 +3345,56 @@ class _BookCarPage extends State<BookCarPage> {
                                           ),
                                         ),
                                       ),
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical:5),
-                                        child: Align(
-                                          alignment: Alignment.topLeft,
-                                          child: ElevatedButton.icon(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                PageRouteBuilder(
-                                                  pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _carList[index].garage_name, pass_username: widget.pass_username),
-                                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                    final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
-                                                    final curvedAnimation = CurvedAnimation(
-                                                      parent: animation,
-                                                      curve: Curves.ease,
-                                                    );
+                                      Row(
+                                        children:[
+                                          Container(
+                                            margin: const EdgeInsets.only(left: 10.0),
+                                            child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: ElevatedButton.icon(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    PageRouteBuilder(
+                                                      pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _carList[index].garage_name, pass_username: widget.pass_username),
+                                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                        final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
+                                                        final curvedAnimation = CurvedAnimation(
+                                                          parent: animation,
+                                                          curve: Curves.ease,
+                                                        );
 
-                                                    return SlideTransition(
-                                                      position: tween.animate(curvedAnimation),
-                                                      child: child,
-                                                    );
-                                                  }
+                                                        return SlideTransition(
+                                                          position: tween.animate(curvedAnimation),
+                                                          child: child,
+                                                        );
+                                                      }
+                                                    ),
+                                                  );
+                                                },
+                                                icon: Icon(Icons.chat, size: 18),
+                                                label: Text("Chat Now"),
+                                                style: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
                                                 ),
-                                              );
-                                            },
-                                            icon: Icon(Icons.chat, size: 18),
-                                            label: Text("Chat Now"),
-                                            style: ButtonStyle(
-                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          Container(
+                                            margin: const EdgeInsets.only(left: 10.0),
+                                            child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: ElevatedButton.icon(
+                                                onPressed: () {
+                                                  var contact= "Phone: +62 "+_carList[index].garage_phone+" Address: "+_carList[index].garage_location;
+                                                  Clipboard.setData(ClipboardData(text: contact));         
+                                                },
+                                                icon: Icon(Icons.copy, size: 18),
+                                                label: Text("Copy"),
+                                              ),
+                                            ),
+                                          ),
+                                        ]
                                       ),
                                       SizedBox(height: 5)
                                     ]
@@ -3644,7 +3663,7 @@ class _BookGuidePage extends State<BookGuidePage> {
   Widget getMessageReview() {
     if(countRev == 0){
       return Card(
-        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
         child: Column(
           children: [
             ClipRRect(
@@ -3654,8 +3673,9 @@ class _BookGuidePage extends State<BookGuidePage> {
             Text(
               "There's no review for this guide", 
               style: TextStyle(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w600,
                 fontSize: 15,
+                color: Colors.grey,
               ),
             ),
           ],
@@ -4056,38 +4076,56 @@ class _BookGuidePage extends State<BookGuidePage> {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: ElevatedButton.icon(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _guideList[index].name, pass_username: widget.pass_username),
-                                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                  final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
-                                                  final curvedAnimation = CurvedAnimation(
-                                                    parent: animation,
-                                                    curve: Curves.ease,
-                                                  );
+                                    Row(
+                                      children:[
+                                        Container(
+                                          margin: const EdgeInsets.only(left: 20.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: ElevatedButton.icon(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _guideList[index].name, pass_username: widget.pass_username),
+                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                      final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
+                                                      final curvedAnimation = CurvedAnimation(
+                                                        parent: animation,
+                                                        curve: Curves.ease,
+                                                      );
 
-                                                  return SlideTransition(
-                                                    position: tween.animate(curvedAnimation),
-                                                    child: child,
-                                                  );
-                                                }
+                                                      return SlideTransition(
+                                                        position: tween.animate(curvedAnimation),
+                                                        child: child,
+                                                      );
+                                                    }
+                                                  ),
+                                                );                    
+                                              },
+                                              icon: Icon(Icons.chat, size: 18),
+                                              label: Text("Chat Now"),
+                                              style: ButtonStyle(
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
                                               ),
-                                            );                    
-                                          },
-                                          icon: Icon(Icons.chat, size: 18),
-                                          label: Text("Chat Now"),
-                                          style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                        Container(
+                                          margin: const EdgeInsets.only(left: 10.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: ElevatedButton.icon(
+                                              onPressed: () {
+                                                var contact= "Phone: +62 "+_guideList[index].phone+" Address: "+_guideList[index].address;
+                                                Clipboard.setData(ClipboardData(text: contact));         
+                                              },
+                                              icon: Icon(Icons.copy, size: 18),
+                                              label: Text("Copy"),
+                                            ),
+                                          ),
+                                        ),
+                                      ]
                                     ),
                                     Container(margin: const EdgeInsets.symmetric(vertical: 10.0))
 
@@ -5729,10 +5767,63 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                             constraints: BoxConstraints(
                               maxWidth: MediaQuery.of(context).size.width * 0.7,
                             ),
-                            child: Text(
-                              _messageList[index].body,
-                              style: const TextStyle(color: Colors.white),
-                            ),
+                            child: GestureDetector(
+                              onLongPress: () {
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) => AlertDialog(
+                                    content: Container(
+                                      height: 145,
+                                      transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children:[
+                                          Container(
+                                            transform: Matrix4.translationValues(20.0, 0.0, 0.0),
+                                            child: IconButton(
+                                              icon: Icon(Icons.close, color: Color(0xFF4169E1)),
+                                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            child: OutlinedButton.icon(
+                                              onPressed: () {
+                                                Clipboard.setData(ClipboardData(text: _messageList[index].body,));
+                                              },
+                                              icon: Icon(Icons.copy, size: 18),
+                                              label: Text("Copy Message"),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            child: OutlinedButton.icon(
+                                              onPressed: () async{
+                                                var idMessage = _messageList[index].idMessage;
+                                                var result = await _carServices.unSendMessage(idMessage);
+
+                                                if(result != null){
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => ChatPage(pass_garage_guide: widget.pass_garage_guide, pass_username: widget.pass_username)),
+                                                  );
+                                                }
+                                              },
+                                              icon: Icon(Icons.delete, size: 18),
+                                              label: Text("Delete Message"),
+                                            )
+                                          )
+                                        ]
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                _messageList[index].body,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            )
                           ),
                         ),
                         Align(
@@ -5757,10 +5848,45 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                             constraints: BoxConstraints(
                               maxWidth: MediaQuery.of(context).size.width * 0.7,
                             ),
-                            child: Text(
-                              _messageList[index].body,
-                              style: const TextStyle(color: Colors.white),
-                            ),
+                            child: GestureDetector(
+                                onLongPress: () {
+                                  showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) => AlertDialog(
+                                      content: Container(
+                                        height: 100,
+                                        transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children:[
+                                            Container(
+                                              transform: Matrix4.translationValues(20.0, 0.0, 0.0),
+                                              child: IconButton(
+                                                icon: Icon(Icons.close, color: Color(0xFF4169E1)),
+                                                onPressed: () => Navigator.pop(context, 'Cancel'),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: MediaQuery.of(context).size.width,
+                                              child: OutlinedButton.icon(
+                                                onPressed: () {
+                                                  Clipboard.setData(ClipboardData(text: _messageList[index].body,));
+                                                },
+                                                icon: Icon(Icons.copy, size: 18),
+                                                label: Text("Copy Message"),
+                                              ),
+                                            ),
+                                          ]
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  _messageList[index].body,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              )
                           ),
                         ),
                         Align(
