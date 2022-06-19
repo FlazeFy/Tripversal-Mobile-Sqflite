@@ -68,10 +68,16 @@ class Repository{
     // return await connection.query(table);
     return await connection.rawQuery('SELECT * FROM ongoing WHERE id_user=?', ['1']);
   }
+
+  //Get waiting payment car rent
   readWaitingDataById(table) async{
     var connection = await database;
-    // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM waiting JOIN car ON waiting.id_car_guide = car.id_car WHERE id_user=?', ['1']);
+    return await connection.rawQuery('SELECT waiting.id_waiting, waiting.id_user, waiting.id_car_guide, waiting.type, waiting.price, waiting.status, waiting.dateStart, waiting.dateEnd, car.carname FROM waiting JOIN car ON waiting.id_car_guide = car.id_car WHERE id_user=?', ['1']);
+  }
+  //Get waiting payment tour guide rent
+  readWaitingDataTGById(table) async{
+    var connection = await database;
+    return await connection.rawQuery('SELECT waiting.id_waiting, waiting.id_user, waiting.id_car_guide, waiting.type, waiting.price, waiting.status, waiting.dateStart, waiting.dateEnd, guide.name FROM waiting JOIN guide ON waiting.id_car_guide = guide.id_guide WHERE id_user=?', ['1']);
   }
 
   checkData(table, data) async{

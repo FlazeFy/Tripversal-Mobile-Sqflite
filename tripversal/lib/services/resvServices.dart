@@ -17,6 +17,9 @@ class resvServices{
   readWaiting() async{
     return await _repository.readWaitingDataById('waiting');
   }
+  readWaitingTG() async{
+    return await _repository.readWaitingDataTGById('waiting');
+  }
   createPayment(waitingModel waiting) async{
     return await _repository.insertWaiting('waiting', waiting.waitingMap2());
   }

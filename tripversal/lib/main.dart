@@ -1792,6 +1792,7 @@ class _MyResPage extends State<MyResPage> {
   void initState(){
     super.initState();
     getAllWaitingData();
+    getAllWaitingDataGuide();
     getAllHistoryData();
     getAllOnGoingData();
     getAllUserData();
@@ -1813,6 +1814,7 @@ class _MyResPage extends State<MyResPage> {
     var waiting = await _resvServices.readWaiting();
 
     waiting.forEach((waiting){
+      if(waiting['type'] == 'Car Rental'){
       setState((){
         var waitingModels = waitingModel();
         waitingModels.idWaiting = waiting['id_waiting'];
@@ -1827,8 +1829,33 @@ class _MyResPage extends State<MyResPage> {
 
         _waitingList.add(waitingModels);
       });
+      }
     });
   }
+  getAllWaitingDataGuide() async {
+    _waitingList = <waitingModel>[];
+    var waiting = await _resvServices.readWaitingTG();
+
+    waiting.forEach((waiting){
+      if(waiting['type'] == 'Tour Guide'){
+      setState((){
+        var waitingModels = waitingModel();
+        waitingModels.idWaiting = waiting['id_waiting'];
+        waitingModels.idUser = waiting['id_user'];
+        waitingModels.idCarGuide = waiting['id_car_guide'];
+        waitingModels.type = waiting['type'];
+        waitingModels.price = waiting['price'];
+        waitingModels.status = waiting['status'];
+        waitingModels.carname = waiting['name'];
+        waitingModels.dateStart= DateTime.tryParse(waiting['dateStart']);
+        waitingModels.dateEnd= DateTime.tryParse(waiting['dateEnd']);
+
+        _waitingList.add(waitingModels);
+      });
+      }
+    });
+  }
+
   getAllHistoryData() async {
     _historyList = <resvModel>[];
     var history = await _resvServices.readHistory();
@@ -3617,8 +3644,6 @@ class BookGuidePage extends StatefulWidget {
 }
 
 class _BookGuidePage extends State<BookGuidePage> {
-  //const _BookGuidePage({Key key}) : super(key: key);
-  //final _guide = guideModel();
   final _guideServices = guideServices();
   final _userServices = userServices();
   //final _review = reviewModel();
@@ -6412,14 +6437,39 @@ class _GaragePage extends State<GaragePage> {
   var garagename; var coordinate_lat_g; var coordinate_lng_g;
   int idCarGuide; var price; var driver; int countRev = 0;
 
+  List<carModel> _carList = <carModel>[];
   List<carModel> _garageList = <carModel>[];
   
   @override
   void initState(){
     super.initState();
     getGarageData();
+    getAllCarData();
   }
+  getAllCarData() async {
+    _carList = <carModel>[];
+    var cars = await _carServices.readCar();
 
+    cars.forEach((car){
+      if(car['garage_name'] == widget.pass_garage){
+        setState((){
+          var carModels = carModel();
+          carModels.idCar = car['id_car'];
+          carModels.plate = car['plate'];
+          carModels.type = car['type'];
+          carModels.carname = car['carname'];
+          carModels.location = car['location'];
+          carModels.price = car['price'];
+          carModels.driver = car['driver'];
+          carModels.seat = car['seat'];
+          carModels.tank = car['tank'];
+          carModels.distance = car['distance'];
+          carModels.desc = car['desc'];
+          _carList.add(carModels);
+        });
+      }
+    });
+  }
   getGarageData() async {
     _garageList = <carModel>[];
     var garage = await _carServices.readGarage();
@@ -6714,6 +6764,151 @@ class _GaragePage extends State<GaragePage> {
                     ),
                   ]
                 ),
+                Flexible(
+                  child: SizedBox(
+                    height: 250,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount : _carList.length,
+                      itemBuilder: (context, index){
+                        return Card(
+                          child:Container(
+                            padding: EdgeInsets.all(10),
+                            width: 160,
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    child: Text(                     
+                                      _carList[index].carname,
+                                      style: const TextStyle(
+                                        color: Color(0xFF4183D7),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),   
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 10),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150, height: 90),
+                                  ),
+                                ),
+                                Container(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "Rp. ",
+                                          style: TextStyle(
+                                            color: Color(0xFF808080),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                          )
+                                        ),
+                                        TextSpan(
+                                          text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                          )
+                                        ),
+                                        TextSpan(
+                                          text: " / Day",
+                                          style: TextStyle(
+                                            color: Color(0xFF808080),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ),
+                                   
+                                SizedBox(height: 5,),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    children:[
+                                      Text(
+                                        "Driver", 
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 14,
+                                          color: Color(0xFF4169E1)
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                        child: Text(
+                                          _carList[index].driver, 
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 13,
+                                            color: Color(0xFF808080)
+                                          ),
+                                        ),
+                                      ),
+                                    ] 
+                                  ),
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_username: widget.pass_username),
+                                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                          final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                          final curvedAnimation = CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.ease,
+                                          );
+
+                                          return SlideTransition(
+                                            position: tween.animate(curvedAnimation),
+                                            child: child,
+                                          );
+                                        }
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.arrow_forward, size: 18),
+                                  label: Text("Book now"),
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white, 
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  blurRadius: 10.0, // soften the shadow
+                                  spreadRadius: 0.0, //extend the shadow
+                                  offset: const Offset(
+                                    5.0, // Move to right 10  horizontally
+                                    5.0, // Move to bottom 10 Vertically
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        );
+                      }
+                    )
+                  )
+                )
                 
               ]
             ),
