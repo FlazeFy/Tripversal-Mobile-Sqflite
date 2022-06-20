@@ -117,13 +117,30 @@ class _RentACarPage extends State<RentACarPage> {
   String categorySearch = 'City Car';
 
   List<carModel> _carList = <carModel>[];
+  List<carModel> _garageList = <carModel>[];
   
   @override
   void initState(){
     super.initState();
     getAllCityCarData();
+    getGarageData();
   }
+  getGarageData() async {
+    _garageList = <carModel>[];
+    var garage = await _carServices.readGarage();
 
+    garage.forEach((garage){
+      setState((){
+        var garageModels = carModel();
+        garageModels.idgarage = garage['id_garage'];
+        garageModels.garage_name = garage['garage_name'];
+        garageModels.garage_location = garage['garage_location'];
+        garageModels.desc = garage['garage_desc'];
+        _garageList.add(garageModels);
+      });
+    });
+  }
+  
   getAllCityCarData() async {
     _carList = <carModel>[];
     var cars = await _carServices.readCar();
@@ -421,71 +438,130 @@ class _RentACarPage extends State<RentACarPage> {
                         ),
                       ],
                     ),
+                  ],
+                ),
+              ),
 
-                    //Sort by button.
-                    // Container(
-                    //   //Button properties.
-                    //   decoration: BoxDecoration(
-                    //     borderRadius : BorderRadius.circular(10),
-                    //     color: Color(0xFF4169E1),
-                    //     boxShadow: const [
-                    //       BoxShadow(
-                    //         color: Colors.grey,
-                    //         spreadRadius: 1,
-                    //         blurRadius: 5,
-                    //         offset: Offset(0, 3)
-                    //       )
-                    //     ],
-                    //   ),
-                    //   margin: EdgeInsets.symmetric(horizontal: 10.0),
-                    //   transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                      
-                    //   child: PopupMenuButton( 
-                    //     iconSize: 35,
-                    //     icon: Icon(Icons.sort, color: Colors.white),
-                    //     enabled: true,
-                    //     itemBuilder: (context) => [
-                    //       PopupMenuItem(
-                    //         child: ListTile(
-                    //           leading: IconButton(
-                    //             iconSize: 30,
-                    //             icon: Icon(Icons.arrow_drop_up,
-                    //             color: Color(0xFF4169E1)),
-                    //             onPressed: () {},
-                    //           ),
-                    //           title: Text('Sort by Price'),
-                    //         ),
-                    //       ),
-                    //       PopupMenuItem(
-                    //         child: ListTile(
-                    //           leading: IconButton(
-                    //             iconSize: 30,
-                    //             icon: Icon(Icons.arrow_drop_down,
-                    //             color: Color(0xFF4169E1)),
-                    //             onPressed: () {},
-                    //           ),
-                    //           title: Text('Sort by Price'),
-                    //         ),
-                    //       )
-                    //     ]
-                    //   ),
-                    // ),
+              Container(
+                transform: Matrix4.translationValues(0.0, -10.0, 0.0),
+                child: ExpansionTile(
+                  leading: IconButton(
+                    iconSize: 30,
+                    icon: const Icon(Icons.warehouse,
+                    color: Color(0xFF808080)),
+                    onPressed: () {},
+                  ),
+                  title: Text('View Garage'),
+                  subtitle: Text('see available car in specific garage', 
+                    style: const TextStyle(
+                      color: Color(0xFF808080),
+                    ),
+                  ),
+                  children: <Widget>[
+                    SizedBox(
+                      height: 170,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount : _garageList.length,
+                        itemBuilder: (context, index){
+                          return Card(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (c, a1, a2) => GaragePage(pass_garage: _garageList[index].garage_name, pass_username: widget.pass_username),
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                      final curvedAnimation = CurvedAnimation(
+                                        parent: animation,
+                                        curve: Curves.ease,
+                                      );
 
+                                      return SlideTransition(
+                                        position: tween.animate(curvedAnimation),
+                                        child: child,
+                                      );
+                                    }
+                                  ),
+                                );
+                              },
+                              child:Container(
+                                padding: EdgeInsets.all(10),
+                                width: 160,
+                                child: Column(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(                     
+                                        _garageList[index].garage_name,
+                                        style: const TextStyle(
+                                          color: Color(0xFF4183D7),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),             
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 5),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(100),
+                                        child: Image.asset('assets/images/garage/garage_${_garageList[index].garage_name}.jpg', width:80, height:80),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      child: Text(
+                                        _garageList[index].garage_location, 
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 13,
+                                          color: Color(0xFF808080)
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white, 
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      blurRadius: 10.0, // soften the shadow
+                                      spreadRadius: 0.0, //extend the shadow
+                                      offset: const Offset(
+                                        5.0, // Move to right 10  horizontally
+                                        5.0, // Move to bottom 10 Vertically
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          );
+
+                        }
+                      )
+                    )
+                    
                   ],
                 ),
               ),
 
               //Car Item.
-              Align(
-                child: Container(
-                  transform: Matrix4.translationValues(0.0, -10.0, 0.0),
-                  child: Text("Showing ${_carList.length.toString()} result...",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 13,
-                        color: Color(0xFF808080)
-                      ),
-                    ),
+              Container(
+                transform: Matrix4.translationValues(0.0, -5.0, 0.0),
+                child: Text("Showing ${_carList.length.toString()} result...",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13,
+                    color: Color(0xFF808080)
+                  ),
                 ),
               ),
 
@@ -1128,19 +1204,6 @@ class AboutPage extends StatelessWidget {
         ),
       ),
       
-      actions: [
-        IconButton(
-          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
-          iconSize: 40,
-          onPressed: () {
-            Navigator.push(
-              context, MaterialPageRoute(
-                builder: (context) => const NavBar(),
-              ),
-            );
-          },
-        )
-      ],
       //Transparent setting.
       backgroundColor: Color(0x44FFFFFF),
       elevation: 0,
@@ -5451,19 +5514,6 @@ class HelpPage extends StatelessWidget {
         ),
       ),
       
-      actions: [
-        IconButton(
-          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
-          iconSize: 40,
-          onPressed: () {
-            Navigator.push(
-              context, MaterialPageRoute(
-                builder: (context) => const NavBar(),
-              ),
-            );
-          },
-        )
-      ],
       //Transparent setting.
       backgroundColor: Color(0x44FFFFFF),
       elevation: 0,
@@ -5696,19 +5746,6 @@ class SettingPage extends StatelessWidget {
         ),
       ),
       
-      actions: [
-        IconButton(
-          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
-          iconSize: 40,
-          onPressed: () {
-            Navigator.push(
-              context, MaterialPageRoute(
-                builder: (context) => const NavBar(),
-              ),
-            );
-          },
-        )
-      ],
       //Transparent setting.
       backgroundColor: Color(0x44FFFFFF),
       elevation: 0,
@@ -6153,7 +6190,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                                               onPressed: () => Navigator.pop(context, 'Cancel'),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width: MediaQuery.of(context).size.width,
                                             child: OutlinedButton.icon(
                                               onPressed: () {
@@ -6163,7 +6200,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                                               label: Text("Copy Message"),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width: MediaQuery.of(context).size.width,
                                             child: OutlinedButton.icon(
                                               onPressed: () async{
@@ -6234,7 +6271,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                                                 onPressed: () => Navigator.pop(context, 'Cancel'),
                                               ),
                                             ),
-                                            Container(
+                                            SizedBox(
                                               width: MediaQuery.of(context).size.width,
                                               child: OutlinedButton.icon(
                                                 onPressed: () {
