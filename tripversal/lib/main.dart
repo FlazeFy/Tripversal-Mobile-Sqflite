@@ -1,6 +1,7 @@
 // Kelompok 4 - SE-43-03
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tripversal/bookCarPage.dart';
 import 'package:tripversal/helpBody.dart';
 import 'package:tripversal/loginBody.dart';
 import 'package:tripversal/models/carModel.dart';
@@ -11,7 +12,7 @@ import 'package:tripversal/models/resvModel.dart';
 import 'package:tripversal/models/reviewModel.dart';
 import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/models/waitingModel.dart';
-import 'package:tripversal/paymentBody.dart';
+import 'package:tripversal/orderPage.dart';
 import 'package:tripversal/services/guideServices.dart';
 import 'package:tripversal/services/resvServices.dart';
 import 'package:tripversal/services/userServices.dart';
@@ -21,10 +22,9 @@ import 'package:tripversal/widgets/sideNav.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'createAccBody.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_chat_bubble/bubble_type.dart';
-import 'package:flutter_chat_bubble/chat_bubble.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter/services.dart';
+import 'package:tripversal/accountPage.dart';
+import 'package:tripversal/chatPage.dart';
 
 //Global variabel.
 String passUsername;
@@ -55,7 +55,28 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
-  // static var _usernamePass;
+  List<userModel> _userList = <userModel>[];
+  final _userServices = userServices();
+
+  //Get data method.
+  @override
+  void initState(){
+    super.initState();
+    getAllUserData();
+  }
+
+  getAllUserData() async {
+    _userList = <userModel>[];
+    var users = await _userServices.readUser();
+
+    users.forEach((user){
+      if(user['fullname'] == passUsername){
+      setState((){
+        var userModels = userModel();
+        passIdUser = user['id_user'];
+      });
+    }});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +158,6 @@ class _RentACarPage extends State<RentACarPage> {
         garageModels.idgarage = garage['id_garage'];
         garageModels.garage_name = garage['garage_name'];
         garageModels.garage_location = garage['garage_location'];
-        garageModels.desc = garage['garage_desc'];
         _garageList.add(garageModels);
       });
     });
@@ -152,19 +172,12 @@ class _RentACarPage extends State<RentACarPage> {
         setState((){
           var carModels = carModel();
           carModels.idCar = car['id_car'];
-          carModels.plate = car['plate'];
-          carModels.type = car['type'];
           carModels.carname = car['carname'];
+          carModels.plate = car['plate'];
           carModels.location = car['location'];
           carModels.price = car['price'];
           carModels.rating = car['rating'];
           carModels.driver = car['driver'];
-          carModels.seat = car['seat'];
-          carModels.tank = car['tank'];
-          carModels.distance = car['distance'];
-          carModels.desc = car['desc'];
-          carModels.coordinate_lan = car['coordinate_lan'];
-          carModels.coordinate_lng = car['coordinate_lng'];
           _carList.add(carModels);
         });
       }
@@ -179,19 +192,12 @@ class _RentACarPage extends State<RentACarPage> {
         setState((){
           var carModels = carModel();
           carModels.idCar = car['id_car'];
-          carModels.plate = car['plate'];
-          carModels.type = car['type'];
           carModels.carname = car['carname'];
+          carModels.plate = car['plate'];
           carModels.location = car['location'];
           carModels.price = car['price'];
           carModels.rating = car['rating'];
           carModels.driver = car['driver'];
-          carModels.seat = car['seat'];
-          carModels.tank = car['tank'];
-          carModels.distance = car['distance'];
-          carModels.desc = car['desc'];
-          carModels.coordinate_lan = car['coordinate_lan'];
-          carModels.coordinate_lng = car['coordinate_lng'];
           _carList.add(carModels);
         });
       }
@@ -206,19 +212,12 @@ class _RentACarPage extends State<RentACarPage> {
         setState((){
           var carModels = carModel();
           carModels.idCar = car['id_car'];
-          carModels.plate = car['plate'];
-          carModels.type = car['type'];
           carModels.carname = car['carname'];
+          carModels.plate = car['plate'];
           carModels.location = car['location'];
           carModels.price = car['price'];
           carModels.rating = car['rating'];
           carModels.driver = car['driver'];
-          carModels.seat = car['seat'];
-          carModels.tank = car['tank'];
-          carModels.distance = car['distance'];
-          carModels.desc = car['desc'];
-          carModels.coordinate_lan = car['coordinate_lan'];
-          carModels.coordinate_lng = car['coordinate_lng'];
           _carList.add(carModels);
         });
       }
@@ -228,7 +227,7 @@ class _RentACarPage extends State<RentACarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
         iconTheme: 
         const IconThemeData(
@@ -241,8 +240,8 @@ class _RentACarPage extends State<RentACarPage> {
         Container(   
           width: MediaQuery.of(context).size.width*0.5, 
           transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
-          child: TextField(
-            decoration: const InputDecoration(
+          child: const TextField(
+            decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -261,11 +260,11 @@ class _RentACarPage extends State<RentACarPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
+              MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.pass_username)),
             );
           },
         )
-      ],//error image blur so badly and not round yet
+      ],
 
         //Transparent setting.
         backgroundColor: const Color(0x44FFFFFF),
@@ -759,7 +758,7 @@ class _RentACarPage extends State<RentACarPage> {
                                           Navigator.push(
                                             context,
                                             PageRouteBuilder(
-                                              pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_username: widget.pass_username),
+                                              pageBuilder: (c, a1, a2) => BookCarPage(passIdCar: _carList[index].idCar, passUsername: widget.pass_username),
                                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                                 final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                                 final curvedAnimation = CurvedAnimation(
@@ -813,376 +812,6 @@ class _RentACarPage extends State<RentACarPage> {
         )
       )
       
-    );
-  }
-}
-class AccountPage extends StatefulWidget {
-  const AccountPage({Key key, this.pass_username}) : super(key: key);
-  final String pass_username;
-
-  @override
-
-  _AccountPage createState() => _AccountPage();
-}
-
-class _AccountPage extends State<AccountPage> {
-  //const AccountPage({Key key}) : super(key: key);
-  final _user = userModel();
-  final _userServices = userServices();
-  final _idCardCtrl = TextEditingController();
-  final _passwordCtrl = TextEditingController();
-  final _emailCtrl = TextEditingController();
-  final _phoneCtrl = TextEditingController();
-
-  List<userModel> _userList = <userModel>[];
-  
-  @override
-  void initState(){
-    super.initState();
-    getAllUserData();
-  }
-
-  getAllUserData() async {
-    _userList = <userModel>[];
-    var users = await _userServices.readUser();
-
-    users.forEach((user){
-      if(user['fullname'] == widget.pass_username){
-      setState((){
-        var userModels = userModel();
-        userModels.idUser = user['id_user'];
-        userModels.fullname = user['fullname'];
-        userModels.idCard = user['id_card'].toString();
-        userModels.password = user['password'];
-        userModels.email = user['email'];
-        userModels.phone = user['phone'];
-        _userList.add(userModels);
-      });
-    }});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: NavDrawer(),
-      appBar: AppBar(
-        iconTheme: 
-          const IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-        title: const Text("Account", 
-        style: TextStyle(
-          color: Color(0xFF4169E1),
-          fontWeight: FontWeight.w800,
-          fontSize: 16,
-        ),
-      ),
-      
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.home, color: Color(0xFF4169E1)),
-          iconSize: 40,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        )
-      ],
-        //Transparent setting.
-        backgroundColor: const Color(0x44FFFFFF),
-        elevation: 0,
-      ),
-
-      body: ListView.builder(
-        itemCount : _userList.length,
-        itemBuilder: (context, index){
-
-        return Container(
-          transform: Matrix4.translationValues(0.0, -40.0, 0.0),
-          child: Flexible(
-            child : SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  //Text.
-                  Container(
-                    width: 160,
-                    margin: const EdgeInsets.all(10),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(80), 
-                      child: Image.asset('assets/images/User.jpg'),
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(80), 
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(0, 3)
-                        )
-                      ],
-                    ),
-                  ),
-
-                  //Full name section.
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: const Text(
-                        "Fullname", 
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: Color(0xFF808080)
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                      height: 35,
-                      child: TextField(
-                        enabled: false,
-                        decoration: InputDecoration(
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                          ),
-                      
-                          hintText: _userList[index].fullname,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  //ID Card section.
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: const Text(
-                        "ID Card / Passport Number", 
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: Color(0xFF808080)
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                      height: 35,
-                      child: TextField(
-                        controller: _idCardCtrl,
-                        decoration: InputDecoration(
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                          ),
-                      
-                          hintText: _userList[index].idCard,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  //Password section.
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: const Text(
-                        "Password", 
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: Color(0xFF808080)
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                      height: 35,
-                      child: TextField(
-                        controller: _passwordCtrl,
-                        decoration: InputDecoration(
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                          ),
-                          hintText: _userList[index].password,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  //Email section.
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: const Text(
-                        "Email", 
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: Color(0xFF808080)
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
-                      height: 35,
-                      child: TextField(
-                        controller: _emailCtrl,
-                        decoration: InputDecoration(
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                          ),
-                      
-                          hintText: _userList[index].email,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  //Phone number section.
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: const Text(
-                        "Phone Number", 
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: Color(0xFF808080)
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
-                      height: 35,
-                      child: TextField(
-                        controller: _phoneCtrl,
-                        decoration: InputDecoration(
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                          ),
-                      
-                          hintText: _userList[index].phone,
-                        ),
-                      ),
-                    ),
-                  ),
-                  //End of text entry section.
-
-                  Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                        child: const Icon(
-                          Icons.info,
-                          color: Color(0xFF4169E1),
-                          size: 30.0,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: 300,
-                          margin: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: const Text(
-                            "Password must have min 8 character, Have 1 capital and 1 number.", 
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                              color: Color(0xFF4169E1)
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]
-                  ),
-
-                  Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                              // Respond to button press
-                          },
-                          icon: const Icon(Icons.photo, size: 20),
-                          label: const Text("Change Photo"),
-                          style: ElevatedButton.styleFrom(
-                            primary: const Color(0xFF4169E1), 
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () async {
-                            _user.idUser = _userList[index].idUser;
-                            _user.fullname = _userList[index].fullname;
-
-                            if(_idCardCtrl.text.isEmpty){
-                              _user.idCard = _userList[index].idCard;
-                            } else {
-                              _user.idCard = _idCardCtrl.text;
-                            }
-                            if(_passwordCtrl.text.isEmpty){
-                              _user.password = _userList[index].password;
-                            } else {
-                              _user.password = _passwordCtrl.text;
-                            }
-                            if(_emailCtrl.text.isEmpty){
-                              _user.email = _userList[index].email;
-                            } else {
-                              _user.email = _emailCtrl.text;
-                            }
-                            if(_phoneCtrl.text.isEmpty){
-                              _user.phone = _userList[index].phone;
-                            } else {
-                              _user.phone = _phoneCtrl.text;
-                            }
-                            
-                            if((_user.password.length > 6)&&(_user.idCard.length == 16)&&(_user.phone.length > 9)&&(_user.phone.length < 14)){
-                              var result = await _userServices.editAccount(_user);
-                              print(result);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const NavBar()),
-                              );
-                            } else {
-                              print('Create Account Failed');
-                            }
-                          },
-                          icon: const Icon(Icons.save, size: 20),
-                          label: const Text("Save Changes"),
-                          style: ElevatedButton.styleFrom(
-                            primary: const Color(0xFF13B402), 
-                          ),
-                        ),
-                      ),
-                    ]
-                  )
-
-                ]
-              )
-            )
-          )
-        );
-     })
     );
   }
 }
@@ -1352,7 +981,7 @@ class _TourGuidePage extends State<TourGuidePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           const IconThemeData(
@@ -1364,8 +993,8 @@ class _TourGuidePage extends State<TourGuidePage> {
         Container(   
           width: MediaQuery.of(context).size.width*0.5, 
           transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
-          child: TextField(
-            decoration: const InputDecoration(
+          child: const TextField(
+            decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -1384,11 +1013,11 @@ class _TourGuidePage extends State<TourGuidePage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
+              MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.pass_username)),
             );
           },
         )
-      ],//error image blur so badly and not round yet
+      ],
 
         //Transparent setting.
         backgroundColor: const Color(0x44FFFFFF),
@@ -1969,7 +1598,7 @@ class _MyResPage extends State<MyResPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           const IconThemeData(
@@ -2001,11 +1630,11 @@ class _MyResPage extends State<MyResPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
+              MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.pass_username)),
             );
           },
         )
-      ],//error image blur so badly and not round yet
+      ],
 
         //Transparent setting.
         backgroundColor: const Color(0x44FFFFFF),
@@ -2842,862 +2471,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 }
 
-class BookCarPage extends StatefulWidget {
-  const BookCarPage({Key key, this.pass_idCar, this.pass_username}) : super(key: key);
-
-  final int pass_idCar;
-  final String pass_username;
-
-  @override
-
-  _BookCarPage createState() => _BookCarPage();
-}
-
-class _BookCarPage extends State<BookCarPage> {
-  final _carServices = carServices();
-  final _userServices = userServices();
-  var carname; var coordinate_lan; var coordinate_lng; var garageName;
-  int idCarGuide; var price; var driver; int countRev = 0;
-  var passIdUser;
-
-  List<carModel> _carList = <carModel>[];
-  List<reviewModel> _reviewList = <reviewModel>[];
-  List<userModel> _userList = <userModel>[];
-  
-  @override
-  void initState(){
-    super.initState();
-    getAllCarData();
-    getAllCarReview();
-    getAllUserData();
-  }
-
-  getAllUserData() async {
-    _userList = <userModel>[];
-    var users = await _userServices.readUser();
-
-    users.forEach((user){
-      if(user['fullname'] == widget.pass_username){
-      setState((){
-        passIdUser = user['id_user'];
-      });
-    }});
-  }
-
-  getAllCarData() async {
-    _carList = <carModel>[];
-    var cars = await _carServices.readCar();
-
-    cars.forEach((car){
-      if(car['id_car'] == widget.pass_idCar){
-        setState((){
-          var carModels = carModel();
-          carModels.idCar = car['id_car'];
-          carModels.plate = car['plate'];
-          carModels.type = car['type'];
-          carModels.carname = car['carname'];
-          carname = car['carname'];
-          carModels.location = car['location'];
-          carModels.price = car['price'];
-          price = car['price'];
-          carModels.rating = car['rating'];
-          carModels.driver = car['driver'];
-          driver = car['driver'];
-          carModels.seat = car['seat'];
-          carModels.tank = car['tank'];
-          carModels.distance = car['distance'];
-          carModels.desc = car['desc'];
-          carModels.coordinate_lan = car['coordinate_lan'];
-          carModels.coordinate_lng = car['coordinate_lng'];
-          coordinate_lan = car['coordinate_lan'];
-          coordinate_lng = car['coordinate_lng'];
-          carModels.idgarage = car['id_garage'];
-          carModels.garage_name = car['garage_name'];
-          garageName = car['garage_name'];
-          carModels.garage_phone = car['garage_phone'];
-          carModels.garage_location = car['garage_location'];
-          carModels.garage_email = car['garage_email'];
-          _carList.add(carModels);
-        });
-      }
-    });
-  }
-
-  getAllCarReview() async {
-    _reviewList = <reviewModel>[];
-    var review = await _carServices.readCarwReview();
-
-    review.forEach((review){
-      if((review['id_car_guide'] == widget.pass_idCar)&&(review['type'] == 'Car Rental')){
-        countRev++;
-        setState((){
-          var reviewModels = reviewModel();
-          reviewModels.idReview = review['id_review'];
-          reviewModels.idUser = review['id_user'];
-          if(review['fullname'] == widget.pass_username){
-            reviewModels.fullname = 'You';
-          } else {
-            reviewModels.fullname = review['fullname'];
-          }     
-          reviewModels.idCarGuide = review['id_car_guide'];
-          reviewModels.type = review['type'];
-          reviewModels.comment = review['comment'];
-          reviewModels.rating = review['rating'];
-          reviewModels.dateReview= DateTime.tryParse(review['dateReview']);
-          
-          _reviewList.add(reviewModels);
-        });
-      }
-    });
-  }
-  Widget getDriverImage() {
-    if(countRev == 0){
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.asset(
-            'assets/images/${driver}.jpg', width: 40),
-          ),
-      );
-    } else {
-      return const SizedBox();
-    }
-  }
-
-  Widget getMessageReview() {
-    if(countRev == 0){
-      return Card(
-        margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical:5),
-        child: Column(
-          children: [
-            ClipRRect(
-            child: Image.asset(
-              'assets/images/icon/Empty2.png', width: 200),
-            ),
-            const Text(
-              "There's no review for this car", 
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 15,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-         
-      );
-    } else {
-      return const SizedBox();
-    }
-  }
-
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: NavDrawer(),
-      appBar: AppBar(
-        iconTheme: 
-          const IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-        title: const Text("Book Car", 
-        style: TextStyle(
-          color: Color(0xFF4169E1),
-          fontWeight: FontWeight.w800,
-          fontSize: 16,
-        ),
-      ),
-      
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.map, color: Color(0xFF4169E1)),
-          iconSize: 40,
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (c, a1, a2) => MapsPage(pass_carguidename: carname, pass_coordinate_lan: double.tryParse(coordinate_lan), pass_coordinate_lng: double.tryParse(coordinate_lng)),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
-                  final curvedAnimation = CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.ease,
-                  );
-
-                  return SlideTransition(
-                    position: tween.animate(curvedAnimation),
-                    child: child,
-                  );
-                }
-              ),
-            );
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.warehouse, color: Color(0xFF4169E1)),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => GaragePage(pass_garage: garageName, pass_username: widget.pass_username)),
-            );
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.home, color: Color(0xFF4169E1)),
-          iconSize: 40,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-      //Transparent setting.
-      backgroundColor: const Color(0x44FFFFFF),
-      elevation: 0,
-    ),
-
-      body: ListView.builder(
-        itemCount : _carList.length,
-        itemBuilder: (context, index){
-            return Container(
-            height: MediaQuery.of(context).size.height,
-            transform: Matrix4.translationValues(0.0, 0.0, 0.0),
-            child: Column(
-              children: [
-                //Text.
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.all(10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10), 
-                    child: Image.asset('assets/images/${_carList[index].plate}.jpg'),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(80), 
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        spreadRadius: 1,
-                        blurRadius: 5,
-                        offset: Offset(0, 3)
-                      )
-                    ],
-                  ),
-                ),
-                Row (
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            const WidgetSpan(
-                              child: Icon(Icons.car_rental, 
-                                size: 24,
-                                color: Color(0xFF4169E1),
-                              ),
-                            ),
-                            TextSpan(
-                              text: _carList[index].carname,
-                              style: const TextStyle(
-                                color: Color(0xFF4169E1),
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18
-                              )
-                            ),                              
-                          ],
-                        ),
-                      )
-                    ),
-                    Container(
-                      transform: Matrix4.translationValues(100.0, 0.0, 0.0),
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            const WidgetSpan(
-                              child: Icon(Icons.star, 
-                                size: 20,
-                                color: Color(0xFF4169E1),
-                              ),
-                            ),
-                            TextSpan(
-                              text: _carList[index].rating.toString(),
-                              style: const TextStyle(
-                                color: Color(0xFF4169E1),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              )
-                            ),                              
-                          ],
-                        ),
-                      )
-                    )
-                  ]
-                ),
-                Container(
-                  // flex: 5, //if expanded
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: "Rp. ",
-                          style: TextStyle(
-                            color: Color(0xFF808080),
-                            fontSize: 21,
-                            fontWeight: FontWeight.w700,
-                          )
-                        ),
-                        TextSpan(
-                          text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
-                          style: const TextStyle(
-                            color: Color(0xFF4169E1),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                          )
-                        ),
-                        const TextSpan(
-                          text: " / Day",
-                          style: TextStyle(
-                            color: Color(0xFF808080),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                          )
-                        ),
-                      ],
-                    ),
-                  )
-                ),
-                Flexible(            
-                  child : SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                            child: new Container(
-                              margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                              child: const Divider(
-                                color: Colors.grey,
-                                thickness: 1.5,
-                                height: 5,
-                              )),
-                            ),       
-                            const Text(
-                              "Description", 
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                color: Color(0xFF414141)
-                              ),
-                            ),    
-                            Expanded(
-                            child: new Container(
-                              margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                              child: const Divider(
-                                color: Colors.grey,
-                                thickness: 1.5,
-                                height: 5,
-                              )),
-                            ),
-                          ]
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text(
-                              _carList[index].desc,
-                              style: const TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                          )
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                            child: new Container(
-                              margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                              child: const Divider(
-                                color: Colors.grey,
-                                thickness: 1.5,
-                                height: 5,
-                              )),
-                            ),       
-                            const Text(
-                              "Specification", 
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                color: Color(0xFF414141)
-                              ),
-                            ),    
-                            Expanded(
-                            child: new Container(
-                              margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                              child: const Divider(
-                                color: Colors.grey,
-                                thickness: 1.5,
-                                height: 5,
-                              )),
-                            ),
-                          ]
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: Row (
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const WidgetSpan(
-                                        child: Icon(Icons.person, 
-                                          size: 20,
-                                          color: Color(0xFF808080),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: "${_carList[index].seat.toString()} Seats",
-                                        style: const TextStyle(
-                                          color: Color(0xFF808080),
-                                          fontSize: 16
-                                        )
-                                      ),                              
-                                    ],
-                                  ),
-                                )
-                              ),
-                              Container(
-                                transform: Matrix4.translationValues(20.0, 0.0, 0.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const WidgetSpan(
-                                        child: Icon(Icons.speed, 
-                                          size: 20,
-                                          color: Color(0xFF808080),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: "${_carList[index].distance.toString()} Km",
-                                        style: const TextStyle(
-                                          color: Color(0xFF808080),
-                                          fontSize: 16
-                                        )
-                                      ),                              
-                                    ],
-                                  ),
-                                )
-                              ),
-                              Container(
-                                transform: Matrix4.translationValues(40.0, 0.0, 0.0),
-                                margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const WidgetSpan(
-                                        child: ImageIcon(
-                                          AssetImage("assets/images/fuel.png"),
-                                          color: Color(0xFF808080),
-                                          size: 18,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: "${_carList[index].tank.toString()} L",
-                                        style: const TextStyle(
-                                          color: Color(0xFF808080),
-                                          fontSize: 16
-                                        )
-                                      ),                              
-                                    ],
-                                  ),
-                                )
-                              )
-                            ]
-                          ),  
-                        ),
-                        Align(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Row(
-                              children: [ 
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                    child: const Text(
-                                      "Driver", 
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 15,
-                                        color: Color(0xFF808080)
-                                      ),
-                                    ),
-                                  )
-                                ), 
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                  child: getDriverImage()
-                                ),
-                                
-                                Expanded(                 
-                                  child: Row (
-                                    children: [
-                                      RichText(
-                                        text: TextSpan(                     
-                                          text: _carList[index].driver,
-                                          style: const TextStyle(
-                                            color: Color(0xFF4169E1),
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                          )
-                                        ),                              
-                                      )
-                                    ]
-                                  )
-                                )
-                              ]
-                            )    
-                          )                   
-                        ),
-                        Column(
-                          children: <Widget>[
-                      
-                            ExpansionTile( //Collapse-Contact ===========================================
-                              leading: IconButton(
-                                iconSize: 30,
-                                icon: const Icon(Icons.contact_mail,
-                                color: Color(0xFF808080)),
-                                onPressed: () {},
-                              ),
-                              title: const Text(
-                                "Contact",
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w800
-                                ),
-                              ),
-                              children: <Widget>[                     
-                                SingleChildScrollView(               
-                                  scrollDirection: Axis.vertical,
-                                  child: Column(
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                const WidgetSpan(
-                                                  child: Icon(Icons.call, 
-                                                    size: 20,
-                                                    color: Color(0xFF808080),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: " ${_carList[index].garage_phone}",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontSize: 15
-                                                  )
-                                                ),                              
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                const WidgetSpan(
-                                                  child: Icon(Icons.location_on, 
-                                                    size: 20,
-                                                    color: Color(0xFF808080),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: " ${_carList[index].garage_location}",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontSize: 15
-                                                  )
-                                                ),                              
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                const WidgetSpan(
-                                                  child: Icon(Icons.email, 
-                                                    size: 20,
-                                                    color: Color(0xFF808080),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: " ${_carList[index].garage_email}",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontSize: 15
-                                                  )
-                                                ),                              
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        children:[
-                                          Container(
-                                            margin: const EdgeInsets.only(left: 10.0),
-                                            child: Align(
-                                              alignment: Alignment.topLeft,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    PageRouteBuilder(
-                                                      pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _carList[index].garage_name, pass_username: widget.pass_username),
-                                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                        final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
-                                                        final curvedAnimation = CurvedAnimation(
-                                                          parent: animation,
-                                                          curve: Curves.ease,
-                                                        );
-
-                                                        return SlideTransition(
-                                                          position: tween.animate(curvedAnimation),
-                                                          child: child,
-                                                        );
-                                                      }
-                                                    ),
-                                                  );
-                                                },
-                                                icon: const Icon(Icons.chat, size: 18),
-                                                label: const Text("Chat Now"),
-                                                style: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(left: 10.0),
-                                            child: Align(
-                                              alignment: Alignment.topLeft,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () {
-                                                  var contact= "Phone: +62 "+_carList[index].garage_phone+" Address: "+_carList[index].garage_location;
-                                                  Clipboard.setData(ClipboardData(text: contact));         
-                                                },
-                                                icon: const Icon(Icons.copy, size: 18),
-                                                label: const Text("Copy"),
-                                              ),
-                                            ),
-                                          ),
-                                        ]
-                                      ),
-                                      const SizedBox(height: 5)
-                                    ]
-                                  )
-                                )   
-                                
-                              ],
-                            ),
-
-                            ExpansionTile( //Collapse-review ===========================================
-                              leading: IconButton(
-                                iconSize: 30,
-                                icon: const Icon(Icons.reviews,
-                                color: Color(0xFF808080)),
-                                onPressed: () {},
-                              ),
-                              title: const Text(
-                                "Review",
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w800
-                                ),
-                              ),
-                              children: [
-                                ListView.builder(
-                                  shrinkWrap: true,   
-                                  itemCount : _reviewList.length,
-                                  itemBuilder: (context, index){
-                                          
-                                  return Card( //item-1 -----------------------------------------
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child:Flexible(
-                                        child: Row(
-                                          children: [  
-                                            Expanded(
-                                              child:Container(
-                                                alignment: Alignment.topLeft,
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                      child: RichText(
-                                                        text: const TextSpan(
-                                                          children: [
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                                                          WidgetSpan(
-                                                            child: Icon(Icons.star, 
-                                                              size: 20,
-                                                              color: Color(0xFF4169E1),
-                                                            ),
-                                                          ),
-                            
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: _reviewList[index].comment,
-                                                              style: const TextStyle(
-                                                                color: Color.fromARGB(255, 77, 77, 77),
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: 16
-                                                              )
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                    Container(
-                                                      alignment: Alignment.topLeft,
-                                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
-                                                              style: const TextStyle(
-                                                                color: Color(0xFF808080),
-                                                                fontWeight: FontWeight.w500,
-                                                                fontStyle: FontStyle.italic,
-                                                                fontSize: 13
-                                                              )
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              flex:8 ,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      elevation: 8,
-                                      margin: const EdgeInsets.all(10),
-                                    );
-
-                                  }  
-                                ),
-                                getMessageReview()
-                                
-                              ],
-                            )
-                          ]
-                        ),
-                        const SizedBox(
-                          height: 60,
-                        ),
-                      ]
-                    )
-                  )
-                )
-                
-
-              ]
-            )
-          );
-          
-          
-        }
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idCar, pass_carguidename: carname, pass_username: widget.pass_username, pass_price: price, type: 'Car Rental', pass_idUser: passIdUser),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                final tween = Tween(begin: const Offset(1.0, 0.0), end: Offset.zero);
-                final curvedAnimation = CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.ease,
-                );
-
-                return SlideTransition(
-                  position: tween.animate(curvedAnimation),
-                  child: child,
-                );
-              }
-            ),
-          );
-        },
-        label: const Text('Checkout'),
-        backgroundColor: const Color(0xFF1F9F2F),
-      ),
-    );
-  }
-}
-
 class BookGuidePage extends StatefulWidget {
   const BookGuidePage({Key key, this.pass_idGuide, this.pass_username}) : super(key: key);
 
@@ -3823,7 +2596,7 @@ class _BookGuidePage extends State<BookGuidePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           const IconThemeData(
@@ -4210,7 +2983,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                                 Navigator.push(
                                                   context,
                                                   PageRouteBuilder(
-                                                    pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _guideList[index].name, pass_username: widget.pass_username),
+                                                    pageBuilder: (c, a1, a2) => ChatPage(passGarageGuide: _guideList[index].name, passUsername: widget.pass_username),
                                                     transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                                       final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                                       final curvedAnimation = CurvedAnimation(
@@ -4409,7 +3182,7 @@ class _BookGuidePage extends State<BookGuidePage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idGuide, pass_carguidename: guideName, pass_username: widget.pass_username, pass_price: price, type: 'Tour Guide', pass_idUser: passIdUser),
+              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idGuide, pass_carguidename: guideName, pass_price: price, type: 'Tour Guide'),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 final tween = Tween(begin: const Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
@@ -4431,738 +3204,6 @@ class _BookGuidePage extends State<BookGuidePage> {
     );
   }
 }
-class OrderPage extends StatefulWidget {
-  const OrderPage({Key key, this.pass_username, this.pass_idUser, this.pass_idCarGuide, this.pass_carguidename, this.pass_price, this.type}) : super(key: key);
-
-  final String pass_username;
-  final String pass_carguidename;
-  final int pass_idCarGuide;
-  final int pass_idUser;
-  final int pass_price;
-  final String type;
-
-  @override
-
-  _OrderPage createState() => _OrderPage();
-}
-
-class _OrderPage extends State<OrderPage> {
-  TimeOfDay selectedTime = TimeOfDay.now();
-  var _waiting = waitingModel();
-  DateTime selectedDate = DateTime.now();
-  final _resvServices = resvServices();
-
-  Future<void> _selectDate(BuildContext context) async {
-    final picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2015, 8), lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-  getNextDay(){
-    var date = DateTime.now();
-    var newDate = DateTime(date.year, date.month, date.day + 1);
-    return newDate;
-  }
-
-  int add = 0;
-  getDays(){
-    
-  }
-  getAddition(){
-    if(widget.type == 'Car Rental'){
-      add = 20000;
-    } else {
-      add = 0;
-    }
-    return add;
-  }
-  getTotal(){
-    bool pickup = false; 
-    int price = widget.pass_price;
-    int total = 0;
-
-    if((!pickup)&&(widget.type == 'Car Rental')){
-      total = price + 5000 + getAddition();
-    } else {
-      total = price + 5000;
-    }
-    return total;
-  } 
-  int passTotal = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: 
-          const IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-        title: Text(widget.pass_carguidename,
-        style: const TextStyle(
-          color: Color(0xFF4169E1),
-          fontWeight: FontWeight.w800,
-          fontSize: 16,
-        ),
-      ),
-      //Transparent setting.
-      backgroundColor: const Color(0x44FFFFFF),
-      elevation: 0,
-    ),
-
-      body: Center(
-        child: Container(
-        alignment: Alignment.topCenter,
-        child: Flexible(
-          child : SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                ExpansionTile( //Collapse-1 ===========================================
-                  title: const Text(
-                    "   Customer Detail",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: Color(0xFF4169E1)
-                    ),
-                  ),
-                  initiallyExpanded: true,
-                  children: <Widget>[                     
-                    SingleChildScrollView(               
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: <Widget>[
-
-                        //Full name section.
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                            child: const Text(
-                              "Fullname", 
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: Color(0xFF212121)
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                            height: 35,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                enabledBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                                ),
-                                hintText: widget.pass_username,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        //Phone number section.
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                            child: const Text(
-                              "Phone Number", 
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: Color(0xFF212121)
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
-                            height: 35,
-                            child: const TextField(
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                                ),
-                            
-                                hintText: '08114882001',
-                              ),
-                            ),
-                          ),
-                        ),
-                        ]
-                      )
-                    )   
-                    
-                  ],
-                ),
-                const Divider(
-                  height: 20,
-                  thickness: 4,
-                  indent: 0,
-                  endIndent: 15,
-                  color: Color.fromARGB(255, 185, 185, 185),
-                ),
-
-                ExpansionTile( //Collapse-1 ===========================================
-                  title: const Text(
-                    "   Order Detail",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: Color(0xFF4169E1)
-                    ),
-                  ),
-                  initiallyExpanded: true,
-                  children: <Widget>[    
-                    //Date section.
-                    Row(
-                      children: [
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                child: const Text(
-                                  "Date Start", 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                    color: Color(0xFF212121)
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                                width: 90,
-                                height: 35,
-                                child: TextField(
-                                  onTap: () {
-                                    _selectDate(context);
-                                  },
-                                  decoration: InputDecoration(
-                                    enabledBorder: const UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                                    ),             
-                                    hintText: (DateFormat('yyyy-MM-dd').format(DateTime.now())).toString(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ]
-                        ),
-                        Row(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                child: const Text(
-                                  "End", 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                    color: Color(0xFF212121)
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                                width: 90,
-                                height: 35,
-                                child: TextField(
-                                  onTap: () {
-                                    _selectDate(context);
-                                  },
-                                  decoration: InputDecoration(
-                                    enabledBorder: const UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                                    ),             
-                                    hintText: (DateFormat('yyyy-MM-dd').format(getNextDay())).toString(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ]
-                        ),
-                      ]
-                    ),
-
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                        child: const Text(
-                          "Pick-Up Location", 
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                            color: Color(0xFF212121)
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal:15.0, vertical: 3.0),
-                            height: 45,
-                            width: 30,
-                            child: IconButton(
-                            onPressed: () {
-                                // Respond to button press
-                              },
-                              icon: const Icon(Icons.location_on, size: 30),
-                              color: const Color(0xFF00B0FF),
-                              padding: const EdgeInsets.all(0.0)
-                            )
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 3.0),
-                            height: 35,
-                            width: MediaQuery.of(context).size.width* 0.45,
-                            child: const TextField(
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                                ),
-                            
-                                hintText: 'Bojongsoang',
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                  child: const Text(
-                                    "Time", 
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: Color(0xFF212121)
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                  width: 60,
-                                  height: 35,
-                                  child: TextField(
-                                    onTap: () {
-                                      _selectTime(context);
-                                    },
-                                    decoration: InputDecoration(
-                                      enabledBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                                      ),        
-                                      hintText: (DateFormat('hh:mm').format(DateTime.now())).toString(),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ]
-                          ),
-                        ]
-                      ),
-                    ),
-
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                        child: const Text(
-                          "Note (Optional)", 
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                            color: Color(0xFF212121)
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      child: Container(
-                        transform: Matrix4.translationValues(0.0, -10.0, 0.0),
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                        height: 65,
-                        child: TextFormField(
-                          minLines: 10,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration: const InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-                            ),
-                            hintText: 'Please arrive at the location five minutes early.',
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width* 0.9,
-                      padding: const EdgeInsets.all(4.0),
-                      decoration: BoxDecoration(
-                        color: Colors.lightGreen.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(10), 
-                      ),  
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                            child: const Icon(
-                              Icons.info,
-                              color: Colors.green,
-                              size: 30.0,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width* 0.65,
-                              margin: const EdgeInsets.symmetric(vertical: 5.0),
-                              child: const Text(
-                                "Make sure the order detail is right. You can't change it in the future", 
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13,
-                                  color: Color(0xFF212121)
-                                ),
-                              ),
-                            ),
-                          ),
-                        ]
-                      ),
-                    ),
-                  ]
-                ),
-                const Divider(
-                  height: 20,
-                  thickness: 4,
-                  indent: 0,
-                  endIndent: 15,
-                  color: Color.fromARGB(255, 185, 185, 185),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Color(0xFF4169E1), width: 2),
-                    ),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                            child: const Text(
-                              "Payment Detail", 
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.black
-                              ),
-                            ),
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
-                                    child: const Text(
-                                      "Payment Method", 
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: MediaQuery.of(context).size.width* 0.07),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: const PaymentMethod(),
-                                  
-                                ),
-                              ]
-                            ),
-                            Row(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
-                                    child: const Text(
-                                      "Price", 
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: MediaQuery.of(context).size.width* 0.32),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: Text(
-                                      "Rp. ${widget.pass_price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ]
-                            ),
-                            Row(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: const Text(
-                                      "Pick-up addition", 
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: MediaQuery.of(context).size.width* 0.15),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: Text(
-                                      "Rp. ${getAddition().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ]
-                            ),
-                            Row(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: const Text(
-                                      "Tax", 
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: MediaQuery.of(context).size.width* 0.38),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: const Text(
-                                      "Rp. 5.000", 
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ]
-                            ),
-                            const Divider(
-                              height: 20,
-                              thickness: 2,
-                              indent: 20,
-                              endIndent: 30,
-                              color: Color.fromARGB(255, 185, 185, 185),
-                            ),
-                            Row(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: const Text(
-                                      "Total", 
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20,
-                                        color: Colors.black
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: MediaQuery.of(context).size.width* 0.18),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: Text(
-                                      "Rp. ${getTotal().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20,
-                                        color: Colors.black
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ]
-                            ),
-                          ]
-
-                        ),
-                      ]
-                    ),
-                  ),
-                ),
-
-                const Divider(
-                  height: 20,
-                  thickness: 4,
-                  indent: 0,
-                  endIndent: 15,
-                  color: Color.fromARGB(255, 185, 185, 185),
-                ),
-                Column(
-                  children: <Widget>[
-
-                    ExpansionTile( //Collapse-2 ===========================================
-                      leading: IconButton(
-                        iconSize: 30,
-                        icon: const Icon(Icons.price_change,
-                        color: Color(0xFF808080)),
-                        onPressed: () {},
-                      ),
-                      title: const Text(
-                        "What is pick-up addition?",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w800
-                        ),
-                      ),
-                      children: <Widget>[
-                        SingleChildScrollView(               
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: const <Widget>[
-                                
-                              
-                            ]
-                          )
-                        )  
-                      ],
-                    ),
-
-                    ExpansionTile( //Collapse-3 ===========================================
-                      leading: IconButton(
-                        iconSize: 30,
-                        icon: const Icon(Icons.price_check,
-                        color: Color(0xFF808080)),
-                        onPressed: () {},
-                      ),
-                      title: const Text(
-                        "How much the tax is charged?",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w800
-                        ),
-                      ),
-                      children: <Widget>[                     
-                        SingleChildScrollView(               
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: const <Widget>[
-                                
-                              
-                            ]
-                          )
-                        )   
-                        
-                      ],
-                    ),
-
-                  ],
-                ),
-
-              ]
-            )
-          )
-        )
-      ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          passTotal = getTotal();
-          var dt = DateTime.now();
-
-          // String
-          var dtStr = dt.toIso8601String();
-          dt = DateTime.tryParse(dtStr);
-          _waiting.idUser = widget.pass_idUser;
-          _waiting.idCarGuide = widget.pass_idCarGuide;
-          _waiting.type = widget.type;
-          _waiting.price = widget.pass_price;
-          _waiting.status = "waiting"; 
-          _waiting.dateStart = dt; //for testing
-          _waiting.dateEnd = dt;  //for testing
-                    
-          var result = await _resvServices.createPayment(_waiting);
-          print(result);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PaymentPage(pass_id_user: widget.pass_idUser, pass_username: widget.pass_username, pass_total: passTotal)),
-          );
-        },
-        label: const Text('Order Now'),
-        backgroundColor: const Color(0xFF00B0FF),
-      ),
-    );
-  }
-  //Time picker
-  _selectTime(BuildContext context) async {          
-  final TimeOfDay timeOfDay = await showTimePicker(
-    context: context,
-    initialTime: selectedTime,
-    initialEntryMode: TimePickerEntryMode.dial,
-  );
-  if(timeOfDay != null && timeOfDay != selectedTime)
-    {
-      setState(() {
-        selectedTime = timeOfDay;
-      });
-    }
-  }
-}
-
 
 class PaymentPage extends StatefulWidget {
   PaymentPage({Key key, this.pass_username, this.pass_id_user, this.pass_total}) : super(key: key);
@@ -5891,7 +3932,7 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(     
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
         iconTheme: 
         const IconThemeData(
@@ -5903,8 +3944,8 @@ class _ContactPageState extends State<ContactPage> {
           Container(   
             width: MediaQuery.of(context).size.width*0.5, 
             transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
-            child: TextField(
-              decoration: const InputDecoration(
+            child: const TextField(
+              decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
@@ -5923,11 +3964,11 @@ class _ContactPageState extends State<ContactPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AccountPage(pass_username: widget.pass_username)),
+                MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.pass_username)),
               );
             },
           )
-        ],//error image blur so badly and not round yet
+        ],
 
         //Transparent setting.
         backgroundColor: const Color(0x44FFFFFF),
@@ -6008,7 +4049,7 @@ class _ContactPageState extends State<ContactPage> {
                     onTap: () { 
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ChatPage(pass_garage_guide: _contactList[index].garage_guide, pass_username: widget.pass_username)),
+                        MaterialPageRoute(builder: (context) => ChatPage(passGarageGuide: _contactList[index].garage_guide, passUsername: widget.pass_username)),
                       );
                     },                   
                   );
@@ -6030,392 +4071,6 @@ class _ContactPageState extends State<ContactPage> {
           // );
         },
         child: const Icon(Icons.send),
-      )
-    );
-  }
-}
-
-class ChatPage extends StatefulWidget {
-  const ChatPage({key, this.pass_garage_guide, this.pass_username}) : super(key: key);
-  final String pass_garage_guide;
-  final String pass_username;
-
-  @override
-
-  _ChatPage createState() => _ChatPage();
-}
-
-class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
-  final _message = messageModel();
-  final _carServices = carServices();
-  final _messageTextCtrl = TextEditingController();
-  var type;
-
-  // this variable determnines whether the back-to-top button is shown or not
-  bool _showBackToTopButton = false;
-
-  // scroll controller
-   ScrollController _scrollController;
-
-  @override
-  void initState() {
-    _scrollController = ScrollController()
-      ..addListener(() {
-        setState(() {
-          if (_scrollController.offset >= 150) {
-            _showBackToTopButton = true; // show the back-to-top button
-          } else {
-            _showBackToTopButton = false; // hide the back-to-top button
-          }
-        });
-      });
-    super.initState();
-    getAllMessage();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose(); // dispose the controller
-    super.dispose();
-  }
-
-  // This function is triggered when the user presses the back-to-top button
-  void _scrollToTop() {
-    _scrollController.animateTo(0,
-      duration: const Duration(seconds: 1), curve: Curves.linear);
-  }
-
-  List<messageModel> _messageList = <messageModel>[];
-
-  //Get all message for car & guide
-  getAllMessage() async {
-    _messageList = <messageModel>[];
-    var messages = await _carServices.readMessage();
-
-    messages.forEach((message){
-      if(((message['sender'] == widget.pass_username)&&(message['receiver'] == widget.pass_garage_guide))||((message['sender'] == widget.pass_garage_guide)&&(message['receiver'] == widget.pass_username))){
-      setState((){
-        var messageModels = messageModel();
-        messageModels.idMessage = message['id_message'];
-        messageModels.sender = message['sender'];
-        messageModels.receiver = message['receiver'];
-        messageModels.type = message['type'];
-        type = message['type'];
-        messageModels.body = message['body'];
-        messageModels.imageURL = message['imageURL'];
-        messageModels.datetime = DateTime.tryParse(message['datetime']);
-        _messageList.add(messageModels);
-      });
-    }});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        iconTheme: 
-          const IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-          title: Text(widget.pass_garage_guide, 
-          style: const TextStyle(
-            color: Color(0xFF4169E1),
-            fontWeight: FontWeight.w800,
-            fontSize: 16,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.warehouse, color: Color(0xFF4169E1)),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => GaragePage(pass_garage: widget.pass_garage_guide, pass_username: widget.pass_username)),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFF4169E1)),
-            iconSize: 40,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NavBar()),
-              );
-            },
-          )
-        ],
-        //Transparent setting.
-        backgroundColor: const Color(0x44FFFFFF),
-        elevation: 0,
-      ),
-
-      //Body.
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            //Text.
-            Flexible(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount : _messageList.length,
-                itemBuilder: (context, index){
-                  if(_messageList[index].sender == widget.pass_username){
-                    return Column(
-                      children:[
-                        ChatBubble(
-                          clipper: ChatBubbleClipper1(type: BubbleType.sendBubble),
-                          alignment: Alignment.topRight,
-                          margin: const EdgeInsets.only(top: 20),
-                          backGroundColor: Colors.lightBlue,
-                          child: Container(
-                            constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width * 0.7,
-                            ),
-                            child: GestureDetector(
-                              onLongPress: () {
-                                showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) => AlertDialog(
-                                    content: Container(
-                                      height: 145,
-                                      transform: Matrix4.translationValues(0.0, -20.0, 0.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children:[
-                                          Container(
-                                            transform: Matrix4.translationValues(20.0, 0.0, 0.0),
-                                            child: IconButton(
-                                              icon: const Icon(Icons.close, color: Color(0xFF4169E1)),
-                                              onPressed: () => Navigator.pop(context, 'Cancel'),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context).size.width,
-                                            child: OutlinedButton.icon(
-                                              onPressed: () {
-                                                Clipboard.setData(ClipboardData(text: _messageList[index].body,));
-                                              },
-                                              icon: const Icon(Icons.copy, size: 18),
-                                              label: const Text("Copy Message"),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context).size.width,
-                                            child: OutlinedButton.icon(
-                                              onPressed: () async{
-                                                var idMessage = _messageList[index].idMessage;
-                                                var result = await _carServices.unSendMessage(idMessage);
-
-                                                if(result != null){
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(builder: (context) => ChatPage(pass_garage_guide: widget.pass_garage_guide, pass_username: widget.pass_username)),
-                                                  );
-                                                }
-                                              },
-                                              icon: const Icon(Icons.delete, size: 18),
-                                              label: const Text("Delete Message"),
-                                            )
-                                          )
-                                        ]
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                _messageList[index].body,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            )
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
-                            child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
-                              style: const TextStyle(color: Colors.grey, fontSize:14))
-                          )
-                        )
-                      ]
-                    );
-                  } else if (_messageList[index].receiver == widget.pass_username){
-                    return Column(
-                      children:[
-                        ChatBubble(
-                          clipper: ChatBubbleClipper1(type: BubbleType.receiverBubble),
-                          alignment: Alignment.topLeft,
-                          margin: const EdgeInsets.only(top: 20),
-                          backGroundColor: Colors.blueAccent,
-                          child: Container(
-                            constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width * 0.7,
-                            ),
-                            child: GestureDetector(
-                                onLongPress: () {
-                                  showDialog<String>(
-                                    context: context,
-                                    builder: (BuildContext context) => AlertDialog(
-                                      content: Container(
-                                        height: 100,
-                                        transform: Matrix4.translationValues(0.0, -20.0, 0.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          children:[
-                                            Container(
-                                              transform: Matrix4.translationValues(20.0, 0.0, 0.0),
-                                              child: IconButton(
-                                                icon: const Icon(Icons.close, color: Color(0xFF4169E1)),
-                                                onPressed: () => Navigator.pop(context, 'Cancel'),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: MediaQuery.of(context).size.width,
-                                              child: OutlinedButton.icon(
-                                                onPressed: () {
-                                                  Clipboard.setData(ClipboardData(text: _messageList[index].body,));
-                                                },
-                                                icon: const Icon(Icons.copy, size: 18),
-                                                label: const Text("Copy Message"),
-                                              ),
-                                            ),
-                                          ]
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  _messageList[index].body,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              )
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
-                            child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
-                              style: const TextStyle(color: Colors.grey, fontSize:14))
-                          )
-                        )
-                      ]
-                    );
-                  }
-                  //End of card.
-                }
-              )
-            //End of item list.
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                padding: const EdgeInsets.only(left: 10,bottom: 10,top: 10),
-                margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-                height: 60,
-                width: double.infinity,
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: (){
-                      },
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.lightBlue,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: const Icon(Icons.add, color: Colors.white, size: 20, ),
-                      ),
-                    ),
-                    const SizedBox(width: 15,),
-                    Expanded(
-                      child: TextField(
-                        controller: _messageTextCtrl,
-                        decoration: const InputDecoration(
-                          hintText: "Type your message...",
-                          hintStyle: TextStyle(color: Colors.black54),
-                          border: InputBorder.none
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 15,),
-                    FloatingActionButton(
-                      heroTag: "send",
-                      onPressed: () async{
-                        var dt = DateTime.now();
-
-                        // String
-                        var dtStr = dt.toIso8601String();
-                        dt = DateTime.tryParse(dtStr);
-                        _message.sender = widget.pass_username;
-                        _message.receiver = widget.pass_garage_guide;
-                        _message.type = type;
-                        _message.body = _messageTextCtrl.text;
-                        _message.imageURL = 'null'; //for now
-                        _message.datetime = dt;
-
-                        var result = await _carServices.sendMessage(_message);
-                        print(result);
-                        if(result != null){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ChatPage(pass_garage_guide: widget.pass_garage_guide, pass_username: widget.pass_username)),
-                          );
-                        } else {
-
-                        }
-                      },
-                      child: const Icon(Icons.send,color: Colors.white,size: 18,),
-                      backgroundColor: Colors.green,
-                      elevation: 0,
-                    ),
-                    
-                  ],
-                  
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.white, 
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.6),
-                      blurRadius: 10.0, // soften the shadow
-                      spreadRadius: 0.0, //extend the shadow
-                      offset: const Offset(
-                        5.0, // Move to right 10  horizontally
-                        5.0, // Move to bottom 10 Vertically
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              
-            ),
-          ], 
-      
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
-      floatingActionButton: _showBackToTopButton == false
-          ? null
-          : Padding(
-        padding: const EdgeInsets.only(top: 70.0),
-        child: FloatingActionButton.extended(
-          heroTag: "backtotop",
-          onPressed: _scrollToTop,
-          label: const Text('Back To Top', style: TextStyle(color: Colors.white)),
-          icon: const Icon(Icons.arrow_circle_up),
-          backgroundColor: const Color(0xFF555555).withOpacity(0.5),
-          elevation: 0,
-        ),
       )
     );
   }
@@ -6538,7 +4193,7 @@ class _GaragePage extends State<GaragePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
         iconTheme: 
           const IconThemeData(
@@ -6708,7 +4363,7 @@ class _GaragePage extends State<GaragePage> {
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (c, a1, a2) => ChatPage(pass_garage_guide: _garageList[index].garage_name, pass_username: widget.pass_username),
+                                  pageBuilder: (c, a1, a2) => ChatPage(passGarageGuide: _garageList[index].garage_name, passUsername: widget.pass_username),
                                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                     final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                     final curvedAnimation = CurvedAnimation(
@@ -6904,7 +4559,7 @@ class _GaragePage extends State<GaragePage> {
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
-                                        pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_username: widget.pass_username),
+                                        pageBuilder: (c, a1, a2) => BookCarPage(passIdCar: _carList[index].idCar, passUsername: widget.pass_username),
                                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                           final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                           final curvedAnimation = CurvedAnimation(

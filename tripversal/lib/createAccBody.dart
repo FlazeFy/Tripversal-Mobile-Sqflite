@@ -291,6 +291,7 @@ class CreateAcc extends StatelessWidget {
 
                     _user2.fullname = _fullnameCtrl.text;
                     
+                    //Input requirement.
                     if((_fullnameCtrl.text.isNotEmpty)&&(_idCardCtrl.text.length == 16)&&(_fullnameCtrl.text.length < 20)&&(_passwordCtrl.text.length > 6)&&(_emailCtrl.text.isNotEmpty)&&(_phoneCtrl.text.length > 9)&&(_phoneCtrl.text.length < 14)){
                       if(checkedCreateAcc == true){
                         
@@ -306,7 +307,7 @@ class CreateAcc extends StatelessWidget {
                               MaterialPageRoute(builder: (context) => const NavBar()),
                             );
                           } else {
-                            //Textfield check failed Pop-up.
+                            //Database change failed Pop-up.
                             return showDialog<void>(
                               context: context,
                               barrierDismissible: false,
