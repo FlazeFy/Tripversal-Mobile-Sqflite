@@ -7,7 +7,6 @@ import 'package:tripversal/models/carModel.dart';
 import 'package:tripversal/models/reviewModel.dart';
 import 'package:tripversal/orderPage.dart';
 import 'package:tripversal/services/carServices.dart';
-import 'package:tripversal/services/userServices.dart';
 import 'package:tripversal/widgets/sideNav.dart';
 
 class BookCarPage extends StatefulWidget {
@@ -31,11 +30,9 @@ class _BookCarPage extends State<BookCarPage> {
   int price = 0; 
   var driver = "";
   int countRev = 0;
-  var passIdUserm = "";
 
   //MVC.
   final _carServices = carServices();
-  final _userServices = userServices();
   List<carModel> _carList = <carModel>[];
   List<reviewModel> _reviewList = <reviewModel>[];
   
@@ -818,7 +815,7 @@ class _BookCarPage extends State<BookCarPage> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.passIdCar, pass_carguidename: carname, pass_price: price, type: 'Car Rental'),
+              pageBuilder: (c, a1, a2) => OrderPage(passIdCarGuide: widget.passIdCar, passCarGuidename: carname, passPrice: price, type: 'Car Rental'),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 final tween = Tween(begin: const Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(

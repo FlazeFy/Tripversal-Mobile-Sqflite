@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:tripversal/main.dart';
 import 'package:tripversal/models/waitingModel.dart';
+import 'package:tripversal/paymentPage.dart';
 import 'package:tripversal/services/resvServices.dart';
 
-DateTime dateStart;
-DateTime dateEnd;
-
 class OrderPage extends StatefulWidget {
-  const OrderPage({Key key, this.pass_idCarGuide, this.pass_carguidename, this.pass_price, this.type}) : super(key: key);
+  const OrderPage({Key key, this.passIdCarGuide, this.passCarGuidename, this.passPrice, this.type}) : super(key: key);
 
-  final String pass_carguidename;
-  final int pass_idCarGuide;
-  final int pass_price;
+  final String passCarGuidename;
+  final int passIdCarGuide;
+  final int passPrice;
   final String type;
 
   @override
@@ -25,9 +22,9 @@ class _OrderPage extends State<OrderPage> {
   final _resvServices = resvServices();
 
   //Initial variable.
-  TimeOfDay selectedTime = TimeOfDay.now();
-  var _waiting = waitingModel();
+  final _waiting = waitingModel();
   DateTime selectedDate = DateTime.now();
+  int add = 0;
 
   //Get day from date picker.
   Future<void> _selectDateStart(BuildContext context) async {
@@ -49,16 +46,19 @@ class _OrderPage extends State<OrderPage> {
     }
   }
 
-  //Set minimal order duration.
-  getNextDay(){
-    var date = DateTime.now();
-    var newDate = DateTime(date.year, date.month, date.day + 1);
-    return newDate;
-  }
-
-  int add = 0;
+  //Count duration in days
   getDays(){
-    
+    if((dateStart == null)&&(dateEnd == null)){
+      dateStart = DateTime.now();
+      dateEnd = DateTime(dateStart.year, dateStart.month, dateStart.day + 1);
+    } 
+    int daysBetween(DateTime from, DateTime to) {
+      from = DateTime(from.year, from.month, from.day);
+      to = DateTime(to.year, to.month, to.day);
+      return (to.difference(from).inHours / 24).round();
+    }
+    int difference = daysBetween(dateStart, dateEnd);
+    return difference;
   }
 
   //Additional fee for car rent.
@@ -74,7 +74,7 @@ class _OrderPage extends State<OrderPage> {
   //Count total with tax
   getTotal(){
     bool pickup = false; 
-    int price = widget.pass_price;
+    int price = widget.passPrice;
     int total = 0;
 
     if((!pickup)&&(widget.type == 'Car Rental')){
@@ -82,7 +82,7 @@ class _OrderPage extends State<OrderPage> {
     } else {
       total = price + 5000;
     }
-    return total;
+    return total * getDays();
   } 
   int passTotal = 0;
 
@@ -95,7 +95,7 @@ class _OrderPage extends State<OrderPage> {
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text(widget.pass_carguidename,
+        title: Text(widget.passCarGuidename,
         style: const TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -246,6 +246,13 @@ class _OrderPage extends State<OrderPage> {
                                   onTap: () {
                                     _selectDateStart(context);
                                   },
+                                  decoration: InputDecoration(
+                                    enabledBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                    ),
+                                
+                                    hintText: dateStart.toString(),
+                                  ),
                                 ),
                               ),
                             ),
@@ -276,6 +283,12 @@ class _OrderPage extends State<OrderPage> {
                                   onTap: () {
                                     _selectDateEnd(context);
                                   },
+                                  decoration: InputDecoration(
+                                    enabledBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                                    ),
+                                    hintText: dateEnd.toString(),
+                                  ),
                                 ),
                               ),
                             ),
@@ -327,36 +340,6 @@ class _OrderPage extends State<OrderPage> {
                                 hintText: 'Bojongsoang',
                               ),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                  child: const Text(
-                                    "Time", 
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: Color(0xFF212121)
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                  width: 60,
-                                  height: 35,
-                                  child: TextField(
-                                    onTap: () {
-                                      _selectTime(context);
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ]
                           ),
                         ]
                       ),
@@ -505,7 +488,7 @@ class _OrderPage extends State<OrderPage> {
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
                                     child: Text(
-                                      "Rp. ${widget.pass_price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
+                                      "Rp. ${widget.passPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
                                       style: const TextStyle(
                                         fontSize: 15,
                                       ),
@@ -585,17 +568,16 @@ class _OrderPage extends State<OrderPage> {
                                   alignment: Alignment.centerLeft,
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                                    child: const Text(
-                                      "Total", 
-                                      style: TextStyle(
+                                    child: Text(
+                                      "Total (${getDays().toString()} days)", 
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 20,
+                                        fontSize: 17,
                                         color: Colors.black
                                       ),
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: MediaQuery.of(context).size.width* 0.18),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
@@ -649,8 +631,7 @@ class _OrderPage extends State<OrderPage> {
                           scrollDirection: Axis.vertical,
                           child: Column(
                             children: const <Widget>[
-                                
-                              
+                              //
                             ]
                           )
                         )  
@@ -676,8 +657,7 @@ class _OrderPage extends State<OrderPage> {
                           scrollDirection: Axis.vertical,
                           child: Column(
                             children: const <Widget>[
-                                
-                              
+                              //
                             ]
                           )
                         )   
@@ -697,23 +677,18 @@ class _OrderPage extends State<OrderPage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           passTotal = getTotal();
-          var dt = DateTime.now();
-
-          var dtStr = dt.toIso8601String();
-          dt = DateTime.tryParse(dtStr);
           _waiting.idUser = passIdUser;
-          _waiting.idCarGuide = widget.pass_idCarGuide;
+          _waiting.idCarGuide = widget.passIdCarGuide;
           _waiting.type = widget.type;
           _waiting.price = getTotal();
           _waiting.status = "waiting"; 
-          _waiting.dateStart = dt; //for testing
-          _waiting.dateEnd = dt;  //for testing
+          _waiting.dateStart = dateStart;
+          _waiting.dateEnd = dateEnd; 
                     
-          var result = await _resvServices.createPayment(_waiting);
-          print(result);
+          await _resvServices.createPayment(_waiting);
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PaymentPage(pass_total: passTotal)),
+            MaterialPageRoute(builder: (context) => PaymentPage(passTotal: passTotal)),
           );
         },
         label: const Text('Order Now'),
@@ -721,18 +696,45 @@ class _OrderPage extends State<OrderPage> {
       ),
     );
   }
-  //Time picker
-  _selectTime(BuildContext context) async {          
-  final TimeOfDay timeOfDay = await showTimePicker(
-    context: context,
-    initialTime: selectedTime,
-    initialEntryMode: TimePickerEntryMode.dial,
-  );
-  if(timeOfDay != null && timeOfDay != selectedTime)
-    {
-      setState(() {
-        selectedTime = timeOfDay;
-      });
-    }
+}
+
+//Drop payment method.
+class PaymentMethod extends StatefulWidget {
+  const PaymentMethod({Key key}) : super(key: key);
+  
+  @override
+  State<PaymentMethod> createState() => _PaymentMethodState();
+}
+
+class _PaymentMethodState extends State<PaymentMethod> {
+  String dropdownValue = 'Transfer Mandiri';
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      elevation: 16,
+      style: const TextStyle(
+        color: Color(0xFF4169E1),
+        fontSize: 15,
+      ),
+      underline: Container(
+        height: 2,
+        color: const Color(0xFF4169E1),
+      ),
+      onChanged: (String newValue) {
+        setState(() {
+          dropdownValue = newValue;
+          paymentMethod = dropdownValue;
+        });
+      },
+      items: <String>["Transfer Mandiri", "Transfer BNI", "Transfer BRI", "Link Aja", "Ovo", "Dana"]
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
   }
 }

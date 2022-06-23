@@ -321,7 +321,6 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                       onPressed: () async{
                         var dt = DateTime.now();
 
-                        // String
                         var dtStr = dt.toIso8601String();
                         dt = DateTime.tryParse(dtStr);
                         _message.sender = widget.passUsername;
