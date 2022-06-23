@@ -16,9 +16,11 @@ class userServices{
     return await _repository.readData('user');
   }
 
-  //New.
   loginAccount(userModel user) async{
     return await _repository.checkData('user', user.userMap());
+  }
+  checkAvailableUsername(userModel user) async{
+    return await _repository.checkUsername('user', user.userMap());
   }
   editAccount(userModel user) async{
     return await _repository.updateData('user', user.userEditMap());

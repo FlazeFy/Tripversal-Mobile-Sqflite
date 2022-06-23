@@ -4,52 +4,53 @@ import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/services/userServices.dart';
 
 class Login extends StatelessWidget {
+  Login({Key key}) : super(key: key);
+
+  //Text field contoller.
   var usernameCtrl = TextEditingController();
   var passwordCtrl = TextEditingController();
 
-  var _user = userModel();
-  var _userservices = userServices();
-
-  Login({Key key}) : super(key: key);
+  //MVC.
+  final _user = userModel();
+  final _userservices = userServices();
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 100.0),
-        child: ListView(
-          children: <Widget>[
-            Column(
-              children: const [
-                Text('tripversal',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 30,
-                    fontFamily: 'FuturaMediumBT',
-                    color: Color(0xFF4169E1)
-                  ),
-                ),
-              
-                Text('-The joy of trip-',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 15,
-                    fontFamily: 'FuturaMediumBT',
-                    color: Color(0xFF4169E1)
-                  ),
-                )
-              ]
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      margin: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            //Title.
+            const Text('tripversal',
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 30,
+                fontFamily: 'FuturaMediumBT',
+                color: Color(0xFF4169E1)
+              ),
             ),
-
+          
+            const Text('-The joy of trip-',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.italic,
+                fontSize: 15,
+                fontFamily: 'FuturaMediumBT',
+                color: Color(0xFF4169E1)
+              ),
+            ),
+          
             //Username section.
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: const Text(
-                  "Fullname", 
+                  "Username", 
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
@@ -60,7 +61,7 @@ class Login extends StatelessWidget {
             ),
             Align(
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                margin: const EdgeInsets.symmetric(),
                 height: 35,
                 child: TextField(
                   controller: usernameCtrl,
@@ -77,7 +78,7 @@ class Login extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: const Text(
                   "Password", 
                   style: TextStyle(
@@ -90,7 +91,7 @@ class Login extends StatelessWidget {
             ),
             Align(
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                margin: const EdgeInsets.symmetric(),
                 height: 35,
                 child: TextField(
                   obscureText: true,
@@ -104,6 +105,7 @@ class Login extends StatelessWidget {
               ),
             ),
 
+            //Button validation section.
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
@@ -129,26 +131,91 @@ class Login extends StatelessWidget {
             
             Container(
               height: 50,
+              width: MediaQuery.of(context).size.width* 0.9,
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: ElevatedButton(
-                
+              child: ElevatedButton(          
                 child: const Text('Login'),
                 onPressed: () async{
+                  //Get controller as text.
                   _user.fullname = usernameCtrl.text;
                   _user.password = passwordCtrl.text;
 
+                  //Check Textfield is empty.
                   if((_user.fullname.isNotEmpty)&&(_user.password.isNotEmpty)){
+                    //Validation.
                     var result = await _userservices.loginAccount(_user);
-                    print(result);
                     if(result.toString() != '[]'){
+                      passUsername = _user.fullname;
                       Navigator.push(
                         context, MaterialPageRoute(
-                          builder: (context) => NavBar(pass_usernameNav: _user.fullname),
+                          builder: (context) => const NavBar(),
                         ),
+                      );
+                    } else {
+                      //Validation failed Pop-up.
+                      return showDialog<void>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: null,
+                            content: SizedBox(
+                              height: MediaQuery.of(context).size.height* 0.23,
+                              width: MediaQuery.of(context).size.width* 0.8,
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    child: Image.asset(
+                                      'assets/images/icon/Failed.png', width: MediaQuery.of(context).size.width* 0.35),
+                                  ),
+                                  const Text('Incorrect username or password!'),
+                                ],
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Ok'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        }
                       );
                     }
                   } else {
-                    print('Fullname and password must not empty');
+                    //Textfield check failed Pop-up.
+                    return showDialog<void>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: null,
+                          content: SizedBox(
+                            height: MediaQuery.of(context).size.height* 0.23,
+                            width: MediaQuery.of(context).size.width* 0.8,
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  child: Image.asset(
+                                    'assets/images/icon/Failed.png', width: MediaQuery.of(context).size.width* 0.35),
+                                ),
+                                const Text('Username and password cannot be left empty!'),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Ok'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                    );
                   }
                 },
                 style: ButtonStyle(
@@ -168,7 +235,7 @@ class Login extends StatelessWidget {
                       color: Color(0xFF4169E1),
                     )
                   ),
-                 onPressed: () {
+                  onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const CreateAccPage()),
@@ -181,7 +248,7 @@ class Login extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: const Text(
                   "V1.0", 
                   style: TextStyle(
@@ -192,9 +259,9 @@ class Login extends StatelessWidget {
                 ),
               ),
             ),
-          ],
+          ]
         )
-      )
+      
     );
   }
 }

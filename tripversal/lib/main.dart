@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors
 // Kelompok 4 - SE-43-03
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +26,10 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter/services.dart';
 
+//Global variabel.
+String passUsername;
+int passIdUser;
+
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
 }
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Leonardho R Sitanggang-1302194041",
       home: LoginPage(), //Navbar
@@ -44,8 +47,7 @@ class MyApp extends StatelessWidget {
   }
 }
 class NavBar extends StatefulWidget {
-  const NavBar({Key key, this.pass_usernameNav}) : super(key: key);
-  final String pass_usernameNav;
+  const NavBar({Key key}) : super(key: key);
   
   @override
   _NavBarState createState() => _NavBarState();
@@ -53,15 +55,15 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
-  static var _usernamePass;
+  // static var _usernamePass;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
-      RentACarPage(pass_username: widget.pass_usernameNav),
-      TourGuidePage(pass_username: widget.pass_usernameNav),
-      MyResPage(pass_username: widget.pass_usernameNav),
-      ContactPage(pass_username: widget.pass_usernameNav),
+      RentACarPage(pass_username: passUsername),
+      TourGuidePage(pass_username: passUsername),
+      MyResPage(pass_username: passUsername),
+      ContactPage(pass_username: passUsername),
     ];
   
     return Scaffold(
@@ -88,8 +90,8 @@ class _NavBarState extends State<NavBar> {
           ],
           //Selected menu style.
           showUnselectedLabels: true,
-          selectedItemColor: Color(0xFF4169E1),
-          unselectedItemColor: Color(0xFF414141),
+          selectedItemColor: const Color(0xFF4169E1),
+          unselectedItemColor: const Color(0xFF414141),
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
@@ -226,10 +228,10 @@ class _RentACarPage extends State<RentACarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(pass_username: widget.pass_username),
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
-        IconThemeData(
+        const IconThemeData(
           color: Color(0xFF4169E1),
           size: 35.0,
         ),
@@ -240,8 +242,8 @@ class _RentACarPage extends State<RentACarPage> {
           width: MediaQuery.of(context).size.width*0.5, 
           transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
           child: TextField(
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal:5),
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
               ),
@@ -266,7 +268,7 @@ class _RentACarPage extends State<RentACarPage> {
       ],//error image blur so badly and not round yet
 
         //Transparent setting.
-        backgroundColor: Color(0x44FFFFFF),
+        backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
 
@@ -279,9 +281,9 @@ class _RentACarPage extends State<RentACarPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 25.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 25.0),
                   transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                  child: Text(
+                  child: const Text(
                     "Location", 
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
@@ -299,9 +301,9 @@ class _RentACarPage extends State<RentACarPage> {
                   children: [
                     //Drop down.
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 15.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 15.0),
                       transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                      child: MyStatefulWidget(),
+                      child: const MyStatefulWidget(),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,7 +312,7 @@ class _RentACarPage extends State<RentACarPage> {
                           alignment: Alignment.centerLeft,
                           child: Container(
                             transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                            child: Text(
+                            child: const Text(
                               "Categories", 
                               style: TextStyle(
                                 fontWeight: FontWeight.w800,
@@ -323,7 +325,7 @@ class _RentACarPage extends State<RentACarPage> {
 
                         Container(
                           transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                          margin: EdgeInsets.symmetric(vertical: 5.0),
+                          margin: const EdgeInsets.symmetric(vertical: 5.0),
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
@@ -334,8 +336,8 @@ class _RentACarPage extends State<RentACarPage> {
                                   width: 80,
                                   margin: const EdgeInsets.symmetric(horizontal: 3.0),
                                   child: RaisedButton(
-                                    color: Color(0xFF4183D7),
-                                    padding: EdgeInsets.all(8.0),
+                                    color: const Color(0xFF4183D7),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: const <Widget>[
@@ -368,8 +370,8 @@ class _RentACarPage extends State<RentACarPage> {
                                   width: 80,
                                   margin: const EdgeInsets.symmetric(horizontal: 3.0),
                                   child: RaisedButton(
-                                    color: Color(0xFF4183D7),
-                                    padding: EdgeInsets.all(8.0),
+                                    color: const Color(0xFF4183D7),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: const <Widget>[
@@ -402,8 +404,8 @@ class _RentACarPage extends State<RentACarPage> {
                                   width: 92,
                                   margin: const EdgeInsets.symmetric(horizontal: 3.0),
                                   child: RaisedButton(
-                                    color: Color(0xFF4183D7),
-                                    padding: EdgeInsets.all(8.0),
+                                    color: const Color(0xFF4183D7),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: const <Widget>[
@@ -445,15 +447,16 @@ class _RentACarPage extends State<RentACarPage> {
               Container(
                 transform: Matrix4.translationValues(0.0, -10.0, 0.0),
                 child: ExpansionTile(
+                  initiallyExpanded: true,
                   leading: IconButton(
                     iconSize: 30,
                     icon: const Icon(Icons.warehouse,
                     color: Color(0xFF808080)),
                     onPressed: () {},
                   ),
-                  title: Text('View Garage'),
-                  subtitle: Text('see available car in specific garage', 
-                    style: const TextStyle(
+                  title: const Text('View Garage'),
+                  subtitle: const Text('see available car in specific garage', 
+                    style: TextStyle(
                       color: Color(0xFF808080),
                     ),
                   ),
@@ -472,7 +475,7 @@ class _RentACarPage extends State<RentACarPage> {
                                   PageRouteBuilder(
                                     pageBuilder: (c, a1, a2) => GaragePage(pass_garage: _garageList[index].garage_name, pass_username: widget.pass_username),
                                     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                      final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                      final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                       final curvedAnimation = CurvedAnimation(
                                         parent: animation,
                                         curve: Curves.ease,
@@ -487,7 +490,7 @@ class _RentACarPage extends State<RentACarPage> {
                                 );
                               },
                               child:Container(
-                                padding: EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(10),
                                 width: 160,
                                 child: Column(
                                   children: [
@@ -515,7 +518,7 @@ class _RentACarPage extends State<RentACarPage> {
                                       height: 30,
                                       child: Text(
                                         _garageList[index].garage_location, 
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 13,
                                           color: Color(0xFF808080)
@@ -557,7 +560,7 @@ class _RentACarPage extends State<RentACarPage> {
               Container(
                 transform: Matrix4.translationValues(0.0, -5.0, 0.0),
                 child: Text("Showing ${_carList.length.toString()} result...",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 13,
                     color: Color(0xFF808080)
@@ -577,7 +580,7 @@ class _RentACarPage extends State<RentACarPage> {
                         children: [
                           Center(
                             child:Container(
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                 children: [
                                   Expanded(
@@ -596,7 +599,7 @@ class _RentACarPage extends State<RentACarPage> {
                                       //Left section.
                                       child: Row(
                                         children: [
-                                          Text(
+                                          const Text(
                                             "Driver", 
                                             style: TextStyle(
                                               fontWeight: FontWeight.w800,
@@ -605,10 +608,10 @@ class _RentACarPage extends State<RentACarPage> {
                                             ),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
                                             child: Text(
                                               _carList[index].driver, 
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 13,
                                                 color: Color(0xFF808080)
@@ -632,12 +635,12 @@ class _RentACarPage extends State<RentACarPage> {
                                 children: [
                                   Container(
                                     // flex: 5, //if expanded
-                                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                                    margin: const EdgeInsets.symmetric(vertical: 5.0),
                                     alignment: Alignment.topLeft,
                                     child: RichText(
                                       text: TextSpan(
                                         children: [
-                                          WidgetSpan(
+                                          const WidgetSpan(
                                             child: Icon(Icons.car_rental,   
                                               size: 20,
                                               color: Color(0xFF4169E1),
@@ -645,7 +648,7 @@ class _RentACarPage extends State<RentACarPage> {
                                           ),
                                           TextSpan(
                                             text: _carList[index].carname, 
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w700,
                                             )
@@ -660,7 +663,7 @@ class _RentACarPage extends State<RentACarPage> {
                                     child: RichText(
                                       text: TextSpan(
                                         children: [
-                                          WidgetSpan(
+                                          const WidgetSpan(
                                             child: Icon(Icons.location_on, 
                                               size: 20,
                                               color: Color(0xFF4169E1),
@@ -668,7 +671,7 @@ class _RentACarPage extends State<RentACarPage> {
                                           ),
                                           TextSpan(
                                             text: _carList[index].location, 
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Color(0xFF808080),
                                               fontWeight: FontWeight.w700,
                                             )
@@ -680,18 +683,18 @@ class _RentACarPage extends State<RentACarPage> {
 
                                   Container(
                                     // flex: 5, //if expanded
-                                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                                    margin: const EdgeInsets.symmetric(vertical: 5.0),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Container(
                                           // flex: 5, //if expanded
                                           alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
                                           child: RichText(
                                             text: TextSpan(
                                               children: [
-                                                TextSpan(
+                                                const TextSpan(
                                                   text: "Rp. ",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
@@ -701,13 +704,13 @@ class _RentACarPage extends State<RentACarPage> {
                                                 ),
                                                 TextSpan(
                                                   text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.w700,
                                                   )
                                                 ),
-                                                TextSpan(
+                                                const TextSpan(
                                                   text: " / Day",
                                                   style: TextStyle(
                                                     color: Color(0xFF808080),
@@ -729,11 +732,11 @@ class _RentACarPage extends State<RentACarPage> {
                                       Container(
                                         // flex: 5, //if expanded
                                         alignment: Alignment.topLeft,
-                                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
                                         child: RichText(
                                           text: TextSpan(
                                             children: [
-                                              WidgetSpan(
+                                              const WidgetSpan(
                                                 child: Icon(Icons.star, 
                                                   size: 20,
                                                   color: Color(0xFF4169E1),
@@ -741,7 +744,7 @@ class _RentACarPage extends State<RentACarPage> {
                                               ),
                                               TextSpan(
                                                 text: _carList[index].rating.toString(), 
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Color(0xFF4169E1),
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w700,
@@ -758,7 +761,7 @@ class _RentACarPage extends State<RentACarPage> {
                                             PageRouteBuilder(
                                               pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_username: widget.pass_username),
                                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                                final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                                 final curvedAnimation = CurvedAnimation(
                                                   parent: animation,
                                                   curve: Curves.ease,
@@ -772,13 +775,13 @@ class _RentACarPage extends State<RentACarPage> {
                                             ),
                                           );
                                         },
-                                        icon: Icon(Icons.arrow_forward, size: 18),
-                                        label: Text("Book now"),
+                                        icon: const Icon(Icons.arrow_forward, size: 18),
+                                        label: const Text("Book now"),
                                         style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
                                         ),
                                       ),
-                                      SizedBox(width: 8,),
+                                      const SizedBox(width: 8,),
                                     ],
                                   )
 
@@ -795,7 +798,7 @@ class _RentACarPage extends State<RentACarPage> {
                       ),
                     ),
                     elevation: 6,
-                    margin: EdgeInsets.all(5),
+                    margin: const EdgeInsets.all(5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -861,14 +864,14 @@ class _AccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(pass_username: widget.pass_username),
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Account", 
+        title: const Text("Account", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -878,7 +881,7 @@ class _AccountPage extends State<AccountPage> {
       
       actions: [
         IconButton(
-          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          icon: const Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
             Navigator.pop(context);
@@ -886,7 +889,7 @@ class _AccountPage extends State<AccountPage> {
         )
       ],
         //Transparent setting.
-        backgroundColor: Color(0x44FFFFFF),
+        backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
 
@@ -904,7 +907,7 @@ class _AccountPage extends State<AccountPage> {
                   //Text.
                   Container(
                     width: 160,
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(80), 
                       child: Image.asset('assets/images/User.jpg'),
@@ -926,8 +929,8 @@ class _AccountPage extends State<AccountPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: Text(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: const Text(
                         "Fullname", 
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -939,12 +942,12 @@ class _AccountPage extends State<AccountPage> {
                   ),
                   Align(
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0),
                       height: 35,
                       child: TextField(
                         enabled: false,
                         decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
@@ -958,8 +961,8 @@ class _AccountPage extends State<AccountPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: Text(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: const Text(
                         "ID Card / Passport Number", 
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -971,12 +974,12 @@ class _AccountPage extends State<AccountPage> {
                   ),
                   Align(
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0),
                       height: 35,
                       child: TextField(
                         controller: _idCardCtrl,
                         decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
@@ -990,8 +993,8 @@ class _AccountPage extends State<AccountPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: Text(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: const Text(
                         "Password", 
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -1003,12 +1006,12 @@ class _AccountPage extends State<AccountPage> {
                   ),
                   Align(
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0),
                       height: 35,
                       child: TextField(
                         controller: _passwordCtrl,
                         decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                           hintText: _userList[index].password,
@@ -1021,8 +1024,8 @@ class _AccountPage extends State<AccountPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: Text(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: const Text(
                         "Email", 
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -1034,12 +1037,12 @@ class _AccountPage extends State<AccountPage> {
                   ),
                   Align(
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
                       height: 35,
                       child: TextField(
                         controller: _emailCtrl,
                         decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
@@ -1053,8 +1056,8 @@ class _AccountPage extends State<AccountPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                      child: Text(
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                      child: const Text(
                         "Phone Number", 
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -1066,12 +1069,12 @@ class _AccountPage extends State<AccountPage> {
                   ),
                   Align(
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 3.0),
                       height: 35,
                       child: TextField(
                         controller: _phoneCtrl,
                         decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
@@ -1085,8 +1088,8 @@ class _AccountPage extends State<AccountPage> {
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-                        child: Icon(
+                        margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                        child: const Icon(
                           Icons.info,
                           color: Color(0xFF4169E1),
                           size: 30.0,
@@ -1096,8 +1099,8 @@ class _AccountPage extends State<AccountPage> {
                         alignment: Alignment.centerLeft,
                         child: Container(
                           width: 300,
-                          margin: EdgeInsets.symmetric(vertical: 10.0),
-                          child: Text(
+                          margin: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: const Text(
                             "Password must have min 8 character, Have 1 capital and 1 number.", 
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -1113,20 +1116,20 @@ class _AccountPage extends State<AccountPage> {
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 25.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: ElevatedButton.icon(
                           onPressed: () {
                               // Respond to button press
                           },
-                          icon: Icon(Icons.photo, size: 20),
-                          label: Text("Change Photo"),
+                          icon: const Icon(Icons.photo, size: 20),
+                          label: const Text("Change Photo"),
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF4169E1), 
+                            primary: const Color(0xFF4169E1), 
                           ),
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 25.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: ElevatedButton.icon(
                           onPressed: () async {
                             _user.idUser = _userList[index].idUser;
@@ -1158,16 +1161,16 @@ class _AccountPage extends State<AccountPage> {
                               print(result);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => NavBar(pass_usernameNav: _user.fullname)),
+                                MaterialPageRoute(builder: (context) => const NavBar()),
                               );
                             } else {
                               print('Create Account Failed');
                             }
                           },
-                          icon: Icon(Icons.save, size: 20),
-                          label: Text("Save Changes"),
+                          icon: const Icon(Icons.save, size: 20),
+                          label: const Text("Save Changes"),
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF13B402), 
+                            primary: const Color(0xFF13B402), 
                           ),
                         ),
                       ),
@@ -1192,11 +1195,11 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("About", 
+        title: const Text("About", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -1205,14 +1208,14 @@ class AboutPage extends StatelessWidget {
       ),
       
       //Transparent setting.
-      backgroundColor: Color(0x44FFFFFF),
+      backgroundColor: const Color(0x44FFFFFF),
       elevation: 0,
     ),
 
       body: Center(
         child: Column(
           children: [
-            Align(
+            const Align(
               child: Icon(
                 Icons.travel_explore,
                 color: Color(0xFF4169E1),
@@ -1220,7 +1223,7 @@ class AboutPage extends StatelessWidget {
               ),     
             ),
             //Bug fontfamily not working.
-            Align(
+            const Align(
               child: Text('tripversal',
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
@@ -1230,7 +1233,7 @@ class AboutPage extends StatelessWidget {
                 ),
               ),
             ),
-            Text('-The joy of trip-',
+            const Text('-The joy of trip-',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontStyle: FontStyle.italic,
@@ -1240,8 +1243,8 @@ class AboutPage extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: Text('Tripversal is an application that will help you travel around Indonesia. With Tripversal you can rent a various of vehicle like citycar, minibus, motorcycle, even a bus. Not only that, you can also rent a tour guide with various spoken language. Our vehicle and guide are trusted and will help you through the day. So dont hesitate and book now to get a trip that will never be forgotten.',
+              margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: const Text('Tripversal is an application that will help you travel around Indonesia. With Tripversal you can rent a various of vehicle like citycar, minibus, motorcycle, even a bus. Not only that, you can also rent a tour guide with various spoken language. Our vehicle and guide are trusted and will help you through the day. So dont hesitate and book now to get a trip that will never be forgotten.',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -1349,10 +1352,10 @@ class _TourGuidePage extends State<TourGuidePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(pass_username: widget.pass_username),
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
         ),
@@ -1362,8 +1365,8 @@ class _TourGuidePage extends State<TourGuidePage> {
           width: MediaQuery.of(context).size.width*0.5, 
           transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
           child: TextField(
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal:5),
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
               ),
@@ -1388,7 +1391,7 @@ class _TourGuidePage extends State<TourGuidePage> {
       ],//error image blur so badly and not round yet
 
         //Transparent setting.
-        backgroundColor: Color(0x44FFFFFF),
+        backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
 
@@ -1399,9 +1402,9 @@ class _TourGuidePage extends State<TourGuidePage> {
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0),
+                margin: const EdgeInsets.symmetric(horizontal: 25.0),
                 transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                child: Text(
+                child: const Text(
                   "Location", 
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
@@ -1419,9 +1422,9 @@ class _TourGuidePage extends State<TourGuidePage> {
                 children: [
                   //Drop down.
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 15.0),
                     transform: Matrix4.translationValues(0.0, -5.0, 0.0),
-                    child: MyStatefulWidget(),
+                    child: const MyStatefulWidget(),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1430,7 +1433,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                         alignment: Alignment.centerLeft,
                         child: Container(
                           transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                          child: Text(
+                          child: const Text(
                             "Language", 
                             style: TextStyle(
                               fontWeight: FontWeight.w800,
@@ -1474,7 +1477,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius : BorderRadius.circular(10),
-                                    color: Color(0xFF4169E1),
+                                    color: const Color(0xFF4169E1),
                                   ),
                                 ),
                                 
@@ -1505,7 +1508,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius : BorderRadius.circular(10),
-                                    color: Color(0xFF4169E1),
+                                    color: const Color(0xFF4169E1),
                                   ),
                                 ),
 
@@ -1536,7 +1539,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius : BorderRadius.circular(10),
-                                    color: Color(0xFF4169E1),
+                                    color: const Color(0xFF4169E1),
                                   ),
                                 ),
 
@@ -1605,9 +1608,9 @@ class _TourGuidePage extends State<TourGuidePage> {
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0),
+                margin: const EdgeInsets.symmetric(horizontal: 25.0),
                 //transform: Matrix4.translationValues(0.0, -10.0, 0.0),
-                child: Text(
+                child: const Text(
                   "Language", 
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
@@ -1620,7 +1623,7 @@ class _TourGuidePage extends State<TourGuidePage> {
 
             Align( //text
               child: Text("Showing ${_guideList.length.toString()} result...",
-                style: TextStyle(
+                style: const TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 13,
                     color: Color(0xFF808080)
@@ -1652,14 +1655,14 @@ class _TourGuidePage extends State<TourGuidePage> {
                                   children: [
                                     Container(
                                       // flex: 5, //if expanded
-                                      margin: EdgeInsets.symmetric(vertical: 5.0),
+                                      margin: const EdgeInsets.symmetric(vertical: 5.0),
                                       alignment: Alignment.topLeft,
                                       child: Row (
                                         children: [
                                           RichText(
                                             text: TextSpan(
                                               children: [
-                                                WidgetSpan(
+                                                const WidgetSpan(
                                                   child: Icon(Icons.person, 
                                                     size: 20,
                                                     color: Color(0xFF4169E1),
@@ -1667,7 +1670,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                                 ),
                                                 TextSpan(
                                                   text: _guideList[index].name,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.w700,
                                                   )
@@ -1680,7 +1683,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                             child: RichText(
                                               text: TextSpan(
                                                 children: [
-                                                  WidgetSpan(
+                                                  const WidgetSpan(
                                                     child: Icon(Icons.star, 
                                                       size: 20,
                                                       color: Color(0xFF4169E1),
@@ -1688,7 +1691,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                                   ),
                                                   TextSpan(
                                                     text: _guideList[index].rating.toString(),
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Color(0xFF4169E1),
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w700,
@@ -1707,7 +1710,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                       child: RichText(
                                         text: TextSpan(
                                           children: [
-                                            WidgetSpan(
+                                            const WidgetSpan(
                                               child: Icon(Icons.message, 
                                                 size: 20,
                                                 color: Color(0xFF4169E1),
@@ -1715,7 +1718,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                             ),
                                             TextSpan(
                                               text: _guideList[index].language,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Color(0xFF808080),
                                                 fontWeight: FontWeight.w700,
                                               )
@@ -1727,18 +1730,18 @@ class _TourGuidePage extends State<TourGuidePage> {
 
                                     Container(
                                       // flex: 5, //if expanded
-                                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                                      margin: const EdgeInsets.symmetric(vertical: 10.0),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           Container(
                                             // flex: 5, //if expanded
                                             alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.symmetric(horizontal: 25.0),
+                                            margin: const EdgeInsets.symmetric(horizontal: 25.0),
                                             child: RichText(
                                               text: TextSpan(
                                                 children: [
-                                                  TextSpan(
+                                                  const TextSpan(
                                                     text: "Rp. ",
                                                     style: TextStyle(
                                                       color: Color(0xFF808080),
@@ -1748,13 +1751,13 @@ class _TourGuidePage extends State<TourGuidePage> {
                                                   ),
                                                   TextSpan(
                                                     text: "${_guideList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w700,
                                                     )
                                                   ),
-                                                  TextSpan(
+                                                  const TextSpan(
                                                     text: " / 12 hr",
                                                     style: TextStyle(
                                                       color: Color(0xFF808080),
@@ -1788,7 +1791,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                       PageRouteBuilder(
                                         pageBuilder: (c, a1, a2) => BookGuidePage(pass_idGuide: _guideList[index].idGuide, pass_username: widget.pass_username),
                                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                          final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                          final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                           final curvedAnimation = CurvedAnimation(
                                             parent: animation,
                                             curve: Curves.ease,
@@ -1802,20 +1805,20 @@ class _TourGuidePage extends State<TourGuidePage> {
                                       ),
                                     );
                                   },
-                                  icon: Icon(Icons.arrow_forward, size: 25),
+                                  icon: const Icon(Icons.arrow_forward, size: 25),
                                   color: Colors.white,
                                 )
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Color(0xFF1F9F2F),
+                                color: const Color(0xFF1F9F2F),
                               ),
                             )
                           ],
                         ),
                       ),
                       elevation: 8,
-                      margin: EdgeInsets.all(6),
+                      margin: const EdgeInsets.all(6),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -1966,10 +1969,10 @@ class _MyResPage extends State<MyResPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(pass_username: widget.pass_username),
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
@@ -1978,9 +1981,9 @@ class _MyResPage extends State<MyResPage> {
         Container(   
           width: MediaQuery.of(context).size.width*0.5, 
           transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
-          child: TextField(
+          child: const TextField(
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal:5),
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
               ),
@@ -2005,7 +2008,7 @@ class _MyResPage extends State<MyResPage> {
       ],//error image blur so badly and not round yet
 
         //Transparent setting.
-        backgroundColor: Color(0x44FFFFFF),
+        backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
       
@@ -2069,7 +2072,7 @@ class _MyResPage extends State<MyResPage> {
                                               children: [
                                                 TextSpan(
                                                   text: " ${_waitingList[index].carname}",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 18
@@ -2090,7 +2093,7 @@ class _MyResPage extends State<MyResPage> {
                                                 child: RichText(
                                                   text: TextSpan(
                                                     children: [
-                                                      TextSpan(
+                                                      const TextSpan(
                                                         text: "Rp.",
                                                         style: TextStyle(
                                                           color: Colors.white,
@@ -2099,13 +2102,13 @@ class _MyResPage extends State<MyResPage> {
                                                       ),
                                                       TextSpan(
                                                         text: " ${_waitingList[index].price.toString()}",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 22,
                                                           fontWeight: FontWeight.bold
                                                         )
                                                       ),
-                                                      TextSpan(
+                                                      const TextSpan(
                                                         text: " / Day",
                                                         style: TextStyle(
                                                           color: Colors.white,
@@ -2228,7 +2231,7 @@ class _MyResPage extends State<MyResPage> {
                   children: <Widget>[
                     Container(
                       height: 260, 
-                      margin: EdgeInsets.symmetric(horizontal: 5), 
+                      margin: const EdgeInsets.symmetric(horizontal: 5), 
                       child: ListView.builder(
                         //shrinkWrap: true,                  
                         scrollDirection: Axis.horizontal,
@@ -2249,17 +2252,17 @@ class _MyResPage extends State<MyResPage> {
                               child: Column(
                                 children: [
                                   ListTile(
-                                    title: Text(_onGoingList[index].type, style: TextStyle(fontWeight: FontWeight.w800)),
+                                    title: Text(_onGoingList[index].type, style: const TextStyle(fontWeight: FontWeight.w800)),
                                     subtitle: Text(
                                       "${_onGoingList[index].desc} ~ end on ${DateFormat('yyyy-MM-dd – kk:mm').format(_onGoingList[index].dateEnd).toString()}",
-                                      style: TextStyle(color: Colors.black),
+                                      style: const TextStyle(color: Colors.black),
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.symmetric(vertical : 3), 
+                                    margin: const EdgeInsets.symmetric(vertical : 3), 
                                     child: Image.asset('assets/images/D 1670 VZB.jpg', width: 180),
                                   ),
-                                  Align(
+                                  const Align(
                                     
                                   ),
                                   Row(
@@ -2267,7 +2270,7 @@ class _MyResPage extends State<MyResPage> {
                                     Container(
                                       height: 40,
                                       width: 90, 
-                                      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical : 10), 
+                                      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical : 10), 
                                       child: RaisedButton(
                                         color: const Color(0xFF4169E1),
                                         padding: const EdgeInsets.all(8.0),
@@ -2453,7 +2456,7 @@ class _MyResPage extends State<MyResPage> {
                                             ), 
                                           )
                                         ),
-                                        SizedBox(width:5),
+                                        const SizedBox(width:5),
                                         Container(
                                           height: 60,
                                           width: 80,
@@ -2554,7 +2557,7 @@ class _MyResPage extends State<MyResPage> {
                                                                 children: [
                                                                   TextSpan(
                                                                     text: _historyList[index].comment,
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                       color: Color.fromARGB(255, 77, 77, 77),
                                                                       fontWeight: FontWeight.w500,
                                                                       fontSize: 16
@@ -2572,7 +2575,7 @@ class _MyResPage extends State<MyResPage> {
                                                                 children: [
                                                                   TextSpan(
                                                                     text: "~on ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateComment).toString()}",
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                       color: Color(0xFF808080),
                                                                       fontWeight: FontWeight.w500,
                                                                       fontStyle: FontStyle.italic,
@@ -2646,7 +2649,7 @@ class _MyResPage extends State<MyResPage> {
                                                     children: [
                                                       TextSpan(
                                                         text: "${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateStart).toString()} - ${DateFormat('yyyy-MM-dd – kk:mm').format(_historyList[index].dateEnd).toString()}",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           color: Color(0xFF808080),
                                                           fontWeight: FontWeight.w500,
                                                           fontStyle: FontStyle.italic,
@@ -2683,7 +2686,7 @@ class _MyResPage extends State<MyResPage> {
                                                     children: [
                                                       TextSpan(
                                                         text: "Rp. ${_historyList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           color: Color(0xFF808080),
                                                           fontWeight: FontWeight.w500,
                                                           fontStyle: FontStyle.italic,
@@ -2720,7 +2723,7 @@ class _MyResPage extends State<MyResPage> {
                                                         children: [
                                                           TextSpan(
                                                             text: _historyList[index].name,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Color(0xFF808080),
                                                               fontWeight: FontWeight.w500,
                                                               fontStyle: FontStyle.italic,
@@ -2755,7 +2758,7 @@ class _MyResPage extends State<MyResPage> {
                                                         children: [
                                                           TextSpan(
                                                             text: _historyList[index].barcode,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Color(0xFF212121),
                                                               fontWeight: FontWeight.w500,
                                                               fontSize: 20
@@ -2821,7 +2824,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       ),
       underline: Container(
         height: 2,
-        color: Color(0xFF4169E1),
+        color: const Color(0xFF4169E1),
       ),
       onChanged: (String newValue) {
         setState(() {
@@ -2958,7 +2961,7 @@ class _BookCarPage extends State<BookCarPage> {
           ),
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 
@@ -2972,7 +2975,7 @@ class _BookCarPage extends State<BookCarPage> {
             child: Image.asset(
               'assets/images/icon/Empty2.png', width: 200),
             ),
-            Text(
+            const Text(
               "There's no review for this car", 
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -2985,7 +2988,7 @@ class _BookCarPage extends State<BookCarPage> {
          
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 
@@ -2993,14 +2996,14 @@ class _BookCarPage extends State<BookCarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(pass_username: widget.pass_username),
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Book Car", 
+        title: const Text("Book Car", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -3010,7 +3013,7 @@ class _BookCarPage extends State<BookCarPage> {
       
       actions: [
         IconButton(
-          icon: Icon(Icons.map, color: Color(0xFF4169E1)),
+          icon: const Icon(Icons.map, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
             Navigator.push(
@@ -3018,7 +3021,7 @@ class _BookCarPage extends State<BookCarPage> {
               PageRouteBuilder(
                 pageBuilder: (c, a1, a2) => MapsPage(pass_carguidename: carname, pass_coordinate_lan: double.tryParse(coordinate_lan), pass_coordinate_lng: double.tryParse(coordinate_lng)),
                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                  final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                   final curvedAnimation = CurvedAnimation(
                     parent: animation,
                     curve: Curves.ease,
@@ -3034,7 +3037,7 @@ class _BookCarPage extends State<BookCarPage> {
           },
         ),
         IconButton(
-          icon: Icon(Icons.warehouse, color: Color(0xFF4169E1)),
+          icon: const Icon(Icons.warehouse, color: Color(0xFF4169E1)),
           onPressed: () {
             Navigator.push(
               context,
@@ -3043,7 +3046,7 @@ class _BookCarPage extends State<BookCarPage> {
           },
         ),
         IconButton(
-          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          icon: const Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
             Navigator.pop(context);
@@ -3051,7 +3054,7 @@ class _BookCarPage extends State<BookCarPage> {
         ),
       ],
       //Transparent setting.
-      backgroundColor: Color(0x44FFFFFF),
+      backgroundColor: const Color(0x44FFFFFF),
       elevation: 0,
     ),
 
@@ -3090,7 +3093,7 @@ class _BookCarPage extends State<BookCarPage> {
                       child: RichText(
                         text: TextSpan(
                           children: [
-                            WidgetSpan(
+                            const WidgetSpan(
                               child: Icon(Icons.car_rental, 
                                 size: 24,
                                 color: Color(0xFF4169E1),
@@ -3098,7 +3101,7 @@ class _BookCarPage extends State<BookCarPage> {
                             ),
                             TextSpan(
                               text: _carList[index].carname,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xFF4169E1),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18
@@ -3113,7 +3116,7 @@ class _BookCarPage extends State<BookCarPage> {
                       child: RichText(
                         text: TextSpan(
                           children: [
-                            WidgetSpan(
+                            const WidgetSpan(
                               child: Icon(Icons.star, 
                                 size: 20,
                                 color: Color(0xFF4169E1),
@@ -3121,7 +3124,7 @@ class _BookCarPage extends State<BookCarPage> {
                             ),
                             TextSpan(
                               text: _carList[index].rating.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xFF4169E1),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
@@ -3140,7 +3143,7 @@ class _BookCarPage extends State<BookCarPage> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
+                        const TextSpan(
                           text: "Rp. ",
                           style: TextStyle(
                             color: Color(0xFF808080),
@@ -3150,13 +3153,13 @@ class _BookCarPage extends State<BookCarPage> {
                         ),
                         TextSpan(
                           text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xFF4169E1),
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                           )
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: " / Day",
                           style: TextStyle(
                             color: Color(0xFF808080),
@@ -3178,13 +3181,13 @@ class _BookCarPage extends State<BookCarPage> {
                             Expanded(
                             child: new Container(
                               margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                              child: Divider(
+                              child: const Divider(
                                 color: Colors.grey,
                                 thickness: 1.5,
                                 height: 5,
                               )),
                             ),       
-                            Text(
+                            const Text(
                               "Description", 
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -3195,7 +3198,7 @@ class _BookCarPage extends State<BookCarPage> {
                             Expanded(
                             child: new Container(
                               margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                              child: Divider(
+                              child: const Divider(
                                 color: Colors.grey,
                                 thickness: 1.5,
                                 height: 5,
@@ -3209,7 +3212,7 @@ class _BookCarPage extends State<BookCarPage> {
                             margin: const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
                               _carList[index].desc,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 15,
                               ),
                             ),
@@ -3220,13 +3223,13 @@ class _BookCarPage extends State<BookCarPage> {
                             Expanded(
                             child: new Container(
                               margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                              child: Divider(
+                              child: const Divider(
                                 color: Colors.grey,
                                 thickness: 1.5,
                                 height: 5,
                               )),
                             ),       
-                            Text(
+                            const Text(
                               "Specification", 
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -3237,7 +3240,7 @@ class _BookCarPage extends State<BookCarPage> {
                             Expanded(
                             child: new Container(
                               margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                              child: Divider(
+                              child: const Divider(
                                 color: Colors.grey,
                                 thickness: 1.5,
                                 height: 5,
@@ -3254,7 +3257,7 @@ class _BookCarPage extends State<BookCarPage> {
                                 child: RichText(
                                   text: TextSpan(
                                     children: [
-                                      WidgetSpan(
+                                      const WidgetSpan(
                                         child: Icon(Icons.person, 
                                           size: 20,
                                           color: Color(0xFF808080),
@@ -3262,7 +3265,7 @@ class _BookCarPage extends State<BookCarPage> {
                                       ),
                                       TextSpan(
                                         text: "${_carList[index].seat.toString()} Seats",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Color(0xFF808080),
                                           fontSize: 16
                                         )
@@ -3276,7 +3279,7 @@ class _BookCarPage extends State<BookCarPage> {
                                 child: RichText(
                                   text: TextSpan(
                                     children: [
-                                      WidgetSpan(
+                                      const WidgetSpan(
                                         child: Icon(Icons.speed, 
                                           size: 20,
                                           color: Color(0xFF808080),
@@ -3284,7 +3287,7 @@ class _BookCarPage extends State<BookCarPage> {
                                       ),
                                       TextSpan(
                                         text: "${_carList[index].distance.toString()} Km",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Color(0xFF808080),
                                           fontSize: 16
                                         )
@@ -3299,7 +3302,7 @@ class _BookCarPage extends State<BookCarPage> {
                                 child: RichText(
                                   text: TextSpan(
                                     children: [
-                                      WidgetSpan(
+                                      const WidgetSpan(
                                         child: ImageIcon(
                                           AssetImage("assets/images/fuel.png"),
                                           color: Color(0xFF808080),
@@ -3308,7 +3311,7 @@ class _BookCarPage extends State<BookCarPage> {
                                       ),
                                       TextSpan(
                                         text: "${_carList[index].tank.toString()} L",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Color(0xFF808080),
                                           fontSize: 16
                                         )
@@ -3350,7 +3353,7 @@ class _BookCarPage extends State<BookCarPage> {
                                       RichText(
                                         text: TextSpan(                     
                                           text: _carList[index].driver,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Color(0xFF4169E1),
                                             fontWeight: FontWeight.w600,
                                             fontSize: 16,
@@ -3393,7 +3396,7 @@ class _BookCarPage extends State<BookCarPage> {
                                           child: RichText(
                                             text: TextSpan(
                                               children: [
-                                                WidgetSpan(
+                                                const WidgetSpan(
                                                   child: Icon(Icons.call, 
                                                     size: 20,
                                                     color: Color(0xFF808080),
@@ -3401,7 +3404,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                 ),
                                                 TextSpan(
                                                   text: " ${_carList[index].garage_phone}",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
                                                   )
@@ -3418,7 +3421,7 @@ class _BookCarPage extends State<BookCarPage> {
                                           child: RichText(
                                             text: TextSpan(
                                               children: [
-                                                WidgetSpan(
+                                                const WidgetSpan(
                                                   child: Icon(Icons.location_on, 
                                                     size: 20,
                                                     color: Color(0xFF808080),
@@ -3426,7 +3429,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                 ),
                                                 TextSpan(
                                                   text: " ${_carList[index].garage_location}",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
                                                   )
@@ -3443,7 +3446,7 @@ class _BookCarPage extends State<BookCarPage> {
                                           child: RichText(
                                             text: TextSpan(
                                               children: [
-                                                WidgetSpan(
+                                                const WidgetSpan(
                                                   child: Icon(Icons.email, 
                                                     size: 20,
                                                     color: Color(0xFF808080),
@@ -3451,7 +3454,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                 ),
                                                 TextSpan(
                                                   text: " ${_carList[index].garage_email}",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Color(0xFF808080),
                                                     fontSize: 15
                                                   )
@@ -3488,10 +3491,10 @@ class _BookCarPage extends State<BookCarPage> {
                                                     ),
                                                   );
                                                 },
-                                                icon: Icon(Icons.chat, size: 18),
-                                                label: Text("Chat Now"),
+                                                icon: const Icon(Icons.chat, size: 18),
+                                                label: const Text("Chat Now"),
                                                 style: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
                                                 ),
                                               ),
                                             ),
@@ -3505,14 +3508,14 @@ class _BookCarPage extends State<BookCarPage> {
                                                   var contact= "Phone: +62 "+_carList[index].garage_phone+" Address: "+_carList[index].garage_location;
                                                   Clipboard.setData(ClipboardData(text: contact));         
                                                 },
-                                                icon: Icon(Icons.copy, size: 18),
-                                                label: Text("Copy"),
+                                                icon: const Icon(Icons.copy, size: 18),
+                                                label: const Text("Copy"),
                                               ),
                                             ),
                                           ),
                                         ]
                                       ),
-                                      SizedBox(height: 5)
+                                      const SizedBox(height: 5)
                                     ]
                                   )
                                 )   
@@ -3602,7 +3605,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                           children: [
                                                             TextSpan(
                                                               text: _reviewList[index].comment,
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                 color: Color.fromARGB(255, 77, 77, 77),
                                                                 fontWeight: FontWeight.w500,
                                                                 fontSize: 16
@@ -3620,7 +3623,7 @@ class _BookCarPage extends State<BookCarPage> {
                                                           children: [
                                                             TextSpan(
                                                               text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                 color: Color(0xFF808080),
                                                                 fontWeight: FontWeight.w500,
                                                                 fontStyle: FontStyle.italic,
@@ -3674,7 +3677,7 @@ class _BookCarPage extends State<BookCarPage> {
             PageRouteBuilder(
               pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idCar, pass_carguidename: carname, pass_username: widget.pass_username, pass_price: price, type: 'Car Rental', pass_idUser: passIdUser),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
+                final tween = Tween(begin: const Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
                   parent: animation,
                   curve: Curves.ease,
@@ -3799,7 +3802,7 @@ class _BookGuidePage extends State<BookGuidePage> {
             child: Image.asset(
               'assets/images/icon/Empty2.png', width: 200),
             ),
-            Text(
+            const Text(
               "There's no review for this guide", 
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -3812,7 +3815,7 @@ class _BookGuidePage extends State<BookGuidePage> {
          
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
   
@@ -3820,14 +3823,14 @@ class _BookGuidePage extends State<BookGuidePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(pass_username: widget.pass_username),
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Book Tour Guide", 
+        title: const Text("Book Tour Guide", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -3837,7 +3840,7 @@ class _BookGuidePage extends State<BookGuidePage> {
       
       actions: [
         IconButton(
-          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          icon: const Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
             Navigator.pop(context);
@@ -3845,7 +3848,7 @@ class _BookGuidePage extends State<BookGuidePage> {
         )
       ],
       //Transparent setting.
-      backgroundColor: Color(0x44FFFFFF),
+      backgroundColor: const Color(0x44FFFFFF),
       elevation: 0,
     ),
 
@@ -3884,7 +3887,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                     child: RichText(
                       text: TextSpan(
                         children: [
-                          WidgetSpan(
+                          const WidgetSpan(
                             child: Icon(Icons.person, 
                               size: 24,
                               color: Color(0xFF4169E1),
@@ -3892,7 +3895,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                           ),
                           TextSpan(
                             text: _guideList[index].name,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xFF4169E1),
                               fontWeight: FontWeight.w700,
                               fontSize: 18
@@ -3907,7 +3910,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                     child: RichText(
                       text: TextSpan(
                         children: [
-                          WidgetSpan(
+                          const WidgetSpan(
                             child: Icon(Icons.star, 
                               size: 20,
                               color: Color(0xFF4169E1),
@@ -3915,7 +3918,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                           ),
                           TextSpan(
                             text: _guideList[index].rating.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xFF4169E1),
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -3939,7 +3942,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                       child: RichText(
                         text: TextSpan(
                           children: [
-                            TextSpan(
+                            const TextSpan(
                               text: "Rp.",
                               style: TextStyle(
                                 color: Color(0xFF808080),
@@ -3949,13 +3952,13 @@ class _BookGuidePage extends State<BookGuidePage> {
                             ),
                             TextSpan(
                               text: " ${_guideList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xFF4169E1),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                               )
                             ),
-                            TextSpan(
+                            const TextSpan(
                               text: " / 12 hr",
                               style: TextStyle(
                                 color: Color(0xFF808080),
@@ -3980,13 +3983,13 @@ class _BookGuidePage extends State<BookGuidePage> {
                           Expanded(
                           child: new Container(
                             margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                            child: Divider(
+                            child: const Divider(
                               color: Colors.grey,
                               thickness: 1.5,
                               height: 5,
                             )),
                           ),       
-                          Text(
+                          const Text(
                             "Description", 
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -3997,7 +4000,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                           Expanded(
                           child: new Container(
                             margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                            child: Divider(
+                            child: const Divider(
                               color: Colors.grey,
                               thickness: 1.5,
                               height: 5,
@@ -4011,7 +4014,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                           margin: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
                             _guideList[index].desc,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               color: Color.fromARGB(255, 145, 145, 145)
                             ),
@@ -4023,13 +4026,13 @@ class _BookGuidePage extends State<BookGuidePage> {
                           Expanded(
                           child: new Container(
                             margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                            child: Divider(
+                            child: const Divider(
                               color: Colors.grey,
                               thickness: 1.5,
                               height: 5,
                             )),
                           ),       
-                          Text(
+                          const Text(
                             "Language", 
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -4040,7 +4043,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                           Expanded(
                           child: new Container(
                             margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                            child: Divider(
+                            child: const Divider(
                               color: Colors.grey,
                               thickness: 1.5,
                               height: 5,
@@ -4057,7 +4060,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                               child: RichText(
                                 text: TextSpan(
                                   children: [
-                                    WidgetSpan(
+                                    const WidgetSpan(
                                       child: Icon(Icons.message, 
                                         size: 20,
                                         color: Color(0xFF808080),
@@ -4065,7 +4068,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                     ),
                                     TextSpan(
                                       text: _guideList[index].language,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Color(0xFF808080),
                                         fontSize: 16
                                       )
@@ -4128,7 +4131,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                         child: RichText(
                                           text: TextSpan(
                                             children: [
-                                              WidgetSpan(
+                                              const WidgetSpan(
                                                 child: Icon(Icons.call, 
                                                   size: 20,
                                                   color: Color(0xFF808080),
@@ -4136,7 +4139,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                               ),
                                               TextSpan(
                                                 text: "+62 ${_guideList[index].phone}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Color(0xFF808080),
                                                   fontSize: 15
                                                 )
@@ -4153,7 +4156,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                         child: RichText(
                                           text: TextSpan(
                                             children: [
-                                              WidgetSpan(
+                                              const WidgetSpan(
                                                 child: Icon(Icons.location_on, 
                                                   size: 20,
                                                   color: Color(0xFF808080),
@@ -4161,7 +4164,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                               ),
                                               TextSpan(
                                                 text: _guideList[index].address,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Color(0xFF808080),
                                                   fontSize: 15
                                                 )
@@ -4178,7 +4181,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                         child: RichText(
                                           text: TextSpan(
                                             children: [
-                                              WidgetSpan(
+                                              const WidgetSpan(
                                                 child: Icon(Icons.email, 
                                                   size: 20,
                                                   color: Color(0xFF808080),
@@ -4186,7 +4189,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                               ),
                                               TextSpan(
                                                 text: " ${_guideList[index].email}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Color(0xFF808080),
                                                   fontSize: 15
                                                 )
@@ -4223,10 +4226,10 @@ class _BookGuidePage extends State<BookGuidePage> {
                                                   ),
                                                 );                    
                                               },
-                                              icon: Icon(Icons.chat, size: 18),
-                                              label: Text("Chat Now"),
+                                              icon: const Icon(Icons.chat, size: 18),
+                                              label: const Text("Chat Now"),
                                               style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
                                               ),
                                             ),
                                           ),
@@ -4240,8 +4243,8 @@ class _BookGuidePage extends State<BookGuidePage> {
                                                 var contact= "Phone: +62 "+_guideList[index].phone+" Address: "+_guideList[index].address;
                                                 Clipboard.setData(ClipboardData(text: contact));         
                                               },
-                                              icon: Icon(Icons.copy, size: 18),
-                                              label: Text("Copy"),
+                                              icon: const Icon(Icons.copy, size: 18),
+                                              label: const Text("Copy"),
                                             ),
                                           ),
                                         ),
@@ -4338,7 +4341,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                                         children: [
                                                           TextSpan(
                                                             text: _reviewList[index].comment,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Color.fromARGB(255, 77, 77, 77),
                                                               fontWeight: FontWeight.w500,
                                                               fontSize: 16
@@ -4356,7 +4359,7 @@ class _BookGuidePage extends State<BookGuidePage> {
                                                         children: [
                                                           TextSpan(
                                                             text: "~${_reviewList[index].fullname} on ${DateFormat('yyyy-MM-dd – kk:mm').format(_reviewList[index].dateReview).toString()}",
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Color(0xFF808080),
                                                               fontWeight: FontWeight.w500,
                                                               fontStyle: FontStyle.italic,
@@ -4408,7 +4411,7 @@ class _BookGuidePage extends State<BookGuidePage> {
             PageRouteBuilder(
               pageBuilder: (c, a1, a2) => OrderPage(pass_idCarGuide: widget.pass_idGuide, pass_carguidename: guideName, pass_username: widget.pass_username, pass_price: price, type: 'Tour Guide', pass_idUser: passIdUser),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                final tween = Tween(begin: Offset(1.0, 0.0), end: Offset.zero);
+                final tween = Tween(begin: const Offset(1.0, 0.0), end: Offset.zero);
                 final curvedAnimation = CurvedAnimation(
                   parent: animation,
                   curve: Curves.ease,
@@ -4494,19 +4497,19 @@ class _OrderPage extends State<OrderPage> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
         title: Text(widget.pass_carguidename,
-        style: TextStyle(
+        style: const TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
           fontSize: 16,
         ),
       ),
       //Transparent setting.
-      backgroundColor: Color(0x44FFFFFF),
+      backgroundColor: const Color(0x44FFFFFF),
       elevation: 0,
     ),
 
@@ -4555,7 +4558,7 @@ class _OrderPage extends State<OrderPage> {
                             height: 35,
                             child: TextField(
                               decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
+                                enabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                                 ),
                                 hintText: widget.pass_username,
@@ -4624,7 +4627,7 @@ class _OrderPage extends State<OrderPage> {
                       children: [
                         Row(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 15,
                             ),
                             Align(
@@ -4651,7 +4654,7 @@ class _OrderPage extends State<OrderPage> {
                                     _selectDate(context);
                                   },
                                   decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
+                                    enabledBorder: const UnderlineInputBorder(
                                       borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                                     ),             
                                     hintText: (DateFormat('yyyy-MM-dd').format(DateTime.now())).toString(),
@@ -4687,7 +4690,7 @@ class _OrderPage extends State<OrderPage> {
                                     _selectDate(context);
                                   },
                                   decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
+                                    enabledBorder: const UnderlineInputBorder(
                                       borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                                     ),             
                                     hintText: (DateFormat('yyyy-MM-dd').format(getNextDay())).toString(),
@@ -4770,7 +4773,7 @@ class _OrderPage extends State<OrderPage> {
                                       _selectTime(context);
                                     },
                                     decoration: InputDecoration(
-                                      enabledBorder: UnderlineInputBorder(
+                                      enabledBorder: const UnderlineInputBorder(
                                         borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                                       ),        
                                       hintText: (DateFormat('hh:mm').format(DateTime.now())).toString(),
@@ -4928,7 +4931,7 @@ class _OrderPage extends State<OrderPage> {
                                     margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
                                     child: Text(
                                       "Rp. ${widget.pass_price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 15,
                                       ),
                                     ),
@@ -4957,7 +4960,7 @@ class _OrderPage extends State<OrderPage> {
                                     margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
                                     child: Text(
                                       "Rp. ${getAddition().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 15,
                                       ),
                                     ),
@@ -5024,7 +5027,7 @@ class _OrderPage extends State<OrderPage> {
                                     margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
                                     child: Text(
                                       "Rp. ${getTotal().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 20,
                                         color: Colors.black
@@ -5180,11 +5183,11 @@ class _PaymentPage extends State<PaymentPage> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Payment", 
+        title: const Text("Payment", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -5194,19 +5197,19 @@ class _PaymentPage extends State<PaymentPage> {
       
       actions: [
         IconButton(
-          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          icon: const Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {    
             Navigator.push(
               context, MaterialPageRoute(
-                builder: (context) => NavBar(pass_usernameNav: widget.pass_username)
+                builder: (context) => const NavBar()
               ),
             );
           },
         )
       ],
       //Transparent setting.
-      backgroundColor: Color(0x44FFFFFF),
+      backgroundColor: const Color(0x44FFFFFF),
       elevation: 0,
     ),
 
@@ -5277,7 +5280,7 @@ class _PaymentPage extends State<PaymentPage> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     "Rp. ${widget.pass_total.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}", 
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20,
                                       color: Colors.black
@@ -5502,11 +5505,11 @@ class HelpPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Help", 
+        title: const Text("Help", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -5515,11 +5518,11 @@ class HelpPage extends StatelessWidget {
       ),
       
       //Transparent setting.
-      backgroundColor: Color(0x44FFFFFF),
+      backgroundColor: const Color(0x44FFFFFF),
       elevation: 0,
     ),
 
-      body: Center(
+      body: const Center(
         child: help()
       ),
     );
@@ -5623,11 +5626,11 @@ class _ForgetPage extends State<ForgetPage> {
                       height: 35,
                       child: TextField(
                         decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                           ),
                       
-                          hintText: widget.pass_usernameNav,
+                          hintText: passUsername,
                         ),
                       ),
                     ),
@@ -5734,11 +5737,11 @@ class SettingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Setting", 
+        title: const Text("Setting", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -5747,11 +5750,11 @@ class SettingPage extends StatelessWidget {
       ),
       
       //Transparent setting.
-      backgroundColor: Color(0x44FFFFFF),
+      backgroundColor: const Color(0x44FFFFFF),
       elevation: 0,
     ),
 
-      body: Center(
+      body: const Center(
         child: Setting()
       ),
     );
@@ -5788,19 +5791,19 @@ class _MapsPageState extends State<MapsPage> {
     return Scaffold(     
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
           title: Text(widget.pass_carguidename, 
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(0xFF4169E1),
             fontWeight: FontWeight.w800,
             fontSize: 16,
           ),
         ),
         //Transparent setting.
-        backgroundColor: Color(0x44FFFFFF),
+        backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
       body: GoogleMap(
@@ -5820,12 +5823,12 @@ class _MapsPageState extends State<MapsPage> {
         onLongPress: _addMarker,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF1F9F2F),
+        backgroundColor: const Color(0xFF1F9F2F),
         foregroundColor: Colors.white,
         onPressed: () => _googleMapController.animateCamera(
           CameraUpdate.newCameraPosition(_initialCameraPosition),
         ),
-        child: Icon(Icons.center_focus_strong),
+        child: const Icon(Icons.center_focus_strong),
       )
     );
   }
@@ -5888,10 +5891,10 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(     
-      drawer: NavDrawer(pass_username: widget.pass_username),
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
-        IconThemeData(
+        const IconThemeData(
           color: Color(0xFF4169E1),
           size: 35.0,
         ),
@@ -5901,8 +5904,8 @@ class _ContactPageState extends State<ContactPage> {
             width: MediaQuery.of(context).size.width*0.5, 
             transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
             child: TextField(
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal:5),
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
                 ),
@@ -5927,7 +5930,7 @@ class _ContactPageState extends State<ContactPage> {
         ],//error image blur so badly and not round yet
 
         //Transparent setting.
-        backgroundColor: Color(0x44FFFFFF),
+        backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
       body:  SizedBox(
@@ -5963,7 +5966,7 @@ class _ContactPageState extends State<ContactPage> {
                                     child: RichText(
                                       text: TextSpan(                     
                                         text: _contactList[index].garage_guide,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Color(0xFF212121),
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
@@ -6018,7 +6021,7 @@ class _ContactPageState extends State<ContactPage> {
         ) 
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF1F9F2F),
+        backgroundColor: const Color(0xFF1F9F2F),
         foregroundColor: Colors.white,
         onPressed: () {
           // Navigator.push(
@@ -6026,7 +6029,7 @@ class _ContactPageState extends State<ContactPage> {
           //   MaterialPageRoute(builder: (context) => ),
           // );
         },
-        child: Icon(Icons.send),
+        child: const Icon(Icons.send),
       )
     );
   }
@@ -6112,12 +6115,12 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
       appBar: AppBar(
         automaticallyImplyLeading: false,
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
           title: Text(widget.pass_garage_guide, 
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(0xFF4169E1),
             fontWeight: FontWeight.w800,
             fontSize: 16,
@@ -6125,7 +6128,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.warehouse, color: Color(0xFF4169E1)),
+            icon: const Icon(Icons.warehouse, color: Color(0xFF4169E1)),
             onPressed: () {
               Navigator.push(
                 context,
@@ -6134,18 +6137,18 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
             },
           ),
           IconButton(
-            icon: Icon(Icons.arrow_back, color: Color(0xFF4169E1)),
+            icon: const Icon(Icons.arrow_back, color: Color(0xFF4169E1)),
             iconSize: 40,
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NavBar(pass_usernameNav: widget.pass_username)),
+                MaterialPageRoute(builder: (context) => const NavBar()),
               );
             },
           )
         ],
         //Transparent setting.
-        backgroundColor: Color(0x44FFFFFF),
+        backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
 
@@ -6186,7 +6189,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                                           Container(
                                             transform: Matrix4.translationValues(20.0, 0.0, 0.0),
                                             child: IconButton(
-                                              icon: Icon(Icons.close, color: Color(0xFF4169E1)),
+                                              icon: const Icon(Icons.close, color: Color(0xFF4169E1)),
                                               onPressed: () => Navigator.pop(context, 'Cancel'),
                                             ),
                                           ),
@@ -6196,8 +6199,8 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                                               onPressed: () {
                                                 Clipboard.setData(ClipboardData(text: _messageList[index].body,));
                                               },
-                                              icon: Icon(Icons.copy, size: 18),
-                                              label: Text("Copy Message"),
+                                              icon: const Icon(Icons.copy, size: 18),
+                                              label: const Text("Copy Message"),
                                             ),
                                           ),
                                           SizedBox(
@@ -6214,8 +6217,8 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                                                   );
                                                 }
                                               },
-                                              icon: Icon(Icons.delete, size: 18),
-                                              label: Text("Delete Message"),
+                                              icon: const Icon(Icons.delete, size: 18),
+                                              label: const Text("Delete Message"),
                                             )
                                           )
                                         ]
@@ -6234,7 +6237,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
+                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
                             child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
                               style: const TextStyle(color: Colors.grey, fontSize:14))
                           )
@@ -6267,7 +6270,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                                             Container(
                                               transform: Matrix4.translationValues(20.0, 0.0, 0.0),
                                               child: IconButton(
-                                                icon: Icon(Icons.close, color: Color(0xFF4169E1)),
+                                                icon: const Icon(Icons.close, color: Color(0xFF4169E1)),
                                                 onPressed: () => Navigator.pop(context, 'Cancel'),
                                               ),
                                             ),
@@ -6277,8 +6280,8 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                                                 onPressed: () {
                                                   Clipboard.setData(ClipboardData(text: _messageList[index].body,));
                                                 },
-                                                icon: Icon(Icons.copy, size: 18),
-                                                label: Text("Copy Message"),
+                                                icon: const Icon(Icons.copy, size: 18),
+                                                label: const Text("Copy Message"),
                                               ),
                                             ),
                                           ]
@@ -6297,7 +6300,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
                         Align(
                           alignment: Alignment.bottomLeft,
                           child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
+                            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
                             child: Text(DateFormat('yyyy-MM-dd kk:mm').format(_messageList[index].datetime).toString(),
                               style: const TextStyle(color: Colors.grey, fontSize:14))
                           )
@@ -6410,7 +6413,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
           onPressed: _scrollToTop,
           label: const Text('Back To Top', style: TextStyle(color: Colors.white)),
           icon: const Icon(Icons.arrow_circle_up),
-          backgroundColor: Color(0xFF555555).withOpacity(0.5),
+          backgroundColor: const Color(0xFF555555).withOpacity(0.5),
           elevation: 0,
         ),
       )
@@ -6535,14 +6538,14 @@ class _GaragePage extends State<GaragePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(pass_username: widget.pass_username),
+      drawer: NavDrawer(),
       appBar: AppBar(
         iconTheme: 
-          IconThemeData(
+          const IconThemeData(
             color: Color(0xFF4169E1),
             size: 35.0,
           ),
-        title: Text("Book Car", 
+        title: const Text("Book Car", 
         style: TextStyle(
           color: Color(0xFF4169E1),
           fontWeight: FontWeight.w800,
@@ -6552,7 +6555,7 @@ class _GaragePage extends State<GaragePage> {
       
       actions: [
         IconButton(
-          icon: Icon(Icons.map, color: Color(0xFF4169E1)),
+          icon: const Icon(Icons.map, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
             Navigator.push(
@@ -6560,7 +6563,7 @@ class _GaragePage extends State<GaragePage> {
               PageRouteBuilder(
                 pageBuilder: (c, a1, a2) => MapsPage(pass_carguidename: garagename, pass_coordinate_lan: double.tryParse(coordinate_lat_g), pass_coordinate_lng: double.tryParse(coordinate_lng_g)),
                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                  final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                   final curvedAnimation = CurvedAnimation(
                     parent: animation,
                     curve: Curves.ease,
@@ -6576,7 +6579,7 @@ class _GaragePage extends State<GaragePage> {
           },
         ),
         IconButton(
-          icon: Icon(Icons.home, color: Color(0xFF4169E1)),
+          icon: const Icon(Icons.home, color: Color(0xFF4169E1)),
           iconSize: 40,
           onPressed: () {
             Navigator.pop(context);
@@ -6584,7 +6587,7 @@ class _GaragePage extends State<GaragePage> {
         ),
       ],
       //Transparent setting.
-      backgroundColor: Color(0x44FFFFFF),
+      backgroundColor: const Color(0x44FFFFFF),
       elevation: 0,
     ),
 
@@ -6600,7 +6603,7 @@ class _GaragePage extends State<GaragePage> {
                   children: [
                     Container(
                       width: 160,
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(80), 
                         child: Image.asset('assets/images/garage/garage_${_garageList[index].garage_name}.jpg'),
@@ -6618,25 +6621,25 @@ class _GaragePage extends State<GaragePage> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      margin: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [           
                           Text(
                             _garageList[index].garage_name, 
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 17,
                               color: Color(0xFF212121)
                             ),
                           ),
-                          SizedBox(height:10),
+                          const SizedBox(height:10),
                           Row(
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Vehicle", 
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -6644,7 +6647,7 @@ class _GaragePage extends State<GaragePage> {
                                       color: Color(0xFF808080)
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     "2", 
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -6654,11 +6657,11 @@ class _GaragePage extends State<GaragePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(width:15),
+                              const SizedBox(width:15),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Driver", 
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -6666,7 +6669,7 @@ class _GaragePage extends State<GaragePage> {
                                       color: Color(0xFF808080)
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     "2", 
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -6676,11 +6679,11 @@ class _GaragePage extends State<GaragePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(width:15),
+                              const SizedBox(width:15),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Trip", 
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -6688,7 +6691,7 @@ class _GaragePage extends State<GaragePage> {
                                       color: Color(0xFF808080)
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     "2", 
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -6721,10 +6724,10 @@ class _GaragePage extends State<GaragePage> {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.chat, size: 18),
-                            label: Text("Chat Now"),
+                            icon: const Icon(Icons.chat, size: 18),
+                            label: const Text("Chat Now"),
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                              backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
                             ),
                           ),
                         ],
@@ -6737,13 +6740,13 @@ class _GaragePage extends State<GaragePage> {
                     Expanded(
                      child: new Container(
                       margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                      child: Divider(
+                      child: const Divider(
                         color: Colors.grey,
                         thickness: 1.5,
                         height: 5,
                       )),
                     ),       
-                    Text(
+                    const Text(
                       "About Us", 
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -6754,7 +6757,7 @@ class _GaragePage extends State<GaragePage> {
                     Expanded(
                      child: new Container(
                       margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: Divider(
+                      child: const Divider(
                         color: Colors.grey,
                         thickness: 1.5,
                         height: 5,
@@ -6763,10 +6766,10 @@ class _GaragePage extends State<GaragePage> {
                   ]
                 ),
                 Container(
-                  margin: EdgeInsets.all(20),
+                  margin: const EdgeInsets.all(20),
                   child: Text(
                     _garageList[index].desc, 
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 13,
                     ),
                   ),
@@ -6776,13 +6779,13 @@ class _GaragePage extends State<GaragePage> {
                     Expanded(
                      child: new Container(
                       margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                      child: Divider(
+                      child: const Divider(
                         color: Colors.grey,
                         thickness: 1.5,
                         height: 5,
                       )),
                     ),       
-                    Text(
+                    const Text(
                       "Other Vehicle", 
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -6793,7 +6796,7 @@ class _GaragePage extends State<GaragePage> {
                     Expanded(
                      child: new Container(
                       margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: Divider(
+                      child: const Divider(
                         color: Colors.grey,
                         thickness: 1.5,
                         height: 5,
@@ -6810,7 +6813,7 @@ class _GaragePage extends State<GaragePage> {
                       itemBuilder: (context, index){
                         return Card(
                           child:Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: 160,
                             child: Column(
                               children: [
@@ -6840,7 +6843,7 @@ class _GaragePage extends State<GaragePage> {
                                   child: RichText(
                                     text: TextSpan(
                                       children: [
-                                        TextSpan(
+                                        const TextSpan(
                                           text: "Rp. ",
                                           style: TextStyle(
                                             color: Color(0xFF808080),
@@ -6850,13 +6853,13 @@ class _GaragePage extends State<GaragePage> {
                                         ),
                                         TextSpan(
                                           text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700,
                                           )
                                         ),
-                                        TextSpan(
+                                        const TextSpan(
                                           text: " / Day",
                                           style: TextStyle(
                                             color: Color(0xFF808080),
@@ -6869,12 +6872,12 @@ class _GaragePage extends State<GaragePage> {
                                   )
                                 ),
                                    
-                                SizedBox(height: 5,),
+                                const SizedBox(height: 5,),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Row(
                                     children:[
-                                      Text(
+                                      const Text(
                                         "Driver", 
                                         style: TextStyle(
                                           fontWeight: FontWeight.w800,
@@ -6883,10 +6886,10 @@ class _GaragePage extends State<GaragePage> {
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
                                         child: Text(
                                           _carList[index].driver, 
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 13,
                                             color: Color(0xFF808080)
@@ -6903,7 +6906,7 @@ class _GaragePage extends State<GaragePage> {
                                       PageRouteBuilder(
                                         pageBuilder: (c, a1, a2) => BookCarPage(pass_idCar: _carList[index].idCar, pass_username: widget.pass_username),
                                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                          final tween = Tween(begin: Offset(0.0, 1.0), end: Offset.zero);
+                                          final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                           final curvedAnimation = CurvedAnimation(
                                             parent: animation,
                                             curve: Curves.ease,
@@ -6917,10 +6920,10 @@ class _GaragePage extends State<GaragePage> {
                                       ),
                                     );
                                   },
-                                  icon: Icon(Icons.arrow_forward, size: 18),
-                                  label: Text("Book now"),
+                                  icon: const Icon(Icons.arrow_forward, size: 18),
+                                  label: const Text("Book now"),
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1F9F2F)),
+                                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
                                   ),
                                 ),
                               ],

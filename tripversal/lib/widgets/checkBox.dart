@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripversal/createAccBody.dart';
 
 //Check box language.
 class MyStatefulWidget2 extends StatefulWidget {
@@ -69,6 +70,7 @@ class _MyStatefulWidgetState3 extends State<MyStatefulWidget3> {
       onChanged: (bool value) {
         setState(() {
           isChecked = value;
+          checkedCreateAcc = isChecked;
         });
       },
     );
