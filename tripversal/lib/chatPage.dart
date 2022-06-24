@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tripversal/garagePage.dart';
 import 'package:tripversal/main.dart';
 import 'package:intl/intl.dart';
 import 'package:tripversal/models/messageModel.dart';
@@ -102,7 +103,7 @@ class _ChatPage extends State<ChatPage> with TickerProviderStateMixin{
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => GaragePage(pass_garage: widget.passGarageGuide, pass_username: widget.passUsername)),
+                MaterialPageRoute(builder: (context) => GaragePage(passGarage: widget.passGarageGuide, passUsername: widget.passUsername)),
               );
             },
           ),

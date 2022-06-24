@@ -1,4 +1,3 @@
-import 'package:tripversal/models/carModel.dart';
 import 'package:tripversal/models/messageModel.dart';
 import 'package:tripversal/repositories/repository.dart';
 

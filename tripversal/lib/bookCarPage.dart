@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:tripversal/chatPage.dart';
-import 'package:tripversal/main.dart';
+import 'package:tripversal/garagePage.dart';
 import 'package:tripversal/mapsPage.dart';
 import 'package:tripversal/models/carModel.dart';
 import 'package:tripversal/models/reviewModel.dart';
@@ -196,7 +196,7 @@ class _BookCarPage extends State<BookCarPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => GaragePage(pass_garage: garageName, pass_username: widget.passUsername)),
+              MaterialPageRoute(builder: (context) => GaragePage(passGarage: garageName, passUsername: widget.passUsername)),
             );
           },
         ),

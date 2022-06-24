@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tripversal/main.dart';
 
 class PaymentPage extends StatefulWidget {
-  PaymentPage({Key key, this.passUsername, this.passIdUser, this.passTotal}) : super(key: key);
+  const PaymentPage({Key key, this.passUsername, this.passIdUser, this.passTotal}) : super(key: key);
 
   final String passUsername;
   final int passIdUser;
@@ -92,7 +92,7 @@ class _PaymentPage extends State<PaymentPage> {
                                     margin: const EdgeInsets.symmetric(vertical: 10.0),
                                     child: Text(
                                       paymentMethod, 
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         color: Colors.black
                                       ),

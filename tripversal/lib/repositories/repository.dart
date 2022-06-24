@@ -62,12 +62,29 @@ class Repository{
   readHistoryDataById(table) async{
     var connection = await database;
     // return await connection.query(table);
-    return await connection.rawQuery('SELECT * FROM history WHERE id_user=?', [passIdUser]);
+    return await connection.rawQuery('SELECT history.type, history.price, history.rating, history.barcode, history.dateStart, history.dateEnd, history.dateComment, history.comment, history.barcode, car.carname, car.location, car.driver FROM history JOIN car ON car.id_car = history.id_car_guide WHERE id_user=?', [passIdUser]);
   }
+  readHistoryDataByIdTG(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT history.type, history.price, history.rating, history.barcode, history.dateStart, history.dateEnd, history.dateComment, history.comment, history.barcode, guide.name, guide.language FROM history JOIN guide ON guide.id_guide = history.id_car_guide WHERE id_user=?', [passIdUser]);
+  }
+
   readOnGoingDataById(table) async{
     var connection = await database;
     // return await connection.query(table);
     return await connection.rawQuery('SELECT * FROM ongoing WHERE id_user=?', [passIdUser]);
+  }
+
+  readHistoryDataGarage(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM history JOIN car ON history.id_car_guide = car.id_car WHERE history.type =?', ['Car Rental']);
+  }
+  readOnGoingDataGarage(table) async{
+    var connection = await database;
+    // return await connection.query(table);
+    return await connection.rawQuery('SELECT * FROM ongoing');
   }
 
   //Get waiting payment car rent

@@ -11,8 +11,17 @@ class resvServices{
   readHistory() async{
     return await _repository.readHistoryDataById('history');
   }
+  readHistoryInGarage() async{
+    return await _repository.readHistoryDataGarage('history');
+  }
+  readHistoryTG() async{
+    return await _repository.readHistoryDataByIdTG('history');
+  }
   readOnGoing() async{
     return await _repository.readOnGoingDataById('ongoing');
+  }
+  readOnGoingGarage() async{
+    return await _repository.readOnGoingDataGarage('ongoing');
   }
   readWaiting() async{
     return await _repository.readWaitingDataById('waiting');
