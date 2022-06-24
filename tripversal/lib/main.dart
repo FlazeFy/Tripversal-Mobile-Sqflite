@@ -1,30 +1,26 @@
-// Kelompok 4 - SE-43-03
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tripversal/bookCarPage.dart';
 import 'package:tripversal/bookGuidePage.dart';
-import 'package:tripversal/helpBody.dart';
 import 'package:tripversal/loginBody.dart';
+import 'package:tripversal/mapsPage.dart';
 import 'package:tripversal/models/carModel.dart';
 import 'package:tripversal/models/guideModel.dart';
 import 'package:tripversal/models/messageModel.dart';
 import 'package:tripversal/models/onGoingModel.dart';
 import 'package:tripversal/models/resvModel.dart';
-import 'package:tripversal/models/reviewModel.dart';
-import 'package:tripversal/models/userModel.dart';
 import 'package:tripversal/models/waitingModel.dart';
 import 'package:tripversal/services/guideServices.dart';
 import 'package:tripversal/services/resvServices.dart';
 import 'package:tripversal/services/userServices.dart';
 import 'package:tripversal/services/carServices.dart';
-import 'package:tripversal/settingBody.dart';
 import 'package:tripversal/widgets/sideNav.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'createAccBody.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:tripversal/accountPage.dart';
 import 'package:tripversal/chatPage.dart';
+import 'package:get/get.dart';
 
 //Global variabel.
 String passUsername;
@@ -32,6 +28,7 @@ int passIdUser;
 DateTime dateStart;
 DateTime dateEnd;
 String paymentMethod = "Transfer Mandiri";
+String activeTheme = "Light";
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
@@ -39,13 +36,18 @@ Future<String> loadAsset() async {
 void main() { runApp(const MyApp()); }
 
 class MyApp extends StatelessWidget {
+  static final ValueNotifier<ThemeMode> themeNotifier =
+  ValueNotifier(ThemeMode.light);
+
   const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+   
+   return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Leonardho R Sitanggang-1302194041",
-      home: LoginPage(), //Navbar
+      title: 'Kelompok 4 - SE-43-03',
+      darkTheme: ThemeData.dark(),
+      home: const LoginPage(),
     );
   }
 }
@@ -58,7 +60,6 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
-  List<userModel> _userList = <userModel>[];
   final _userServices = userServices();
 
   //Get data method.
@@ -69,13 +70,11 @@ class _NavBarState extends State<NavBar> {
   }
 
   getAllUserData() async {
-    _userList = <userModel>[];
     var users = await _userServices.readUser();
 
     users.forEach((user){
       if(user['fullname'] == passUsername){
       setState((){
-        var userModels = userModel();
         passIdUser = user['id_user'];
       });
     }});
@@ -84,9 +83,9 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
-      RentACarPage(pass_username: passUsername),
-      TourGuidePage(pass_username: passUsername),
-      MyResPage(pass_username: passUsername),
+      RentACarPage(passUsername: passUsername),
+      TourGuidePage(passUsername: passUsername),
+      MyResPage(passUsername: passUsername),
       ContactPage(pass_username: passUsername),
     ];
   
@@ -128,9 +127,9 @@ class _NavBarState extends State<NavBar> {
 }
 
 class RentACarPage extends StatefulWidget {
-  const RentACarPage({Key key, this.pass_username}) : super(key: key);
+  const RentACarPage({Key key, this.passUsername}) : super(key: key);
 
-  final String pass_username;
+  final String passUsername;
 
   @override
 
@@ -138,13 +137,15 @@ class RentACarPage extends StatefulWidget {
 }
 
 class _RentACarPage extends State<RentACarPage> {
-  //final _car = carModel();
-  final _carServices = carServices();
+  //Intial variable.
   String categorySearch = 'City Car';
 
+  //MVC.
+  final _carServices = carServices();
   List<carModel> _carList = <carModel>[];
   List<carModel> _garageList = <carModel>[];
   
+  //Get data.
   @override
   void initState(){
     super.initState();
@@ -160,7 +161,6 @@ class _RentACarPage extends State<RentACarPage> {
         var garageModels = carModel();
         garageModels.idgarage = garage['id_garage'];
         garageModels.garage_name = garage['garage_name'];
-        garageModels.garage_location = garage['garage_location'];
         _garageList.add(garageModels);
       });
     });
@@ -232,523 +232,463 @@ class _RentACarPage extends State<RentACarPage> {
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
-        iconTheme: 
-        const IconThemeData(
+        iconTheme: const IconThemeData(
           color: Color(0xFF4169E1),
           size: 35.0,
         ),
-      
-      actions: [
-        //Text entry search.
-        Container(   
-          width: MediaQuery.of(context).size.width*0.5, 
-          transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
-          child: const TextField(
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-              ),
-              border: OutlineInputBorder(),
-              hintText: 'search by driver, car...',
-              hintStyle: TextStyle(
-                fontStyle: FontStyle.italic
+        actions: [
+          Container(   
+            width: MediaQuery.of(context).size.width*0.5, 
+            transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
+            child: const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                ),
+                border: OutlineInputBorder(),
+                hintText: 'search by driver, car...',
+                hintStyle: TextStyle(
+                  fontStyle: FontStyle.italic
+                ),
               ),
             ),
           ),
-        ),
-        IconButton(
-          icon: Image.asset('assets/images/User.jpg'),
-          iconSize: 50,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.pass_username)),
-            );
-          },
-        )
-      ],
-
-        //Transparent setting.
+          IconButton(
+            icon: Image.asset('assets/images/User.jpg'),
+            iconSize: 50,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.passUsername)),
+              );
+            },
+          )
+        ],
         backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
 
-      //Body.
       body: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              //Text.
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                  transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                  child: const Text(
-                    "Location", 
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
-                      color: Color(0xFF808080)
-                    ),
-                  ),
-                ),
-              ),
-              
-              //Text.
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    //Drop down.
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 15.0),
-                      transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                      child: const MyStatefulWidget(),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                            child: const Text(
-                              "Categories", 
-                              style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 15,
-                                color: Color(0xFF808080)
-                              ),
-                            ),
-                          ),
-                        ),  
-
-                        Container(
-                          transform: Matrix4.translationValues(0.0, -15.0, 0.0),
-                          margin: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: <Widget>[
-                                //Button item.
-                                //Button / Container color must changed when selected.
-                                Container(
-                                  width: 80,
-                                  margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                                  child: RaisedButton(
-                                    color: const Color(0xFF4183D7),
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: const <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Icon(
-                                            Icons.car_rental,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Text(
-                                            "City Car",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      getAllCityCarData();
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                                Container(
-                                  width: 80,
-                                  margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                                  child: RaisedButton(
-                                    color: const Color(0xFF4183D7),
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: const <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Icon(
-                                            Icons.airport_shuttle,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Text(
-                                            "Minibus",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      getAllMinibusData();
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                                Container(
-                                  width: 92,
-                                  margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                                  child: RaisedButton(
-                                    color: const Color(0xFF4183D7),
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: const <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Icon(
-                                            Icons.motorcycle,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Text(
-                                            "Motorcycle",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      getAllOtherData();
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                              ]
-                            )
-                          )
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              Container(
-                transform: Matrix4.translationValues(0.0, -10.0, 0.0),
-                child: ExpansionTile(
-                  initiallyExpanded: true,
-                  leading: IconButton(
-                    iconSize: 30,
-                    icon: const Icon(Icons.warehouse,
-                    color: Color(0xFF808080)),
-                    onPressed: () {},
-                  ),
-                  title: const Text('View Garage'),
-                  subtitle: const Text('see available car in specific garage', 
-                    style: TextStyle(
-                      color: Color(0xFF808080),
-                    ),
-                  ),
-                  children: <Widget>[
-                    SizedBox(
-                      height: 170,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount : _garageList.length,
-                        itemBuilder: (context, index){
-                          return Card(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (c, a1, a2) => GaragePage(pass_garage: _garageList[index].garage_name, pass_username: widget.pass_username),
-                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                      final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
-                                      final curvedAnimation = CurvedAnimation(
-                                        parent: animation,
-                                        curve: Curves.ease,
-                                      );
-
-                                      return SlideTransition(
-                                        position: tween.animate(curvedAnimation),
-                                        child: child,
-                                      );
-                                    }
-                                  ),
-                                );
-                              },
-                              child:Container(
-                                padding: const EdgeInsets.all(10),
-                                width: 160,
-                                child: Column(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(                     
-                                        _garageList[index].garage_name,
-                                        style: const TextStyle(
-                                          color: Color(0xFF4183D7),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                      ),             
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(vertical: 5),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(100),
-                                        child: Image.asset('assets/images/garage/garage_${_garageList[index].garage_name}.jpg', width:80, height:80),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 30,
-                                      child: Text(
-                                        _garageList[index].garage_location, 
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 13,
-                                          color: Color(0xFF808080)
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white, 
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      blurRadius: 10.0, // soften the shadow
-                                      spreadRadius: 0.0, //extend the shadow
-                                      offset: const Offset(
-                                        5.0, // Move to right 10  horizontally
-                                        5.0, // Move to bottom 10 Vertically
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          );
-
-                        }
-                      )
-                    )
-                    
-                  ],
-                ),
-              ),
-
-              //Car Item.
-              Container(
-                transform: Matrix4.translationValues(0.0, -5.0, 0.0),
-                child: Text("Showing ${_carList.length.toString()} result...",
-                  style: const TextStyle(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                transform: Matrix4.translationValues(0.0, 5.0, 0.0),
+                child: const Text(
+                  "Location", 
+                  style: TextStyle(
                     fontWeight: FontWeight.w800,
-                    fontSize: 13,
+                    fontSize: 15,
                     color: Color(0xFF808080)
                   ),
                 ),
               ),
-
-              Flexible(
-                child: ListView.builder(
-                  itemCount : _carList.length,
-                  itemBuilder: (context, index){
-                  
-                    return Card(
-                    child:Container(
-                      height: 140,
-                      child: Row(
-                        children: [
-                          Center(
-                            child:Container(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10), 
-                                      child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
-                                    ),
-                                    flex:2 ,
-                                  ),
-                                
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                      transform: Matrix4.translationValues(0.0, 5.0, 0.0),
-                                      
-                                      //Left section.
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "Driver", 
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 14,
-                                              color: Color(0xFF4169E1)
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                            child: Text(
-                                              _carList[index].driver, 
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 13,
-                                                color: Color(0xFF808080)
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-
-                                      )
-                                    ),
-                                  ),
-
-                                ]
-                              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15.0),
+                    transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                    child: const MyStatefulWidget(),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                          child: const Text(
+                            "Categories", 
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15,
+                              color: Color(0xFF808080)
                             ),
                           ),
-                          Expanded(
-                            child:Container(
-                              alignment: Alignment.topLeft,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    // flex: 5, //if expanded
-                                    margin: const EdgeInsets.symmetric(vertical: 5.0),
-                                    alignment: Alignment.topLeft,
-                                    child: RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          const WidgetSpan(
-                                            child: Icon(Icons.car_rental,   
-                                              size: 20,
-                                              color: Color(0xFF4169E1),
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: _carList[index].carname, 
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w700,
-                                            )
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ),
-                                  Container(
-                                    // flex: 5, //if expanded
-                                    alignment: Alignment.topLeft,
-                                    child: RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          const WidgetSpan(
-                                            child: Icon(Icons.location_on, 
-                                              size: 20,
-                                              color: Color(0xFF4169E1),
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: _carList[index].location, 
-                                            style: const TextStyle(
-                                              color: Color(0xFF808080),
-                                              fontWeight: FontWeight.w700,
-                                            )
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ),
+                        ),
+                      ),  
 
-                                  Container(
-                                    // flex: 5, //if expanded
-                                    margin: const EdgeInsets.symmetric(vertical: 5.0),
+                      Container(
+                        transform: Matrix4.translationValues(0.0, -15.0, 0.0),
+                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: <Widget>[
+                              //Button item.
+                              //Button / Container color must changed when selected.
+                              Container(
+                                width: 85,
+                                margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(const Color(0xFF4183D7)),
+                                    padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Icon(
+                                          Icons.car_rental,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Text(
+                                          "City Car",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    //Get data method.
+                                    getAllCityCarData();
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                              Container(
+                                width: 85,
+                                margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(const Color(0xFF4183D7)),
+                                    padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Icon(
+                                          Icons.airport_shuttle,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Text(
+                                          "Minibus",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    //Get data method.
+                                    getAllMinibusData();
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                              Container(
+                                width: 85,
+                                margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(const Color(0xFF4183D7)),
+                                    padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Icon(
+                                          Icons.motorcycle,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Text(
+                                          "Other",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    //Get data method.
+                                    getAllOtherData();
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                            ]
+                          )
+                        )
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            Container(
+              transform: Matrix4.translationValues(0.0, -10.0, 0.0),
+              child: ExpansionTile(
+                initiallyExpanded: true,
+                leading: IconButton(
+                  iconSize: 30,
+                  icon: const Icon(Icons.warehouse,
+                  color: Color(0xFF808080)),
+                  onPressed: () {},
+                ),
+                title: const Text('View Garage'),
+                subtitle: const Text('see available car in specific garage', 
+                  style: TextStyle(
+                    color: Color(0xFF808080),
+                  ),
+                ),
+                children: <Widget>[
+                  SizedBox(
+                    height: 120,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount : _garageList.length,
+                      itemBuilder: (context, index){
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (c, a1, a2) => GaragePage(pass_garage: _garageList[index].garage_name, pass_username: widget.passUsername),
+                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
+                                  final curvedAnimation = CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.ease,
+                                  );
+
+                                  return SlideTransition(
+                                    position: tween.animate(curvedAnimation),
+                                    child: child,
+                                  );
+                                }
+                              ),
+                            );
+                          },
+                          child:Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 2),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(65),
+                                    child: Image.asset('assets/images/garage/garage_${_garageList[index].garage_name}.jpg', width:65, height:65),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(65), 
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: Offset(0, 3)
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(                     
+                                    _garageList[index].garage_name,
+                                    style: const TextStyle(
+                                      color: Color(0xFF4183D7),
+                                      fontSize: 14,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),             
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+
+                      }
+                    )
+                  )
+                  
+                ],
+              ),
+            ),
+
+            Container(
+              transform: Matrix4.translationValues(0.0, -5.0, 0.0),
+              child: Text("Showing ${_carList.length.toString()} result...",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13,
+                  color: Color(0xFF808080)
+                ),
+              ),
+            ),
+
+            Flexible(
+              child: ListView.builder(
+                itemCount : _carList.length,
+                itemBuilder: (context, index){
+                
+                  return Card(
+                  child:Container(
+                    height: 140,
+                    child: Row(
+                      children: [
+                        Center(
+                          child:Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10), 
+                                    child:Image.asset("assets/images/${ _carList[index].plate}.jpg", width: 150),
+                                  ),
+                                  flex:2 ,
+                                ),
+                              
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    transform: Matrix4.translationValues(0.0, 5.0, 0.0),                                      
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
+                                        const Text(
+                                          "Driver", 
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 14,
+                                            color: Color(0xFF4169E1)
+                                          ),
+                                        ),
                                         Container(
-                                          // flex: 5, //if expanded
-                                          alignment: Alignment.topLeft,
-                                          margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                const TextSpan(
-                                                  text: "Rp. ",
-                                                  style: TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                                TextSpan(
-                                                  text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                                const TextSpan(
-                                                  text: " / Day",
-                                                  style: TextStyle(
-                                                    color: Color(0xFF808080),
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w700,
-                                                  )
-                                                ),
-                                              ],
+                                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                          child: Text(
+                                            _carList[index].driver, 
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                              color: Color(0xFF808080)
                                             ),
+                                          ),
+                                        ),
+                                      ],
+
+                                    )
+                                  ),
+                                ),
+
+                              ]
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child:Container(
+                            alignment: Alignment.topLeft,
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 5.0),
+                                  alignment: Alignment.topLeft,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const WidgetSpan(
+                                          child: Icon(Icons.car_rental,   
+                                            size: 20,
+                                            color: Color(0xFF4169E1),
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: _carList[index].carname, 
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700,
                                           )
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  )
+                                ),
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const WidgetSpan(
+                                          child: Icon(Icons.location_on, 
+                                            size: 20,
+                                            color: Color(0xFF4169E1),
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: _carList[index].location, 
+                                          style: const TextStyle(
+                                            color: Color(0xFF808080),
+                                            fontWeight: FontWeight.w700,
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ),
 
-                                  Row(
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Container(
                                         // flex: 5, //if expanded
                                         alignment: Alignment.topLeft,
-                                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
                                         child: RichText(
                                           text: TextSpan(
                                             children: [
-                                              const WidgetSpan(
-                                                child: Icon(Icons.star, 
-                                                  size: 20,
-                                                  color: Color(0xFF4169E1),
-                                                ),
+                                              const TextSpan(
+                                                text: "Rp. ",
+                                                style: TextStyle(
+                                                  color: Color(0xFF808080),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700,
+                                                )
                                               ),
                                               TextSpan(
-                                                text: _carList[index].rating.toString(), 
+                                                text: _carList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
                                                 style: const TextStyle(
-                                                  color: Color(0xFF4169E1),
+                                                  color: Colors.black,
                                                   fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                )
+                                              ),
+                                              const TextSpan(
+                                                text: " / Day",
+                                                style: TextStyle(
+                                                  color: Color(0xFF808080),
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.w700,
                                                 )
                                               ),
@@ -756,61 +696,93 @@ class _RentACarPage extends State<RentACarPage> {
                                           ),
                                         )
                                       ),
-                                      ElevatedButton.icon(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                              pageBuilder: (c, a1, a2) => BookCarPage(passIdCar: _carList[index].idCar, passUsername: widget.pass_username),
-                                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
-                                                final curvedAnimation = CurvedAnimation(
-                                                  parent: animation,
-                                                  curve: Curves.ease,
-                                                );
-
-                                                return SlideTransition(
-                                                  position: tween.animate(curvedAnimation),
-                                                  child: child,
-                                                );
-                                              }
-                                            ),
-                                          );
-                                        },
-                                        icon: const Icon(Icons.arrow_forward, size: 18),
-                                        label: const Text("Book now"),
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8,),
                                     ],
-                                  )
+                                  ),
+                                ),
 
-                                ],
-                              ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      // flex: 5, //if expanded
+                                      alignment: Alignment.topLeft,
+                                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                      child: RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            const WidgetSpan(
+                                              child: Icon(Icons.star, 
+                                                size: 20,
+                                                color: Color(0xFF4169E1),
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: _carList[index].rating.toString(), 
+                                              style: const TextStyle(
+                                                color: Color(0xFF4169E1),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                              )
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ),
+                                    ElevatedButton.icon(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            pageBuilder: (c, a1, a2) => BookCarPage(passIdCar: _carList[index].idCar, passUsername: widget.passUsername),
+                                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                              final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
+                                              final curvedAnimation = CurvedAnimation(
+                                                parent: animation,
+                                                curve: Curves.ease,
+                                              );
+
+                                              return SlideTransition(
+                                                position: tween.animate(curvedAnimation),
+                                                child: child,
+                                              );
+                                            }
+                                          ),
+                                        );
+                                      },
+                                      icon: const Icon(Icons.arrow_forward, size: 18),
+                                      label: const Text("Book now"),
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1F9F2F)),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8,),
+                                  ],
+                                )
+
+                              ],
                             ),
-                            flex:8 ,
                           ),
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
+                          flex:8 ,
+                        ),
+                      ],
                     ),
-                    elevation: 6,
-                    margin: const EdgeInsets.all(5),
-                    shape: RoundedRectangleBorder(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
                     ),
-                  ); 
-                  //End of card.
-                }
-              //End of item list.
-              )
+                  ),
+                  elevation: 6,
+                  margin: const EdgeInsets.all(5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ); 
+                //End of card.
+              }
+            //End of item list.
             )
-          ], 
+          )
+        ], 
 
         )
       )
@@ -893,8 +865,8 @@ class AboutPage extends StatelessWidget {
   }
 }
 class TourGuidePage extends StatefulWidget {
-  const TourGuidePage({Key key, this.pass_username}) : super(key: key);
-  final String pass_username;
+  const TourGuidePage({Key key, this.passUsername}) : super(key: key);
+  final String passUsername;
 
   @override
 
@@ -902,22 +874,24 @@ class TourGuidePage extends StatefulWidget {
 }
 
 class _TourGuidePage extends State<TourGuidePage> {
-  //final _guide = guideModel();
-  final _guideServices = guideServices();
+  //Initial value
   bool value = false;
   bool value1 = true;
   bool value2 = false;
   bool value3 = false;
 
+  //MVC.
+  final _guideServices = guideServices();
   List<guideModel> _guideList = <guideModel>[];
   
+  //Get data method.
   @override
   void initState(){
     super.initState();
-    getAllGuideData_ID();
+    getAllGuideDataID();
   }
 
-  getAllGuideData_ID() async {
+  getAllGuideDataID() async {
     _guideList = <guideModel>[];
     var guides = await _guideServices.readGuideID();
 
@@ -929,16 +903,11 @@ class _TourGuidePage extends State<TourGuidePage> {
         guideModels.language = guide['language'];
         guideModels.price = guide['price'];
         guideModels.rating = guide['rating'];
-        guideModels.customer = guide['customer'];
-        guideModels.desc = guide['desc'];
-        guideModels.phone = guide['phone'];
-        guideModels.address = guide['address'];
-        guideModels.email = guide['email'];
         _guideList.add(guideModels);
       });
     });
   }
-  getAllGuideData_EN() async {
+  getAllGuideDataEN() async {
     _guideList = <guideModel>[];
     var guides = await _guideServices.readGuideEN();
 
@@ -950,16 +919,11 @@ class _TourGuidePage extends State<TourGuidePage> {
         guideModels.language = guide['language'];
         guideModels.price = guide['price'];
         guideModels.rating = guide['rating'];
-        guideModels.customer = guide['customer'];
-        guideModels.desc = guide['desc'];
-        guideModels.phone = guide['phone'];
-        guideModels.address = guide['address'];
-        guideModels.email = guide['email'];
         _guideList.add(guideModels);
       });
     });
   }
-  getAllGuideData_ES() async {
+  getAllGuideDataES() async {
     _guideList = <guideModel>[];
     var guides = await _guideServices.readGuideES();
 
@@ -971,11 +935,6 @@ class _TourGuidePage extends State<TourGuidePage> {
         guideModels.language = guide['language'];
         guideModels.price = guide['price'];
         guideModels.rating = guide['rating'];
-        guideModels.customer = guide['customer'];
-        guideModels.desc = guide['desc'];
-        guideModels.phone = guide['phone'];
-        guideModels.address = guide['address'];
-        guideModels.email = guide['email'];
         _guideList.add(guideModels);
       });
     });
@@ -992,37 +951,35 @@ class _TourGuidePage extends State<TourGuidePage> {
             size: 35.0,
         ),
       
-      actions: [
-        Container(   
-          width: MediaQuery.of(context).size.width*0.5, 
-          transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
-          child: const TextField(
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
-              ),
-              border: OutlineInputBorder(),
-              hintText: 'search by name...',
-              hintStyle: TextStyle(
-                fontStyle: FontStyle.italic
+        actions: [
+          Container(   
+            width: MediaQuery.of(context).size.width*0.5, 
+            transform: Matrix4.translationValues(-70.0, 5.0, 0.0),
+            child: const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal:5),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF4169E1), width: 2.0),
+                ),
+                border: OutlineInputBorder(),
+                hintText: 'search by name...',
+                hintStyle: TextStyle(
+                  fontStyle: FontStyle.italic
+                ),
               ),
             ),
           ),
-        ),
-        IconButton(
-          icon: Image.asset('assets/images/User.jpg'),
-          iconSize: 50,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.pass_username)),
-            );
-          },
-        )
-      ],
-
-        //Transparent setting.
+          IconButton(
+            icon: Image.asset('assets/images/User.jpg'),
+            iconSize: 50,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.passUsername)),
+              );
+            },
+          )
+        ],
         backgroundColor: const Color(0x44FFFFFF),
         elevation: 0,
       ),
@@ -1030,7 +987,6 @@ class _TourGuidePage extends State<TourGuidePage> {
       body: Center(
         child: Column(
           children: [
-            //Text.
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -1090,7 +1046,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                       Checkbox(
                                         value: value1,
                                         onChanged: (bool value1) {
-                                          getAllGuideData_ID();
+                                          getAllGuideDataID();
                                           setState(() {
                                             this.value1 = value1;
                                           });
@@ -1121,7 +1077,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                       Checkbox(
                                         value: value2,
                                         onChanged: (bool value2) {
-                                          getAllGuideData_EN();
+                                          getAllGuideDataEN();
                                           setState(() {
                                             this.value2 = value2;
                                           });
@@ -1152,7 +1108,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                       Checkbox(
                                         value: value3,
                                         onChanged: (bool value3) {
-                                          getAllGuideData_ES();
+                                          getAllGuideDataES();
                                           setState(() {
                                             this.value3 = value3;
                                           });
@@ -1382,7 +1338,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                                     )
                                                   ),
                                                   TextSpan(
-                                                    text: "${_guideList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                    text: _guideList[index].price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
                                                     style: const TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 18,
@@ -1421,7 +1377,7 @@ class _TourGuidePage extends State<TourGuidePage> {
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
-                                        pageBuilder: (c, a1, a2) => BookGuidePage(passIdGuide: _guideList[index].idGuide, passUsername: widget.pass_username),
+                                        pageBuilder: (c, a1, a2) => BookGuidePage(passIdGuide: _guideList[index].idGuide, passUsername: widget.passUsername),
                                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                           final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                                           final curvedAnimation = CurvedAnimation(
@@ -1468,8 +1424,8 @@ class _TourGuidePage extends State<TourGuidePage> {
   }
 }
 class MyResPage extends StatefulWidget {
-  const MyResPage({Key key, this.pass_username}) : super(key: key);
-  final String pass_username;
+  const MyResPage({Key key, this.passUsername}) : super(key: key);
+  final String passUsername;
 
   @override
 
@@ -1479,12 +1435,10 @@ class MyResPage extends StatefulWidget {
 class _MyResPage extends State<MyResPage> {
   final _resvServices = resvServices();
   final _userServices = userServices();
-  var passIdUser;
 
   List<resvModel> _historyList = <resvModel>[];
   List<onGoingModel> _onGoingList = <onGoingModel>[];
   List<waitingModel> _waitingList = <waitingModel>[];
-  List<userModel> _userList = <userModel>[];
   
   @override
   void initState(){
@@ -1496,11 +1450,10 @@ class _MyResPage extends State<MyResPage> {
     getAllUserData();
   }
   getAllUserData() async {
-    _userList = <userModel>[];
     var users = await _userServices.readUser();
 
     users.forEach((user){
-      if(user['fullname'] == widget.pass_username){
+      if(user['fullname'] == widget.passUsername){
       setState((){
         passIdUser = user['id_user'];
       });
@@ -1633,7 +1586,7 @@ class _MyResPage extends State<MyResPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.pass_username)),
+              MaterialPageRoute(builder: (context) => AccountPage(passUsername: widget.passUsername)),
             );
           },
         )
@@ -2470,38 +2423,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 }
 
-class HelpPage extends StatelessWidget {
-  const HelpPage({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: 
-          const IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-        title: const Text("Help", 
-        style: TextStyle(
-          color: Color(0xFF4169E1),
-          fontWeight: FontWeight.w800,
-          fontSize: 16,
-        ),
-      ),
-      
-      //Transparent setting.
-      backgroundColor: const Color(0x44FFFFFF),
-      elevation: 0,
-    ),
-
-      body: const Center(
-        child: help()
-      ),
-    );
-  }
-}
-
 class LoginPage extends StatelessWidget {
   const LoginPage({Key key}) : super(key: key);
 
@@ -2540,8 +2461,8 @@ class CreateAccPage extends StatelessWidget {
   }
 }
 class ForgetPage extends StatefulWidget {
-  const ForgetPage({Key key, this.pass_usernameNav}) : super(key: key);
-  final String pass_usernameNav;
+  const ForgetPage({Key key, this.passUsernameNav}) : super(key: key);
+  final String passUsernameNav;
 
   @override
 
@@ -2699,126 +2620,6 @@ class _ForgetPage extends State<ForgetPage> {
         ),
       ),
     );
-  }
-}
-
-class SettingPage extends StatelessWidget {
-  const SettingPage({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: 
-          const IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-        title: const Text("Setting", 
-        style: TextStyle(
-          color: Color(0xFF4169E1),
-          fontWeight: FontWeight.w800,
-          fontSize: 16,
-        ),
-      ),
-      
-      //Transparent setting.
-      backgroundColor: const Color(0x44FFFFFF),
-      elevation: 0,
-    ),
-
-      body: const Center(
-        child: Setting()
-      ),
-    );
-  }
-}
-
-class MapsPage extends StatefulWidget {
-  const MapsPage({Key key, this.pass_carguidename, this.pass_coordinate_lan, this.pass_coordinate_lng}) : super(key: key);
-
-  final String pass_carguidename;
-  final double pass_coordinate_lan;
-  final double pass_coordinate_lng;
-
-  @override
-  _MapsPageState createState() => _MapsPageState();
-}
-class _MapsPageState extends State<MapsPage> {
-  static const _initialCameraPosition = CameraPosition(
-    target: LatLng(-6.913698347245817, 107.60835377374151), //Bandung
-    zoom: 12, 
-  );
-  GoogleMapController _googleMapController;
-  Marker _origin;
-  Marker _destination;
-
-  @override
-  void dispose() {
-    _googleMapController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(     
-      appBar: AppBar(
-        iconTheme: 
-          const IconThemeData(
-            color: Color(0xFF4169E1),
-            size: 35.0,
-          ),
-          title: Text(widget.pass_carguidename, 
-          style: const TextStyle(
-            color: Color(0xFF4169E1),
-            fontWeight: FontWeight.w800,
-            fontSize: 16,
-          ),
-        ),
-        //Transparent setting.
-        backgroundColor: const Color(0x44FFFFFF),
-        elevation: 0,
-      ),
-      body: GoogleMap(
-        myLocationButtonEnabled: false,
-        zoomControlsEnabled: false,
-        initialCameraPosition: _initialCameraPosition,
-        onMapCreated: (controller) => _googleMapController = controller,
-        markers: {
-          if (_origin != null) _origin,
-          Marker(
-            markerId: const MarkerId('destination'),
-            infoWindow: const InfoWindow(title: 'Destination'),
-            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-            position: LatLng(widget.pass_coordinate_lan, widget.pass_coordinate_lng),
-          )
-        },
-        onLongPress: _addMarker,
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF1F9F2F),
-        foregroundColor: Colors.white,
-        onPressed: () => _googleMapController.animateCamera(
-          CameraUpdate.newCameraPosition(_initialCameraPosition),
-        ),
-        child: const Icon(Icons.center_focus_strong),
-      )
-    );
-  }
-  void _addMarker(LatLng pos) async {
-    if (_origin == null || (_origin != null && _destination != null)) {
-      setState(() {
-        _origin = Marker(
-          markerId: const MarkerId('origin'),
-          infoWindow: const InfoWindow(title: 'Your Location'),
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          position: pos,
-        );
-        // Reset destination
-        _destination = null;
-      });
-    } 
   }
 }
 
@@ -3108,7 +2909,7 @@ class _GaragePage extends State<GaragePage> {
             Navigator.push(
               context,
               PageRouteBuilder(
-                pageBuilder: (c, a1, a2) => MapsPage(pass_carguidename: garagename, pass_coordinate_lan: double.tryParse(coordinate_lat_g), pass_coordinate_lng: double.tryParse(coordinate_lng_g)),
+                pageBuilder: (c, a1, a2) => MapsPage(passCarguidename: garagename, passCoordinateLan: double.tryParse(coordinate_lat_g), passCoordinateLng: double.tryParse(coordinate_lng_g)),
                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
                   final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                   final curvedAnimation = CurvedAnimation(

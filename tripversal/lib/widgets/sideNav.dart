@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tripversal/helpPage.dart';
+import 'package:tripversal/settingPage.dart';
 import '../main.dart';
 
 class NavDrawer extends StatelessWidget {

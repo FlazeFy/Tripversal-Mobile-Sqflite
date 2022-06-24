@@ -34,7 +34,7 @@ dependencies:
   sqflite: ^2.0.2+1
   path_provider: ^2.0.9
 
-  #Google Maps
+  # Google Maps
   dio: ^4.0.0
   flutter_polyline_points: ^0.2.6
   google_maps_flutter: ^2.0.2
@@ -42,9 +42,15 @@ dependencies:
   # format DateTime
   intl: ^0.17.0
 
+  #Dark / light mode
+  day_night_switcher: ^0.2.0+1
+  theme_provider: ^0.5.0
+  get: ^4.6.5
+
+  # Chat bubble
   flutter_chat_bubble: ^2.0.0
 
-  # display todos in grid
+  # Grid
   flutter_staggered_grid_view: ^0.4.0-nullsafety.3
 
   # The following adds the Cupertino Icons font to your application.

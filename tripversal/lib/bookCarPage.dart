@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:tripversal/chatPage.dart';
 import 'package:tripversal/main.dart';
+import 'package:tripversal/mapsPage.dart';
 import 'package:tripversal/models/carModel.dart';
 import 'package:tripversal/models/reviewModel.dart';
 import 'package:tripversal/orderPage.dart';
@@ -173,7 +174,7 @@ class _BookCarPage extends State<BookCarPage> {
             Navigator.push(
               context,
               PageRouteBuilder(
-                pageBuilder: (c, a1, a2) => MapsPage(pass_carguidename: carname, pass_coordinate_lan: double.tryParse(coordinateLan), pass_coordinate_lng: double.tryParse(coordinateLng)),
+                pageBuilder: (c, a1, a2) => MapsPage(passCarguidename: carname, passCoordinateLan: double.tryParse(coordinateLan), passCoordinateLng: double.tryParse(coordinateLng)),
                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
                   final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
                   final curvedAnimation = CurvedAnimation(
@@ -525,6 +526,7 @@ class _BookCarPage extends State<BookCarPage> {
                                   fontWeight: FontWeight.w800
                                 ),
                               ),
+                              initiallyExpanded: true,
                               children: <Widget>[                     
                                 SingleChildScrollView(               
                                   scrollDirection: Axis.vertical,
@@ -678,6 +680,7 @@ class _BookCarPage extends State<BookCarPage> {
                                   fontWeight: FontWeight.w800
                                 ),
                               ),
+                              initiallyExpanded: true,
                               children: [
                                 ListView.builder(
                                   shrinkWrap: true,   

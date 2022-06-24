@@ -114,7 +114,7 @@ class Login extends StatelessWidget {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ForgetPage(pass_usernameNav: _user.fullname)),
+                    MaterialPageRoute(builder: (context) => ForgetPage(passUsernameNav: _user.fullname)),
                   );
                 },
                 child: const Text('Forgot Password',
